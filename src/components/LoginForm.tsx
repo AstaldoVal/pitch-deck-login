@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 
 const LoginForm = () => {
@@ -12,6 +13,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -33,14 +35,14 @@ const LoginForm = () => {
     if (!isPasswordValid) setPasswordError(true);
     
     if (isEmailValid && isPasswordValid) {
-      // Handle login logic here
-      console.log("Login attempted with:", { email, password });
+      // Navigate to onboarding for prototype
+      navigate('/onboarding');
     }
   };
 
   const handleGoogleSignIn = () => {
-    // Handle Google sign-in logic here
-    console.log("Google sign-in attempted");
+    // Navigate to onboarding for prototype
+    navigate('/onboarding');
   };
 
   return (
