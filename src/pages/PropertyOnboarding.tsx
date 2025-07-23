@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Upload, FileText, Check, ArrowRight, Home, FileUp, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -17,6 +18,7 @@ const PropertyOnboarding = () => {
     city: "",
     state: "",
     zip: "",
+    propertyCategory: "",
     propertyType: ""
   });
   const [rentRollFile, setRentRollFile] = useState<File | null>(null);
@@ -32,14 +34,20 @@ const PropertyOnboarding = () => {
   ];
 
   const handleFormChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => {
+      // Reset property type if category changes
+      if (field === 'propertyCategory' && prev.propertyCategory !== value) {
+        return { ...prev, [field]: value, propertyType: "" };
+      }
+      return { ...prev, [field]: value };
+    });
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate required fields
-    const requiredFields = ['name', 'address', 'city', 'state', 'zip', 'propertyType'];
+    const requiredFields = ['name', 'address', 'city', 'state', 'zip', 'propertyCategory', 'propertyType'];
     const isValid = requiredFields.every(field => formData[field].trim() !== '');
     
     if (!isValid) {
@@ -99,14 +107,27 @@ const PropertyOnboarding = () => {
     }, 2000);
   };
 
-  const propertyTypes = [
-    "Military",
-    "Conventional", 
-    "Senior Living",
-    "Housing",
-    "Affordable",
-    "Student Housing"
-  ];
+  const propertyCategories = ["Multi-Family", "Commercial"];
+  
+  const propertyTypes = {
+    "Multi-Family": [
+      "Military",
+      "Conventional", 
+      "Senior Living",
+      "Affordable",
+      "Student Housing"
+    ],
+    "Commercial": [
+      "Office",
+      "Retail",
+      "Industrial",
+      "Mixed Use"
+    ]
+  };
+
+  const getAvailablePropertyTypes = () => {
+    return formData.propertyCategory ? propertyTypes[formData.propertyCategory as keyof typeof propertyTypes] || [] : [];
+  };
 
   const states = [
     "CA", "NY", "TX", "FL", "IL", "PA", "OH", "GA", "NC", "MI",
@@ -251,15 +272,37 @@ const PropertyOnboarding = () => {
                 </div>
 
                 <div>
+                  <Label htmlFor="propertyCategory" className="text-sm font-medium text-gray-700">
+                    Property Category *
+                  </Label>
+                  <Select value={formData.propertyCategory} onValueChange={(value) => handleFormChange('propertyCategory', value)}>
+                    <SelectTrigger className="mt-1 h-11">
+                      <SelectValue placeholder="Select property category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {propertyCategories.map(category => (
+                        <SelectItem key={category} value={category}>{category}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
                   <Label htmlFor="propertyType" className="text-sm font-medium text-gray-700">
                     Property Type *
                   </Label>
-                  <Select value={formData.propertyType} onValueChange={(value) => handleFormChange('propertyType', value)}>
+                  <Select 
+                    value={formData.propertyType} 
+                    onValueChange={(value) => handleFormChange('propertyType', value)}
+                    disabled={!formData.propertyCategory}
+                  >
                     <SelectTrigger className="mt-1 h-11">
-                      <SelectValue placeholder="Select property type" />
+                      <SelectValue placeholder={
+                        formData.propertyCategory ? "Select property type" : "Select category first"
+                      } />
                     </SelectTrigger>
                     <SelectContent>
-                      {propertyTypes.map(type => (
+                      {getAvailablePropertyTypes().map(type => (
                         <SelectItem key={type} value={type}>{type}</SelectItem>
                       ))}
                     </SelectContent>
