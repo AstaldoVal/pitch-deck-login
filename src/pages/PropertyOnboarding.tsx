@@ -346,7 +346,7 @@ const PropertyOnboarding = () => {
                   onClick={handleSkipRentRoll}
                   className="w-full h-11"
                 >
-                  Skip This Step
+                  I will upload it later
                 </Button>
               </div>
             </div>
