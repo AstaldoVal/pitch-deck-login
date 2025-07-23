@@ -100,12 +100,12 @@ const PropertyOnboarding = () => {
   };
 
   const propertyTypes = [
-    "Apartment Complex",
-    "Single Family Home",
-    "Townhouse",
-    "Condominium",
-    "Commercial Building",
-    "Mixed Use"
+    "Military",
+    "Conventional", 
+    "Senior Living",
+    "Housing",
+    "Affordable",
+    "Student Housing"
   ];
 
   const states = [
