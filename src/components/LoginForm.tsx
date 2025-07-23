@@ -22,22 +22,8 @@ const LoginForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Reset errors
-    setEmailError(false);
-    setPasswordError(false);
-    
-    // Validate
-    const isEmailValid = validateEmail(email);
-    const isPasswordValid = password.length >= 6;
-    
-    if (!isEmailValid) setEmailError(true);
-    if (!isPasswordValid) setPasswordError(true);
-    
-    if (isEmailValid && isPasswordValid) {
-      // Navigate to onboarding for prototype
-      navigate('/onboarding');
-    }
+    // Navigate to onboarding for prototype (skip validation)
+    navigate('/onboarding');
   };
 
   const handleGoogleSignIn = () => {
