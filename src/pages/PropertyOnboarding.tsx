@@ -359,13 +359,18 @@ const PropertyOnboarding = () => {
               </div>
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  Property Created Successfully!
+                  {rentRollFile ? 
+                    "Property Created Successfully!" :
+                    skippedCustomerSuccess ?
+                    "Welcome to RenoQuest!" :
+                    "Property Created Successfully!"
+                  }
                 </h2>
                 <p className="text-gray-600">
                   {rentRollFile ? 
                     "Our support team will contact you to help with setup" : 
                     skippedCustomerSuccess ?
-                    "Don't worry, we are always here to support you on the RenoQuest journey. If you need the assistance of customer success later, you will always be able to talk to them by using live chat support." :
+                    "Your property is ready and you're all set to begin your RenoQuest journey. Remember, our customer success team is always available through live chat whenever you need assistance." :
                     "You can add units manually later or upload a rent roll"
                   }
                 </p>
