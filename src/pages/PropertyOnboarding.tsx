@@ -125,7 +125,7 @@ const PropertyOnboarding = () => {
             Create Your First Property
           </h1>
           <p className="text-lg text-gray-600">
-            Start simple with your first property - your RenoQuest journey begins here. You can always add more properties later!
+            Start with your first property - your RenoQuest journey begins here!
           </p>
         </div>
 
