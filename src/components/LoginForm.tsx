@@ -94,10 +94,7 @@ const LoginForm = () => {
                 type="email"
                 placeholder="Enter email"
                 value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (emailError) setEmailError(false);
-                }}
+                
                 className={`h-12 border-2 rounded-lg ${emailError ? 'border-red-500' : 'border-gray-300'}`}
                 required
               />
