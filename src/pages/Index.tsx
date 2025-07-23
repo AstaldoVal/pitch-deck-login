@@ -8,22 +8,24 @@ const Index = () => {
         <LoginForm />
       </div>
       
-      {/* Right Column - Hero Image */}
-      <div className="hidden lg:block lg:w-1/2 relative overflow-hidden bg-white">
-        <div className="flex items-center justify-center h-full">
-          <img 
-            src="/lovable-uploads/0d24ec0e-6cc1-4a91-ba1e-c10a73e6503b.png" 
-            alt="Modern building with architectural elements"
-            className="max-w-full max-h-full object-contain"
-          />
-        </div>
-        <div className="absolute bottom-16 left-8 right-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent mb-2">
-            Shaping the New Standard
-          </h1>
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-            for Renovation Management
-          </h2>
+      {/* Right Column - Hero Content */}
+      <div className="hidden lg:block lg:w-1/2 bg-white">
+        <div className="w-full h-full flex flex-col md:flex-row justify-between gap-16 items-center px-5 md:px-10">
+          {/* Text Block */}
+          <div className="flex flex-col justify-center items-start text-left gap-8">
+            <h1 className="lg:text-[72px] md:text-[56px] text-[36px] font-semibold leading-none max-w-[900px] bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+              Shaping the new standard for renovation management
+            </h1>
+          </div>
+          
+          {/* Image Block */}
+          <div>
+            <img 
+              src="/lovable-uploads/0d24ec0e-6cc1-4a91-ba1e-c10a73e6503b.png" 
+              alt="Modern building with architectural elements"
+              className="w-full max-w-[600px] object-contain"
+            />
+          </div>
         </div>
       </div>
     </div>
