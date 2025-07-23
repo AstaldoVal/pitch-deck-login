@@ -96,9 +96,7 @@ const PropertyOnboarding = () => {
       hasRentRoll: false
     }));
     
-    setTimeout(() => {
-      navigate('/property');
-    }, 2000);
+    // Don't auto-redirect when skipping customer success - let user read the message
   };
 
   const propertyTypes = [
