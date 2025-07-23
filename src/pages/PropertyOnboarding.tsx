@@ -122,10 +122,10 @@ const PropertyOnboarding = () => {
         <div className="text-center mb-8">
           <Logo size="lg" className="justify-center mb-6" />
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Create Your First Property
+            Add Property Details
           </h1>
           <p className="text-lg text-gray-600">
-            Start with your first property - your RenoQuest journey begins here!
+            Transform your property management with RenoQuest's powerful tools
           </p>
         </div>
 
