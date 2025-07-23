@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, FileText, Check, ArrowRight } from "lucide-react";
+import { Upload, FileText, Check, ArrowRight, Home, FileUp, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/components/Logo";
@@ -25,6 +25,12 @@ const PropertyOnboarding = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const steps = [
+    { id: 'form', title: 'Property Details', icon: Home, description: 'Enter property information' },
+    { id: 'file', title: 'Upload Rent Roll', icon: FileUp, description: 'Upload or skip rent roll' },
+    { id: 'success', title: 'Complete', icon: CheckCircle, description: 'Setup complete' }
+  ];
+
   const handleFormChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -38,7 +44,7 @@ const PropertyOnboarding = () => {
     
     if (!isValid) {
       toast({
-        title: "Заполните все обязательные поля",
+        title: "Please fill in all required fields",
         variant: "destructive"
       });
       return;
@@ -59,8 +65,8 @@ const PropertyOnboarding = () => {
     // Simulate file processing
     setStep('success');
     toast({
-      title: "Rent Roll успешно загружен",
-      description: "Команда поддержки свяжется с вами для помощи"
+      title: "Rent Roll uploaded successfully",
+      description: "Our support team will contact you to help with setup"
     });
     
     // Save to localStorage for prototype
@@ -78,8 +84,8 @@ const PropertyOnboarding = () => {
   const handleSkipRentRoll = () => {
     setStep('success');
     toast({
-      title: "Property создан",
-      description: "Вы можете добавить юниты позже вручную или загрузить Rent Roll"
+      title: "Property created",
+      description: "You can add units manually later or upload a rent roll"
     });
     
     // Save to localStorage for prototype
@@ -113,11 +119,55 @@ const PropertyOnboarding = () => {
         <div className="text-center mb-8">
           <Logo size="lg" className="justify-center mb-6" />
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Создайте вашу первую Property
+            Create Your First Property
           </h1>
           <p className="text-lg text-gray-600">
-            Заполните основную информацию и загрузите Rent Roll или пропустите этот шаг
+            Fill out the basic information and upload a rent roll or skip this step
           </p>
+        </div>
+
+        {/* Progress Steps */}
+        <div className="mb-8">
+          <div className="flex items-center justify-center space-x-8">
+            {steps.map((stepItem, index) => {
+              const isActive = stepItem.id === step;
+              const isCompleted = steps.findIndex(s => s.id === step) > index;
+              const StepIcon = stepItem.icon;
+              
+              return (
+                <div key={stepItem.id} className="flex items-center">
+                  <div className="flex flex-col items-center">
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 ${
+                      isActive ? 'bg-blue-600 border-blue-600 text-white' : 
+                      isCompleted ? 'bg-green-600 border-green-600 text-white' : 
+                      'bg-gray-100 border-gray-300 text-gray-400'
+                    }`}>
+                      {isCompleted ? (
+                        <Check className="w-5 h-5" />
+                      ) : (
+                        <StepIcon className="w-5 h-5" />
+                      )}
+                    </div>
+                    <div className="mt-2 text-center">
+                      <p className={`text-sm font-medium ${
+                        isActive ? 'text-blue-600' : 
+                        isCompleted ? 'text-green-600' : 
+                        'text-gray-500'
+                      }`}>
+                        {stepItem.title}
+                      </p>
+                      <p className="text-xs text-gray-400">{stepItem.description}</p>
+                    </div>
+                  </div>
+                  {index < steps.length - 1 && (
+                    <div className={`w-16 h-0.5 mx-4 ${
+                      isCompleted ? 'bg-green-600' : 'bg-gray-300'
+                    }`} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         <Card className="p-8">
@@ -222,7 +272,7 @@ const PropertyOnboarding = () => {
                   type="submit" 
                   className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
                 >
-                  Продолжить
+                  Continue
                 </Button>
               </div>
             </form>
@@ -232,11 +282,11 @@ const PropertyOnboarding = () => {
             <div className="space-y-6">
               <div className="text-center">
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  Загрузите Rent Roll
+                  Upload Rent Roll
                 </h2>
                 <p className="text-gray-600">
-                  Загрузите файл с данными о юнитах или пропустите этот шаг. 
-                  Наша команда поддержки поможет вам с настройкой.
+                  Upload a file with unit data or skip this step. 
+                  Our support team will help you with setup.
                 </p>
               </div>
 
@@ -252,10 +302,10 @@ const PropertyOnboarding = () => {
                   <label htmlFor="rentRoll" className="cursor-pointer">
                     <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <p className="text-lg font-medium text-gray-900 mb-2">
-                      Перетащите файл сюда или нажмите для выбора
+                      Drag file here or click to select
                     </p>
                     <p className="text-sm text-gray-500">
-                      Поддерживаются файлы: .xlsx, .xls, .csv
+                      Supported files: .xlsx, .xls, .csv
                     </p>
                   </label>
                 </div>
@@ -265,7 +315,7 @@ const PropertyOnboarding = () => {
                     <FileText className="w-8 h-8 text-green-600" />
                     <div>
                       <p className="font-medium text-green-900">{rentRollFile?.name}</p>
-                      <p className="text-sm text-green-700">Файл готов к обработке</p>
+                      <p className="text-sm text-green-700">File ready for processing</p>
                     </div>
                   </div>
                   <div className="space-y-3">
@@ -274,14 +324,14 @@ const PropertyOnboarding = () => {
                       className="w-full h-11 bg-green-600 hover:bg-green-700 text-white font-semibold"
                     >
                       <Check className="w-4 h-4 mr-2" />
-                      Подтвердить загрузку
+                      Confirm Upload
                     </Button>
                     <Button 
                       variant="outline"
                       onClick={() => setShowFilePreview(false)}
                       className="w-full h-11"
                     >
-                      Выбрать другой файл
+                      Choose Another File
                     </Button>
                   </div>
                 </div>
@@ -293,7 +343,7 @@ const PropertyOnboarding = () => {
                   onClick={handleSkipRentRoll}
                   className="w-full h-11"
                 >
-                  Пропустить этот шаг
+                  Skip This Step
                 </Button>
               </div>
             </div>
@@ -306,12 +356,12 @@ const PropertyOnboarding = () => {
               </div>
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  Property успешно создан!
+                  Property Created Successfully!
                 </h2>
                 <p className="text-gray-600">
                   {rentRollFile ? 
-                    "Команда поддержки свяжется с вами для помощи с настройкой" : 
-                    "Вы можете добавить юниты позже вручную или загрузить Rent Roll"
+                    "Our support team will contact you to help with setup" : 
+                    "You can add units manually later or upload a rent roll"
                   }
                 </p>
               </div>
@@ -319,7 +369,7 @@ const PropertyOnboarding = () => {
                 onClick={() => navigate('/property')}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8"
               >
-                Перейти к Property
+                Go to Property
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
