@@ -22,6 +22,7 @@ const PropertyOnboarding = () => {
   const [rentRollFile, setRentRollFile] = useState<File | null>(null);
   const [showFilePreview, setShowFilePreview] = useState(false);
   const [step, setStep] = useState<'form' | 'file' | 'success'>('form');
+  const [skippedCustomerSuccess, setSkippedCustomerSuccess] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -82,6 +83,7 @@ const PropertyOnboarding = () => {
   };
 
   const handleSkipRentRoll = () => {
+    setSkippedCustomerSuccess(true);
     setStep('success');
     toast({
       title: "Property created",
@@ -364,6 +366,8 @@ const PropertyOnboarding = () => {
                 <p className="text-gray-600">
                   {rentRollFile ? 
                     "Our support team will contact you to help with setup" : 
+                    skippedCustomerSuccess ?
+                    "Don't worry, we are always here to support you on the RenoQuest journey. If you need the assistance of customer success later, you will always be able to talk to them by using live chat support." :
                     "You can add units manually later or upload a rent roll"
                   }
                 </p>
