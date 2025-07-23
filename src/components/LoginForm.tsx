@@ -10,11 +10,32 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempted with:", { email, password });
+    
+    // Reset errors
+    setEmailError(false);
+    setPasswordError(false);
+    
+    // Validate
+    const isEmailValid = validateEmail(email);
+    const isPasswordValid = password.length >= 6;
+    
+    if (!isEmailValid) setEmailError(true);
+    if (!isPasswordValid) setPasswordError(true);
+    
+    if (isEmailValid && isPasswordValid) {
+      // Handle login logic here
+      console.log("Login attempted with:", { email, password });
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -85,15 +106,20 @@ const LoginForm = () => {
                 type="email"
                 placeholder="Enter email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-12 border-2 border-red-500 rounded-lg"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (emailError) setEmailError(false);
+                }}
+                className={`h-12 border-2 rounded-lg ${emailError ? 'border-red-500' : 'border-gray-300'}`}
                 required
               />
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                <div className="w-6 h-6 bg-red-500 rounded flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">!</span>
+              {emailError && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <div className="w-6 h-6 bg-red-500 rounded flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">!</span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
@@ -116,8 +142,11 @@ const LoginForm = () => {
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="h-12 border-2 border-gray-300 rounded-lg pr-12"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (passwordError) setPasswordError(false);
+                }}
+                className={`h-12 border-2 rounded-lg ${passwordError ? 'border-red-500 pr-24' : 'border-gray-300 pr-12'}`}
                 required
               />
               <button
@@ -131,11 +160,13 @@ const LoginForm = () => {
                   <EyeIcon className="h-5 w-5" />
                 )}
               </button>
-              <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
-                <div className="w-6 h-6 bg-red-500 rounded flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">!</span>
+              {passwordError && (
+                <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
+                  <div className="w-6 h-6 bg-red-500 rounded flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">!</span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
