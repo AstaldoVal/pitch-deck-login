@@ -288,8 +288,8 @@ const PropertyOnboarding = () => {
                   Upload Rent Roll
                 </h2>
                 <p className="text-gray-600">
-                  Upload a file with unit data or skip this step. 
-                  Our support team will help you with setup.
+                  Upload your rent roll now and save hours of manual data entry. 
+                  Our customer success team will have your property fully set up within 24 hours and guide you through your next steps.
                 </p>
               </div>
 
