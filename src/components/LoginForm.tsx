@@ -82,7 +82,7 @@ const LoginForm = () => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off" noValidate>
           {/* Email Field */}
           <div className="space-y-2">
             <Label htmlFor="email" className="text-sm font-medium text-gray-700">
@@ -94,9 +94,11 @@ const LoginForm = () => {
                 type="email"
                 placeholder="Enter email"
                 value={email}
-                
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (emailError) setEmailError(false);
+                }}
                 className={`h-12 border-2 rounded-lg ${emailError ? 'border-red-500' : 'border-gray-300'}`}
-                required
               />
               {emailError && (
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -132,7 +134,6 @@ const LoginForm = () => {
                   if (passwordError) setPasswordError(false);
                 }}
                 className={`h-12 border-2 rounded-lg ${passwordError ? 'border-red-500 pr-24' : 'border-gray-300 pr-12'}`}
-                required
               />
               <button
                 type="button"
