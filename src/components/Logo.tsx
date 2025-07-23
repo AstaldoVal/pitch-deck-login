@@ -22,27 +22,11 @@ const Logo = ({ className, size = "md", showText = true }: LogoProps) => {
   return (
     <div className={cn("flex items-center gap-3", className)}>
       {/* Logo Icon */}
-      <div className={cn(
-        "rounded-lg bg-gradient-primary flex items-center justify-center shadow-soft",
-        sizeClasses[size]
-      )}>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          className={cn(
-            "text-white",
-            size === "sm" ? "w-3 h-3" : size === "md" ? "w-4 h-4" : "w-6 h-6"
-          )}
-        >
-          <path
-            d="M20 7L12 3L4 7M20 7L12 11M20 7V17L12 21M4 7L12 11M4 7V17L12 21M12 11V21"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </div>
+      <img 
+        src="/lovable-uploads/c6e5ff12-0fa6-4fd8-adfe-f43e4e07eece.png"
+        alt="RenoQuest Logo"
+        className={cn(sizeClasses[size], "object-contain")}
+      />
       
       {/* Logo Text */}
       {showText && (
