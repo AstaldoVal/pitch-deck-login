@@ -14,7 +14,7 @@ const Index = () => {
           <img 
             src="/lovable-uploads/0d24ec0e-6cc1-4a91-ba1e-c10a73e6503b.png" 
             alt="Modern building with architectural elements"
-            className="w-full h-full object-cover"
+            className="max-w-full max-h-full object-contain"
           />
         </div>
         <div className="absolute bottom-16 left-8 right-8">
