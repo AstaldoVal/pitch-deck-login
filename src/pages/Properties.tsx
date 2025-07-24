@@ -56,7 +56,7 @@ const Properties = () => {
         zip: propertyData.zip,
         propertyType: propertyData.propertyType,
         units: 0, // Default as no units added yet
-        asset: 'Real Estate',
+        asset: 'John Smith',
         hasRentRoll: propertyData.hasRentRoll,
         rentRollFile: propertyData.rentRollFile
       };
@@ -119,16 +119,16 @@ const Properties = () => {
                 <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-50">
-                    <TableHead className="font-semibold whitespace-nowrap min-w-[120px]">Name</TableHead>
-                    <TableHead className="font-semibold whitespace-nowrap min-w-[80px]">Units</TableHead>
-                    <TableHead className="font-semibold whitespace-nowrap min-w-[100px]">Year Built</TableHead>
-                    <TableHead className="font-semibold whitespace-nowrap min-w-[200px]">Address</TableHead>
-                    <TableHead className="font-semibold whitespace-nowrap min-w-[120px]">City</TableHead>
-                    <TableHead className="font-semibold whitespace-nowrap min-w-[80px]">State</TableHead>
-                    <TableHead className="font-semibold whitespace-nowrap min-w-[100px]">ZIP Code</TableHead>
-                    <TableHead className="font-semibold whitespace-nowrap min-w-[120px]">Property Type</TableHead>
-                    <TableHead className="font-semibold whitespace-nowrap min-w-[100px]">Asset</TableHead>
-                    <TableHead className="font-semibold whitespace-nowrap min-w-[100px] text-right">Actions</TableHead>
+                    <TableHead className="font-semibold">Name</TableHead>
+                    <TableHead className="font-semibold w-16">Units</TableHead>
+                    <TableHead className="font-semibold w-20">Year Built</TableHead>
+                    <TableHead className="font-semibold">Address</TableHead>
+                    <TableHead className="font-semibold w-24">City</TableHead>
+                    <TableHead className="font-semibold w-16">State</TableHead>
+                    <TableHead className="font-semibold w-20">ZIP Code</TableHead>
+                    <TableHead className="font-semibold w-28">Property Type</TableHead>
+                    <TableHead className="font-semibold w-32">Asset Manager</TableHead>
+                    <TableHead className="font-semibold w-20 text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -164,7 +164,7 @@ const Properties = () => {
                         <TableCell>{property.zip}</TableCell>
                         <TableCell>
                           <Badge variant="secondary" className={getPropertyTypeBadge(property.propertyType)}>
-                            {property.propertyType}
+                            Conventional
                           </Badge>
                         </TableCell>
                         <TableCell>{property.asset}</TableCell>
