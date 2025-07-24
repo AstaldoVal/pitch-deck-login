@@ -38,16 +38,13 @@ const PropertyOnboarding = () => {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     
     // Validate required fields
     const requiredFields = ['name', 'address', 'city', 'state', 'zip', 'propertyType'];
     const isValid = requiredFields.every(field => formData[field].trim() !== '');
     
     if (!isValid) {
-      toast({
-        title: "Please fill in all required fields",
-        variant: "destructive"
-      });
       return;
     }
     
