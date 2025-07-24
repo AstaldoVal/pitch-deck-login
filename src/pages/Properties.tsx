@@ -30,8 +30,7 @@ interface PropertyData {
   zip: string;
   propertyType: string;
   units: number;
-  yearBuilt: number;
-  portfolio: string;
+  yearBuilt?: number;
   asset: string;
   hasRentRoll: boolean;
   rentRollFile?: string;
@@ -57,8 +56,6 @@ const Properties = () => {
         zip: propertyData.zip,
         propertyType: propertyData.propertyType,
         units: 0, // Default as no units added yet
-        yearBuilt: 2023, // Default year
-        portfolio: 'Default Portfolio',
         asset: 'Real Estate',
         hasRentRoll: propertyData.hasRentRoll,
         rentRollFile: propertyData.rentRollFile
@@ -116,26 +113,26 @@ const Properties = () => {
 
               {/* Properties Table */}
               <Card className="overflow-hidden">
-                <Table>
+                <div className="overflow-x-auto">
+                  <Table>
                   <TableHeader>
                     <TableRow className="bg-gray-50">
-                      <TableHead className="font-semibold">Name</TableHead>
-                      <TableHead className="font-semibold">Units</TableHead>
-                      <TableHead className="font-semibold">Year Built</TableHead>
-                      <TableHead className="font-semibold">Address</TableHead>
-                      <TableHead className="font-semibold">City</TableHead>
-                      <TableHead className="font-semibold">State</TableHead>
-                      <TableHead className="font-semibold">ZIP Code</TableHead>
-                      <TableHead className="font-semibold">Property Type</TableHead>
-                      <TableHead className="font-semibold">Portfolio</TableHead>
-                      <TableHead className="font-semibold">Asset</TableHead>
-                      <TableHead className="font-semibold text-right">Actions</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap min-w-[120px]">Name</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap min-w-[80px]">Units</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap min-w-[100px]">Year Built</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap min-w-[200px]">Address</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap min-w-[120px]">City</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap min-w-[80px]">State</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap min-w-[100px]">ZIP Code</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap min-w-[120px]">Property Type</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap min-w-[100px]">Asset</TableHead>
+                      <TableHead className="font-semibold whitespace-nowrap min-w-[100px] text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {properties.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={11} className="text-center py-12">
+                        <TableCell colSpan={10} className="text-center py-12">
                           <div className="flex flex-col items-center">
                             <Building2 className="w-12 h-12 text-gray-300 mb-4" />
                             <h3 className="text-lg font-medium text-gray-900 mb-2">No Properties Found</h3>
@@ -168,7 +165,6 @@ const Properties = () => {
                               {property.propertyType}
                             </Badge>
                           </TableCell>
-                          <TableCell>{property.portfolio}</TableCell>
                           <TableCell>{property.asset}</TableCell>
                           <TableCell className="text-right">
                             <Button
@@ -188,21 +184,24 @@ const Properties = () => {
                     )}
                   </TableBody>
                 </Table>
+                </div>
               </Card>
 
               {/* Table Footer */}
               {properties.length > 0 && (
                 <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
                   <span>Total {properties.length} items</span>
-                  <div className="flex items-center space-x-2">
-                    <Button variant="outline" size="sm" disabled>
-                      Previous
-                    </Button>
-                    <span className="px-3 py-1 bg-blue-600 text-white rounded">1</span>
-                    <Button variant="outline" size="sm" disabled>
-                      Next
-                    </Button>
-                  </div>
+                  {properties.length > 40 && (
+                    <div className="flex items-center space-x-2">
+                      <Button variant="outline" size="sm" disabled>
+                        Previous
+                      </Button>
+                      <span className="px-3 py-1 bg-blue-600 text-white rounded">1</span>
+                      <Button variant="outline" size="sm" disabled>
+                        Next
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
