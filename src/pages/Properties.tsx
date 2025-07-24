@@ -97,7 +97,7 @@ const Properties = () => {
         <AppSidebar />
         <div className="flex-1 flex flex-col">
           <AppHeader />
-          <div className="flex-1">
+          <div className="flex-1 overflow-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {/* Page Header */}
               <div className="flex items-center justify-between mb-8">
