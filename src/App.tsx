@@ -5,8 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Properties from "./pages/Properties";
-import PropertyEdit from "./pages/PropertyEdit";
 import PropertyOnboarding from "./pages/PropertyOnboarding";
+import PropertyEdit from "./pages/PropertyEdit";
 import Property from "./pages/Property";
 import NotFound from "./pages/NotFound";
 
