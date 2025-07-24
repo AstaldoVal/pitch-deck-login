@@ -34,16 +34,16 @@ export function AppSidebar() {
 
   const isActive = (path: string) => currentPath === path;
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100";
+    isActive ? "bg-primary/10 text-primary font-medium" : "hover:bg-muted/50";
 
   return (
     <Sidebar
-      className={`${state === "collapsed" ? "w-14" : "w-60"} mt-16 bg-blue-600 border-r-0`}
+      className={`${state === "collapsed" ? "w-14" : "w-60"} mt-16`}
       collapsible="icon"
     >
-      <SidebarContent className="bg-blue-600">
+      <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className={`${state === "collapsed" ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+          <SidebarGroupLabel className={state === "collapsed" ? "sr-only" : ""}>
             Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -52,8 +52,8 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={getNavCls}>
-                      <item.icon className="h-5 w-5 text-current" />
-                      {state !== "collapsed" && <span className="font-medium">{item.title}</span>}
+                      <item.icon className="h-4 w-4" />
+                      {state !== "collapsed" && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -63,7 +63,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className={`${state === "collapsed" ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+          <SidebarGroupLabel className={state === "collapsed" ? "sr-only" : ""}>
             Support
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -72,8 +72,8 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={getNavCls}>
-                      <item.icon className="h-5 w-5 text-current" />
-                      {state !== "collapsed" && <span className="font-medium">{item.title}</span>}
+                      <item.icon className="h-4 w-4" />
+                      {state !== "collapsed" && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
