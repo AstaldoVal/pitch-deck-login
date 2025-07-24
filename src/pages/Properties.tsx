@@ -96,7 +96,7 @@ const Properties = () => {
       <div className="min-h-screen w-full flex">
         <AppSidebar />
         <div className="flex-1 relative">
-          <div className="fixed top-0 right-0 left-64 z-20 bg-white">
+          <div className="fixed top-0 right-0 left-60 z-20 bg-white">
             <AppHeader />
           </div>
           <div className="pt-16 h-screen overflow-auto">
