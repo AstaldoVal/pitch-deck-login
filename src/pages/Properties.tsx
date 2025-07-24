@@ -65,10 +65,7 @@ const Properties = () => {
   }, []);
 
   const handleEdit = (propertyId: string) => {
-    toast({
-      title: "Редактирование",
-      description: "Функция редактирования будет доступна в следующей версии"
-    });
+    navigate(`/property/edit/${propertyId}`);
   };
 
   const handleAddProperty = () => {
