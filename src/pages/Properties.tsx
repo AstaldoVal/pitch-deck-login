@@ -119,16 +119,16 @@ const Properties = () => {
                 <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-50">
-                    <TableHead className="font-semibold">Name</TableHead>
-                    <TableHead className="font-semibold w-16">Units</TableHead>
-                    <TableHead className="font-semibold w-20">Year Built</TableHead>
-                    <TableHead className="font-semibold">Address</TableHead>
-                    <TableHead className="font-semibold w-24">City</TableHead>
-                    <TableHead className="font-semibold w-16">State</TableHead>
-                    <TableHead className="font-semibold w-20">ZIP Code</TableHead>
-                    <TableHead className="font-semibold w-28">Property Type</TableHead>
-                    <TableHead className="font-semibold w-32">Asset Manager</TableHead>
-                    <TableHead className="font-semibold w-20 text-right">Actions</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap">Name</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap w-16">Units</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap w-24">Year Built</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap">Address</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap w-24">City</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap w-16">State</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap w-24">ZIP Code</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap w-28">Property Type</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap w-36">Asset Manager</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap w-20 text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
