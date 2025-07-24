@@ -96,7 +96,9 @@ const Properties = () => {
       <div className="min-h-screen w-full flex">
         <AppSidebar />
         <div className="flex-1 flex flex-col h-screen">
-          <AppHeader />
+          <div className="sticky top-0 z-10">
+            <AppHeader />
+          </div>
           <div className="flex-1 overflow-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {/* Page Header */}
