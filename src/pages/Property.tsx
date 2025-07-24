@@ -86,8 +86,8 @@ const Property = () => {
               <div className="mb-8">
                 <Card className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      <h1 className="text-3xl font-bold text-gray-900">
+                    <div>
+                      <h1 className="text-3xl font-bold text-gray-900 mb-2">
                         {propertyData.name}
                       </h1>
                       <Badge variant="outline" className="text-blue-700 border-blue-200 bg-blue-50">
