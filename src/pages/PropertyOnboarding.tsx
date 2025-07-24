@@ -72,10 +72,6 @@ const PropertyOnboarding = () => {
       hasRentRoll: true,
       rentRollFile: rentRollFile?.name
     }));
-    
-    setTimeout(() => {
-      navigate('/property');
-    }, 2000);
   };
 
   const handleSkipRentRoll = () => {
