@@ -96,7 +96,7 @@ const Properties = () => {
     
     return (
       <div className="flex-1 relative">
-        <div className={`fixed top-0 right-0 z-20 bg-white transition-all duration-200 ${open ? 'left-60' : 'left-14'}`}>
+        <div className={`fixed top-0 right-0 z-20 bg-white transition-all duration-200 ${open ? 'left-[240px]' : 'left-[56px]'}`}>
           <AppHeader />
         </div>
         <div className="pt-16 h-screen overflow-auto">
