@@ -83,23 +83,43 @@ const Property = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Property Header */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                {propertyData.name}
-              </h1>
-              <div className="flex items-center text-gray-600">
-                <MapPin className="w-4 h-4 mr-1" />
-                <span>
-                  {propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}
-                </span>
+          <Card className="p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex-1">
+                <div className="flex items-center space-x-3 mb-3">
+                  <h1 className="text-3xl font-bold text-gray-900">
+                    {propertyData.name}
+                  </h1>
+                  <Badge variant="outline" className="text-blue-700 border-blue-200 bg-blue-50">
+                    <Building2 className="w-3 h-3 mr-1" />
+                    {propertyData.propertyType}
+                  </Badge>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+                  <div className="flex items-center">
+                    <MapPin className="w-4 h-4 mr-2 text-gray-400" />
+                    <span>
+                      {propertyData.address}
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <Building2 className="w-4 h-4 mr-2 text-gray-400" />
+                    <span>
+                      {propertyData.city}, {propertyData.state} {propertyData.zip}
+                    </span>
+                  </div>
+                </div>
               </div>
+              
+              {propertyData.hasRentRoll && (
+                <Badge variant="outline" className="text-green-700 border-green-200 bg-green-50">
+                  <FileText className="w-3 h-3 mr-1" />
+                  Rent Roll Uploaded
+                </Badge>
+              )}
             </div>
-            <Badge variant="outline" className="text-blue-700 border-blue-200 bg-blue-50">
-              <Building2 className="w-3 h-3 mr-1" />
-              {propertyData.propertyType}
-            </Badge>
-          </div>
+          </Card>
 
           {/* Onboarding Tip */}
           {showOnboardingTip && (
