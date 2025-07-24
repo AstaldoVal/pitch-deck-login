@@ -95,11 +95,11 @@ const Properties = () => {
     <SidebarProvider>
       <div className="min-h-screen w-full flex">
         <AppSidebar />
-        <div className="flex-1 flex flex-col h-screen">
-          <div className="sticky top-0 z-10">
+        <div className="flex-1 relative">
+          <div className="fixed top-0 right-0 left-64 z-20 bg-white">
             <AppHeader />
           </div>
-          <div className="flex-1 overflow-auto">
+          <div className="pt-16 h-screen overflow-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {/* Page Header */}
               <div className="flex items-center justify-between mb-8">
