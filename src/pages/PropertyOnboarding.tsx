@@ -65,10 +65,6 @@ const PropertyOnboarding = () => {
   const handleFileConfirm = () => {
     // Simulate file processing
     setStep('success');
-    toast({
-      title: "Rent Roll uploaded successfully",
-      description: "Our support team will contact you to help with setup"
-    });
     
     // Save to localStorage for prototype
     localStorage.setItem('property', JSON.stringify({
@@ -85,10 +81,6 @@ const PropertyOnboarding = () => {
   const handleSkipRentRoll = () => {
     setSkippedCustomerSuccess(true);
     setStep('success');
-    toast({
-      title: "Property created",
-      description: "You can add units manually later or upload a rent roll"
-    });
     
     // Save to localStorage for prototype
     localStorage.setItem('property', JSON.stringify({
