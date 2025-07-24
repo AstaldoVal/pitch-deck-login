@@ -28,22 +28,20 @@ const supportItems = [
 ];
 
 export function AppSidebar() {
-  const { state } = useSidebar();
+  const { open } = useSidebar();
   const location = useLocation();
   const currentPath = location.pathname;
 
   const isActive = (path: string) => currentPath === path;
-  const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100";
 
   return (
     <Sidebar
-      className={`${state === "collapsed" ? "w-14" : "w-60"} mt-16 bg-blue-600 border-r-0`}
+      className={`${!open ? "w-14" : "w-60"} bg-blue-600 border-r-0`}
       collapsible="icon"
     >
       <SidebarContent className="bg-blue-600">
         <SidebarGroup>
-          <SidebarGroupLabel className={`${state === "collapsed" ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
             Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -51,9 +49,14 @@ export function AppSidebar() {
               {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to={item.url} className={getNavCls}>
+                    <NavLink 
+                      to={item.url} 
+                      className={({ isActive }) =>
+                        isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
+                      }
+                    >
                       <item.icon className="h-5 w-5 text-current" />
-                      {state !== "collapsed" && <span className="font-medium">{item.title}</span>}
+                      {open && <span className="font-medium">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -63,7 +66,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className={`${state === "collapsed" ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
             Support
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -71,9 +74,14 @@ export function AppSidebar() {
               {supportItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to={item.url} className={getNavCls}>
+                    <NavLink 
+                      to={item.url} 
+                      className={({ isActive }) =>
+                        isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
+                      }
+                    >
                       <item.icon className="h-5 w-5 text-current" />
-                      {state !== "collapsed" && <span className="font-medium">{item.title}</span>}
+                      {open && <span className="font-medium">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
