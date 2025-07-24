@@ -38,7 +38,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar
-      className={state === "collapsed" ? "w-14" : "w-60"}
+      className={`${state === "collapsed" ? "w-14" : "w-60"} mt-16`}
       collapsible="icon"
     >
       <SidebarContent>
