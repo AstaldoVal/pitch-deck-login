@@ -353,7 +353,7 @@ const PropertyOnboarding = () => {
                 </h2>
                 <p className="text-gray-600">
                   {rentRollFile ? 
-                    "Our support team will contact you to help with setup" : 
+                    "Отлично! Мы получили ваш файл. Настройка вашего аккаунта займет до 24 часов. По завершению наш представитель Customer Success свяжется с вами и обсудит дальнейшие шаги для успешного развития вашего проекта." : 
                     skippedCustomerSuccess ?
                     "Your property is ready and you're all set to begin your RenoQuest journey. Remember, our customer success team is always available through live chat whenever you need assistance." :
                     "You can add units manually later or upload a rent roll"
