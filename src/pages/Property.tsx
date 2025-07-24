@@ -59,11 +59,11 @@ const Property = () => {
   if (!propertyData) {
     return (
       <SidebarProvider>
-        <div className="min-h-screen w-full">
-          <AppHeader />
-          <div className="flex">
-            <AppSidebar />
-            <div className="flex-1 flex items-center justify-center min-h-[calc(100vh-64px)]">
+        <div className="min-h-screen w-full flex">
+          <AppSidebar />
+          <div className="flex-1 flex flex-col">
+            <AppHeader />
+            <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <p className="text-lg text-gray-600">Данные Property не найдены</p>
               </div>
@@ -76,10 +76,10 @@ const Property = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen w-full">
-        <AppHeader />
-        <div className="flex">
-          <AppSidebar />
+      <div className="min-h-screen w-full flex">
+        <AppSidebar />
+        <div className="flex-1 flex flex-col">
+          <AppHeader />
           <div className="flex-1">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {/* Property Header */}
