@@ -55,7 +55,21 @@ const Settings = () => {
     // Load job types from localStorage or use defaults
     const savedJobTypes = localStorage.getItem('jobTypes');
     if (savedJobTypes) {
-      setJobTypes(JSON.parse(savedJobTypes));
+      try {
+        const parsed = JSON.parse(savedJobTypes);
+        // Check if the saved data has the new structure with categories
+        if (parsed.length > 0 && parsed[0].category) {
+          setJobTypes(parsed);
+        } else {
+          // Old format without categories, use defaults
+          setJobTypes(defaultJobTypes);
+          localStorage.setItem('jobTypes', JSON.stringify(defaultJobTypes));
+        }
+      } catch (error) {
+        // Invalid JSON, use defaults
+        setJobTypes(defaultJobTypes);
+        localStorage.setItem('jobTypes', JSON.stringify(defaultJobTypes));
+      }
     } else {
       setJobTypes(defaultJobTypes);
       localStorage.setItem('jobTypes', JSON.stringify(defaultJobTypes));
