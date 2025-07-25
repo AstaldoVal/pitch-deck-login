@@ -176,13 +176,8 @@ export default function PropertyBids() {
                   )}
 
                   <div className="space-y-2">
-                    <Label htmlFor="bidNumber">Bid Number</Label>
-                    <Input 
-                      id="bidNumber" 
-                      value={generateBidNumber()} 
-                      readOnly 
-                      className="bg-muted"
-                    />
+                    <Label>Bid Number</Label>
+                    <p className="font-medium text-lg">{generateBidNumber()}</p>
                   </div>
 
                   <div className="space-y-2">
