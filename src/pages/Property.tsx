@@ -11,7 +11,9 @@ import {
   Users, 
   DollarSign,
   AlertCircle,
-  FileText
+  FileText,
+  Edit,
+  Map
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -27,6 +29,9 @@ interface PropertyData {
   propertyType: string;
   hasRentRoll: boolean;
   rentRollFile?: string;
+  yearBuilt?: number;
+  buildingType?: string;
+  assetManager?: string;
 }
 
 const Property = () => {
@@ -64,6 +69,20 @@ const Property = () => {
     toast({
       title: "Uploading Rent Roll",
       description: "This feature will be available in the next version"
+    });
+  };
+
+  const handleEditProperty = () => {
+    toast({
+      title: "Edit Property",
+      description: "Property editing feature coming soon"
+    });
+  };
+
+  const handleViewOnMap = () => {
+    toast({
+      title: "View on Map",
+      description: "Map view feature coming soon"
     });
   };
 
@@ -108,13 +127,46 @@ const Property = () => {
                           {propertyData.propertyType}
                         </Badge>
                       </div>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" onClick={handleEditProperty}>
+                          <Edit className="w-4 h-4 mr-2" />
+                          Edit Property Details
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={handleViewOnMap}>
+                          <Map className="w-4 h-4 mr-2" />
+                          View on Map
+                        </Button>
+                      </div>
                     </div>
                     
-                    <div className="flex items-center text-gray-600">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      <span>
-                        {propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}
-                      </span>
+                    <div className="space-y-3">
+                      <div className="flex items-center text-gray-600">
+                        <MapPin className="w-4 h-4 mr-2" />
+                        <span>
+                          {propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        {propertyData.yearBuilt && (
+                          <div>
+                            <p className="text-sm font-medium text-gray-600">Year Built</p>
+                            <p className="text-lg font-semibold text-gray-900">{propertyData.yearBuilt}</p>
+                          </div>
+                        )}
+                        {propertyData.buildingType && (
+                          <div>
+                            <p className="text-sm font-medium text-gray-600">Building Type</p>
+                            <p className="text-lg font-semibold text-gray-900">{propertyData.buildingType}</p>
+                          </div>
+                        )}
+                        {propertyData.assetManager && (
+                          <div>
+                            <p className="text-sm font-medium text-gray-600">Asset Manager</p>
+                            <p className="text-lg font-semibold text-gray-900">{propertyData.assetManager}</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </Card>
                 </div>
