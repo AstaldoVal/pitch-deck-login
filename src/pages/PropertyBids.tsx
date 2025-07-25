@@ -168,7 +168,7 @@ export default function PropertyBids() {
                         </div>
                         <div>
                           <Label className="text-xs text-muted-foreground">Property Type</Label>
-                          <p className="font-medium">{propertyData.propertyType?.replace(':', '')}</p>
+                          <p className="font-medium">Multi-Family</p>
                         </div>
                         <div>
                           <Label className="text-xs text-muted-foreground">Address</Label>
