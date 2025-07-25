@@ -80,10 +80,11 @@ const Property = () => {
   };
 
   const handleViewOnMap = () => {
-    toast({
-      title: "View on Map",
-      description: "Map view feature coming soon"
-    });
+    if (propertyData) {
+      const address = `${propertyData.address}, ${propertyData.city}, ${propertyData.state} ${propertyData.zip}`;
+      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+      window.open(googleMapsUrl, '_blank');
+    }
   };
 
   if (!propertyData) {
