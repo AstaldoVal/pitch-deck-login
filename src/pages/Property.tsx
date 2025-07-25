@@ -34,6 +34,17 @@ const Property = () => {
   const [showOnboardingTip, setShowOnboardingTip] = useState(true);
   const { toast } = useToast();
 
+  const handleRentRollUploaded = (fileName: string) => {
+    if (propertyData) {
+      const updatedPropertyData = {
+        ...propertyData,
+        hasRentRoll: true,
+        rentRollFile: fileName
+      };
+      setPropertyData(updatedPropertyData);
+    }
+  };
+
   useEffect(() => {
     // Load property data from localStorage (for prototype)
     const savedProperty = localStorage.getItem('property');
@@ -114,6 +125,7 @@ const Property = () => {
                     hasRentRoll={propertyData.hasRentRoll}
                     rentRollFile={propertyData.rentRollFile}
                     uploadTime={new Date()}
+                    onRentRollUploaded={handleRentRollUploaded}
                   />
                 </div>
               </div>
