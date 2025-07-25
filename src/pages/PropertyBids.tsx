@@ -174,6 +174,12 @@ export default function PropertyBids() {
                             className="mt-1 h-9"
                           />
                         </div>
+                        {propertyData && (
+                          <div>
+                            <Label className="text-xs text-muted-foreground">Asset Manager</Label>
+                            <p className="font-medium text-sm mt-1">{propertyData.assetManager || "Not assigned"}</p>
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -235,6 +241,10 @@ export default function PropertyBids() {
                           <Label className="text-xs text-muted-foreground">Property Name</Label>
                           <p className="font-medium text-sm">{propertyData.name}</p>
                         </div>
+                        <div className="col-span-2">
+                          <Label className="text-xs text-muted-foreground">Address</Label>
+                          <p className="font-medium text-sm">{propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}</p>
+                        </div>
                         <div>
                           <Label className="text-xs text-muted-foreground">Year Built</Label>
                           <p className="font-medium text-sm">{propertyData.yearBuilt || "Not specified"}</p>
@@ -242,14 +252,6 @@ export default function PropertyBids() {
                         <div>
                           <Label className="text-xs text-muted-foreground">Building Type</Label>
                           <p className="font-medium text-sm">{propertyData.buildingType || "Not specified"}</p>
-                        </div>
-                        <div className="col-span-2">
-                          <Label className="text-xs text-muted-foreground">Address</Label>
-                          <p className="font-medium text-sm">{propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}</p>
-                        </div>
-                        <div>
-                          <Label className="text-xs text-muted-foreground">Asset Manager</Label>
-                          <p className="font-medium text-sm">{propertyData.assetManager || "Not assigned"}</p>
                         </div>
                       </div>
                     </div>
