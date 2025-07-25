@@ -44,15 +44,15 @@ const Property = () => {
 
   const handleAddUnits = () => {
     toast({
-      title: "Добавление юнитов",
-      description: "Эта функция будет доступна в следующей версии"
+      title: "Adding Units",
+      description: "This feature will be available in the next version"
     });
   };
 
   const handleUploadRentRoll = () => {
     toast({
-      title: "Загрузка Rent Roll",
-      description: "Эта функция будет доступна в следующей версии"
+      title: "Uploading Rent Roll",
+      description: "This feature will be available in the next version"
     });
   };
 
@@ -65,7 +65,7 @@ const Property = () => {
             <AppHeader />
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <p className="text-lg text-gray-600">Данные Property не найдены</p>
+                <p className="text-lg text-gray-600">Property data not found</p>
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@ const Property = () => {
                 <Card className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600">Всего юнитов</p>
+                      <p className="text-sm font-medium text-gray-600">Total Units</p>
                       <p className="text-2xl font-bold text-gray-900">0</p>
                     </div>
                     <Users className="w-8 h-8 text-blue-600" />
@@ -130,7 +130,7 @@ const Property = () => {
                 <Card className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600">Общий доход</p>
+                      <p className="text-sm font-medium text-gray-600">Total Revenue</p>
                       <p className="text-2xl font-bold text-gray-900">$0</p>
                     </div>
                     <DollarSign className="w-8 h-8 text-green-600" />
@@ -140,7 +140,7 @@ const Property = () => {
                 <Card className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600">Занятость</p>
+                      <p className="text-sm font-medium text-gray-600">Occupancy</p>
                       <p className="text-2xl font-bold text-gray-900">0%</p>
                     </div>
                     <Building2 className="w-8 h-8 text-orange-600" />
@@ -153,32 +153,32 @@ const Property = () => {
                 {/* Units Section */}
                 <Card className="p-6">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-semibold text-gray-900">Юниты</h2>
+                    <h2 className="text-xl font-semibold text-gray-900">Units</h2>
                     <Button onClick={handleAddUnits} size="sm">
                       <Plus className="w-4 h-4 mr-2" />
-                      Добавить юнит
+                      Add Unit
                     </Button>
                   </div>
                   
                   <div className="text-center py-12 text-gray-500">
                     <Building2 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                    <p className="text-lg font-medium mb-2">Юниты не добавлены</p>
-                    <p className="text-sm">Добавьте первый юнит или загрузите Rent Roll</p>
+                    <p className="text-lg font-medium mb-2">No units added</p>
+                    <p className="text-sm">Add your first unit or upload a Rent Roll</p>
                   </div>
                 </Card>
 
                 {/* Recent Activity */}
                 <Card className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Последняя активность</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Recent Activity</h2>
                   
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       <div className="flex-1">
                         <p className="text-sm font-medium text-gray-900">
-                          Property "{propertyData.name}" создан
+                          Property "{propertyData.name}" created
                         </p>
-                        <p className="text-xs text-gray-500">Только что</p>
+                        <p className="text-xs text-gray-500">Just now</p>
                       </div>
                     </div>
 
@@ -187,9 +187,9 @@ const Property = () => {
                         <FileText className="w-4 h-4 text-blue-600" />
                         <div className="flex-1">
                           <p className="text-sm font-medium text-gray-900">
-                            Rent Roll "{propertyData.rentRollFile}" загружен
+                            Rent Roll "{propertyData.rentRollFile}" uploaded
                           </p>
-                          <p className="text-xs text-gray-500">Обрабатывается...</p>
+                          <p className="text-xs text-gray-500">Processing...</p>
                         </div>
                       </div>
                     )}
