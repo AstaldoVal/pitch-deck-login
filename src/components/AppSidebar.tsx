@@ -104,6 +104,7 @@ export function AppSidebar() {
                                   isActive ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:bg-gray-100"
                                 }`
                               }
+                              onClick={() => setShowSettingsPanel(false)}
                             >
                               <FileText className="h-4 w-4 mr-2" />
                               Job Types
