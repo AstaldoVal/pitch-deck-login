@@ -168,42 +168,38 @@ export default function PropertyBids() {
         <div className="flex-1 flex flex-col">
           <AppHeader />
           <div className="flex-1 p-8 pb-24 space-y-6">
-            {/* Header */}
-            <div>
-              <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
-                Create Renovation Bid
-              </h1>
-              <p className="text-muted-foreground mt-3 text-lg">Generate detailed renovation proposals for contractors</p>
-            </div>
-
-            {/* Compact Step Navigation */}
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-background to-accent/10 rounded-lg border border-primary/20 shadow-soft">
+            {/* Header with Stepper */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+                  Create Innovation Bid
+                </h1>
+                <p className="text-muted-foreground mt-3 text-lg">Generate detailed renovation proposals for contractors</p>
+              </div>
+              
+              {/* Compact Step Navigation in top right */}
               <div className="flex items-center gap-4">
                 <Badge variant="outline" className="px-3 py-1">
                   Step {currentStep} of {steps.length}
                 </Badge>
-                <div className="text-sm text-muted-foreground">
-                  {steps[currentStep - 1].title}
+                <div className="flex items-center gap-2">
+                  {steps.map((step) => (
+                    <button
+                      key={step.number}
+                      onClick={() => goToStep(step.number)}
+                      className={cn(
+                        "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all",
+                        currentStep === step.number
+                          ? "bg-primary text-white"
+                          : currentStep > step.number
+                          ? "bg-primary/80 text-white hover:bg-primary"
+                          : "bg-muted text-muted-foreground hover:bg-muted/60"
+                      )}
+                    >
+                      {currentStep > step.number ? <Check className="h-3 w-3" /> : step.number}
+                    </button>
+                  ))}
                 </div>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                {steps.map((step) => (
-                  <button
-                    key={step.number}
-                    onClick={() => goToStep(step.number)}
-                    className={cn(
-                      "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all",
-                      currentStep === step.number
-                        ? "bg-primary text-white"
-                        : currentStep > step.number
-                        ? "bg-primary/80 text-white hover:bg-primary"
-                        : "bg-muted text-muted-foreground hover:bg-muted/60"
-                    )}
-                  >
-                    {currentStep > step.number ? <Check className="h-3 w-3" /> : step.number}
-                  </button>
-                ))}
               </div>
             </div>
 
