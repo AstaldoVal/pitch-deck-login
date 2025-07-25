@@ -225,6 +225,7 @@ const Settings = () => {
                         {/* Job Types List for current category */}
                         {jobTypes
                           .filter(job => job.category === category)
+                          .sort((a, b) => a.name.localeCompare(b.name))
                           .map((jobType) => (
                             <div key={jobType.id} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50">
                               {editingId === jobType.id ? (
