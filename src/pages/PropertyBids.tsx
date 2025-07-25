@@ -225,31 +225,31 @@ export default function PropertyBids() {
 
                   {/* Property Information */}
                   {propertyData && (
-                    <div className="space-y-4 p-4 border rounded-lg bg-muted/30">
+                    <div className="space-y-4 p-4 border rounded-lg bg-muted/20">
                       <div className="flex items-center gap-2">
                         <Building className="h-4 w-4 text-muted-foreground" />
                         <h4 className="font-medium text-sm text-muted-foreground">Property Information</h4>
                       </div>
-                      <div className="grid grid-cols-2 gap-x-6 gap-y-3">
-                        <div className="col-span-2">
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
                           <Label className="text-xs text-muted-foreground">Property Name</Label>
-                          <p className="font-medium">{propertyData.name}</p>
-                        </div>
-                        <div className="col-span-2">
-                          <Label className="text-xs text-muted-foreground">Address</Label>
-                          <p className="font-medium">{propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}</p>
+                          <p className="font-medium text-sm">{propertyData.name}</p>
                         </div>
                         <div>
                           <Label className="text-xs text-muted-foreground">Year Built</Label>
-                          <p className="font-medium">{propertyData.yearBuilt || "Not specified"}</p>
+                          <p className="font-medium text-sm">{propertyData.yearBuilt || "Not specified"}</p>
                         </div>
                         <div>
                           <Label className="text-xs text-muted-foreground">Building Type</Label>
-                          <p className="font-medium">{propertyData.buildingType || "Not specified"}</p>
+                          <p className="font-medium text-sm">{propertyData.buildingType || "Not specified"}</p>
                         </div>
                         <div className="col-span-2">
+                          <Label className="text-xs text-muted-foreground">Address</Label>
+                          <p className="font-medium text-sm">{propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}</p>
+                        </div>
+                        <div>
                           <Label className="text-xs text-muted-foreground">Asset Manager</Label>
-                          <p className="font-medium">{propertyData.assetManager || "Not assigned"}</p>
+                          <p className="font-medium text-sm">{propertyData.assetManager || "Not assigned"}</p>
                         </div>
                       </div>
                     </div>
