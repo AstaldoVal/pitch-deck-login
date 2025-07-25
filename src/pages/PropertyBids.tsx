@@ -230,12 +230,12 @@ export default function PropertyBids() {
                         <Building className="h-4 w-4 text-muted-foreground" />
                         <h4 className="font-medium text-sm text-muted-foreground">Property Information</h4>
                       </div>
-                      <div className="space-y-3">
-                        <div>
+                      <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                        <div className="col-span-2">
                           <Label className="text-xs text-muted-foreground">Property Name</Label>
                           <p className="font-medium">{propertyData.name}</p>
                         </div>
-                        <div>
+                        <div className="col-span-2">
                           <Label className="text-xs text-muted-foreground">Address</Label>
                           <p className="font-medium">{propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}</p>
                         </div>
@@ -247,7 +247,7 @@ export default function PropertyBids() {
                           <Label className="text-xs text-muted-foreground">Building Type</Label>
                           <p className="font-medium">{propertyData.buildingType || "Not specified"}</p>
                         </div>
-                        <div>
+                        <div className="col-span-2">
                           <Label className="text-xs text-muted-foreground">Asset Manager</Label>
                           <p className="font-medium">{propertyData.assetManager || "Not assigned"}</p>
                         </div>
