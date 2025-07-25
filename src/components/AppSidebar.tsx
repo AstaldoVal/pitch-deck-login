@@ -113,7 +113,7 @@ export function AppSidebar() {
 
       {/* Settings Popup positioned next to Settings button */}
       {showSettingsPanel && (
-        <div className="absolute left-60 bottom-4 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+        <div className="absolute left-60 bottom-16 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
           <NavLink 
             to="/settings" 
             className={({ isActive }) =>
