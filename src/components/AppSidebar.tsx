@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/sidebar";
 
 const mainItems = [
-  { title: "Dashboard", url: "/", icon: Home },
   { title: "Properties", url: "/properties", icon: Building2 },
 ];
 
