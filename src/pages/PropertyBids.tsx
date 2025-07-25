@@ -274,7 +274,7 @@ export default function PropertyBids() {
             </section>
 
             {/* Contractors Section */}
-            <section className="space-y-8">
+            <section className="space-y-8 pt-8 border-t border-border/40">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-semibold">Contractors</h2>
@@ -307,49 +307,49 @@ export default function PropertyBids() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium">Company Name *</Label>
+                      <Label className="text-sm text-muted-foreground">Company Name *</Label>
                       <Input
                         value={newContractor.companyName}
                         onChange={(e) => setNewContractor({...newContractor, companyName: e.target.value})}
                         placeholder="Company name"
-                        className="bg-background/60"
+                        className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium">Location</Label>
+                      <Label className="text-sm text-muted-foreground">Location</Label>
                       <Input
                         value={newContractor.location}
                         onChange={(e) => setNewContractor({...newContractor, location: e.target.value})}
                         placeholder="City, State"
-                        className="bg-background/60"
+                        className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium">First Name *</Label>
+                      <Label className="text-sm text-muted-foreground">First Name *</Label>
                       <Input
                         value={newContractor.firstName}
                         onChange={(e) => setNewContractor({...newContractor, firstName: e.target.value})}
                         placeholder="First name"
-                        className="bg-background/60"
+                        className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium">Last Name *</Label>
+                      <Label className="text-sm text-muted-foreground">Last Name *</Label>
                       <Input
                         value={newContractor.lastName}
                         onChange={(e) => setNewContractor({...newContractor, lastName: e.target.value})}
                         placeholder="Last name"
-                        className="bg-background/60"
+                        className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <Label className="text-sm font-medium">Email Address *</Label>
+                      <Label className="text-sm text-muted-foreground">Email Address *</Label>
                       <Input
                         type="email"
                         value={newContractor.email}
                         onChange={(e) => setNewContractor({...newContractor, email: e.target.value})}
                         placeholder="email@company.com"
-                        className="bg-background/60"
+                        className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                       />
                     </div>
                   </div>
@@ -398,7 +398,7 @@ export default function PropertyBids() {
             </section>
 
             {/* Scope Selection */}
-            <section className="space-y-8">
+            <section className="space-y-8 pt-8 border-t border-border/40">
               <div>
                 <h2 className="text-2xl font-semibold">Scope Type</h2>
                 <p className="text-muted-foreground mt-1">Choose how to define the project scope</p>
@@ -437,7 +437,7 @@ export default function PropertyBids() {
             </section>
 
             {/* Job Categories */}
-            <section className="space-y-8">
+            <section className="space-y-8 pt-8 border-t border-border/40">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-semibold">Job Categories</h2>
@@ -495,35 +495,39 @@ export default function PropertyBids() {
                         <div className="space-y-6 pt-4">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                              <Label className="text-sm font-medium">Material Spec/Finish</Label>
+                              <Label className="text-sm text-muted-foreground">Material Spec/Finish</Label>
                               <Input
                                 placeholder="Specify materials or finishes"
                                 value={category.materialSpec || ""}
                                 onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
+                                className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                               />
                             </div>
                             <div className="space-y-2">
-                              <Label className="text-sm font-medium">Product Information</Label>
+                              <Label className="text-sm text-muted-foreground">Product Information</Label>
                               <Input
                                 placeholder="Product details"
                                 value={category.productInfo || ""}
                                 onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
+                                className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                               />
                             </div>
                             <div className="space-y-2">
-                              <Label className="text-sm font-medium">Dimensions</Label>
+                              <Label className="text-sm text-muted-foreground">Dimensions</Label>
                               <Input
                                 placeholder="Size specifications"
                                 value={category.dimensions || ""}
                                 onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
+                                className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                               />
                             </div>
                             <div className="space-y-2">
-                              <Label className="text-sm font-medium">Quantity</Label>
+                              <Label className="text-sm text-muted-foreground">Quantity</Label>
                               <Input
                                 placeholder="Number of units"
                                 value={category.quantity || ""}
                                 onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
+                                className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                               />
                             </div>
                           </div>
