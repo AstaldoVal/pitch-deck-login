@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CalendarIcon, Plus, X, Upload, FileText, User, Mail, Phone, Building, ChevronDown, ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -695,10 +696,24 @@ export default function PropertyBids() {
               </div>
               
               {currentStep === steps.length ? (
-                <Button className="flex items-center gap-2 bg-gradient-to-r from-primary to-brand-blue-dark text-white shadow-medium hover:shadow-strong transition-all duration-300">
-                  Create Bid
-                  <Check className="h-4 w-4" />
-                </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        disabled={contractors.length === 0}
+                        className="flex items-center gap-2 bg-gradient-to-r from-primary to-brand-blue-dark text-white shadow-medium hover:shadow-strong transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Create Bid
+                        <Check className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    {contractors.length === 0 && (
+                      <TooltipContent>
+                        <p>Please add at least one contractor to create the bid.</p>
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                </TooltipProvider>
               ) : (
                 <Button
                   onClick={nextStep}
