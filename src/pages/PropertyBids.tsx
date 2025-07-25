@@ -67,6 +67,7 @@ export default function PropertyBids() {
     location: ""
   });
   const [newCategory, setNewCategory] = useState("");
+  const [showContractorForm, setShowContractorForm] = useState(false);
   
   // Form data with defaults
   const [generatedBy, setGeneratedBy] = useState("Roman Matsukatov");
@@ -99,6 +100,7 @@ export default function PropertyBids() {
         email: "",
         location: ""
       });
+      setShowContractorForm(false);
     }
   };
 
@@ -273,38 +275,36 @@ export default function PropertyBids() {
 
             {/* Contractors Section */}
             <section className="space-y-8">
-              <div>
-                <h2 className="text-2xl font-semibold">Contractors</h2>
-                <p className="text-muted-foreground mt-1">Add up to 5 contractors for this bid</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold">Contractors</h2>
+                  <p className="text-muted-foreground mt-1">Add up to 5 contractors for this bid</p>
+                </div>
+                {contractors.length < 5 && (
+                  <Button 
+                    onClick={() => setShowContractorForm(true)}
+                    className="bg-gradient-to-r from-primary to-brand-blue-dark hover:shadow-medium transition-all duration-300"
+                  >
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Contractor
+                  </Button>
+                )}
               </div>
               
-              {contractors.length > 0 && (
-                <div className="space-y-3">
-                  {contractors.map((contractor) => (
-                    <div key={contractor.id} className="flex items-center justify-between p-4 bg-muted/20 rounded-lg border-l-4 border-l-primary/30">
-                      <div>
-                        <div className="font-semibold">{contractor.companyName}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {contractor.firstName} {contractor.lastName} • {contractor.email}
-                          {contractor.location && ` • ${contractor.location}`}
-                        </div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeContractor(contractor.id)}
-                        className="text-muted-foreground hover:text-destructive"
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {contractors.length < 5 && (
-                <div className="space-y-6 p-6 bg-muted/10 rounded-xl">
-                  <h4 className="font-medium text-lg">Add New Contractor</h4>
+              {/* Contract Form */}
+              {showContractorForm && (
+                <div className="space-y-6 p-6 bg-gradient-to-br from-accent/10 to-primary/5 rounded-xl border border-primary/20 shadow-soft">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-medium text-lg">Add New Contractor</h4>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => setShowContractorForm(false)}
+                      className="hover:bg-destructive/10 hover:text-destructive"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label className="text-sm font-medium">Company Name *</Label>
@@ -312,6 +312,7 @@ export default function PropertyBids() {
                         value={newContractor.companyName}
                         onChange={(e) => setNewContractor({...newContractor, companyName: e.target.value})}
                         placeholder="Company name"
+                        className="bg-background/60"
                       />
                     </div>
                     <div className="space-y-2">
@@ -320,6 +321,7 @@ export default function PropertyBids() {
                         value={newContractor.location}
                         onChange={(e) => setNewContractor({...newContractor, location: e.target.value})}
                         placeholder="City, State"
+                        className="bg-background/60"
                       />
                     </div>
                     <div className="space-y-2">
@@ -328,6 +330,7 @@ export default function PropertyBids() {
                         value={newContractor.firstName}
                         onChange={(e) => setNewContractor({...newContractor, firstName: e.target.value})}
                         placeholder="First name"
+                        className="bg-background/60"
                       />
                     </div>
                     <div className="space-y-2">
@@ -336,6 +339,7 @@ export default function PropertyBids() {
                         value={newContractor.lastName}
                         onChange={(e) => setNewContractor({...newContractor, lastName: e.target.value})}
                         placeholder="Last name"
+                        className="bg-background/60"
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
@@ -345,13 +349,50 @@ export default function PropertyBids() {
                         value={newContractor.email}
                         onChange={(e) => setNewContractor({...newContractor, email: e.target.value})}
                         placeholder="email@company.com"
+                        className="bg-background/60"
                       />
                     </div>
                   </div>
-                  <Button onClick={addContractor} className="w-full md:w-auto">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Contractor
-                  </Button>
+                  <div className="flex gap-3">
+                    <Button onClick={addContractor} className="bg-gradient-to-r from-primary to-brand-blue-dark">
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add Contractor
+                    </Button>
+                    <Button variant="outline" onClick={() => setShowContractorForm(false)}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+              
+              {contractors.length > 0 && (
+                <div className="space-y-3">
+                  {contractors.map((contractor) => (
+                    <div key={contractor.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-background to-accent/10 rounded-lg border-l-4 border-l-primary/30 shadow-soft">
+                      <div>
+                        <div className="font-semibold text-lg">{contractor.companyName}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {contractor.firstName} {contractor.lastName} • {contractor.email}
+                          {contractor.location && ` • ${contractor.location}`}
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeContractor(contractor.id)}
+                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {contractors.length === 0 && !showContractorForm && (
+                <div className="text-center py-12 text-muted-foreground">
+                  <User className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>No contractors added yet. Click "Add Contractor" to get started.</p>
                 </div>
               )}
             </section>
