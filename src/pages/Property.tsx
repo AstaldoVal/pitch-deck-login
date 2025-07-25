@@ -81,7 +81,7 @@ const Property = () => {
         <div className="flex-1 flex flex-col">
           <AppHeader />
           <div className="flex-1">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 ml-0">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
               {/* Property Header */}
               <div className="mb-8">
                 <Card className="p-6">
