@@ -385,32 +385,30 @@ export default function PropertyBids() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Add New Job Category */}
-                <div className="space-y-4 p-4 border rounded-lg bg-muted/20">
-                  <h4 className="font-medium">Add Job Category</h4>
-                  <div className="flex gap-2">
-                    <Select value={newCategory} onValueChange={setNewCategory}>
-                      <SelectTrigger className="flex-1">
-                        <SelectValue placeholder="Select job type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Flooring">Flooring</SelectItem>
-                        <SelectItem value="Kitchen">Kitchen</SelectItem>
-                        <SelectItem value="Bathroom">Bathroom</SelectItem>
-                        <SelectItem value="Painting">Painting</SelectItem>
-                        <SelectItem value="HVAC">HVAC</SelectItem>
-                        <SelectItem value="Plumbing">Plumbing</SelectItem>
-                        <SelectItem value="Electrical">Electrical</SelectItem>
-                        <SelectItem value="Appliances">Appliances</SelectItem>
-                        <SelectItem value="Windows">Windows</SelectItem>
-                        <SelectItem value="Doors">Doors</SelectItem>
-                        <SelectItem value="Roofing">Roofing</SelectItem>
-                        <SelectItem value="Landscaping">Landscaping</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Button onClick={addJobCategory} disabled={!newCategory}>
-                      <Plus className="h-4 w-4" />
-                    </Button>
-                  </div>
+                <div className="inline-flex items-center gap-2 p-3 border rounded-lg bg-muted/20">
+                  <span className="text-sm font-medium whitespace-nowrap">Add Job Category:</span>
+                  <Select value={newCategory} onValueChange={setNewCategory}>
+                    <SelectTrigger className="w-48">
+                      <SelectValue placeholder="Select job type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Flooring">Flooring</SelectItem>
+                      <SelectItem value="Kitchen">Kitchen</SelectItem>
+                      <SelectItem value="Bathroom">Bathroom</SelectItem>
+                      <SelectItem value="Painting">Painting</SelectItem>
+                      <SelectItem value="HVAC">HVAC</SelectItem>
+                      <SelectItem value="Plumbing">Plumbing</SelectItem>
+                      <SelectItem value="Electrical">Electrical</SelectItem>
+                      <SelectItem value="Appliances">Appliances</SelectItem>
+                      <SelectItem value="Windows">Windows</SelectItem>
+                      <SelectItem value="Doors">Doors</SelectItem>
+                      <SelectItem value="Roofing">Roofing</SelectItem>
+                      <SelectItem value="Landscaping">Landscaping</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button onClick={addJobCategory} disabled={!newCategory} size="sm">
+                    <Plus className="h-4 w-4" />
+                  </Button>
                 </div>
 
                 {/* Selected Job Categories */}
