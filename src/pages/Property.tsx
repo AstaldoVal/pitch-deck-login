@@ -117,29 +117,27 @@ const Property = () => {
                 {/* Property Header */}
                 <div>
                   <Card className="p-6 h-full">
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">
                           {propertyData.name}
                         </h1>
                         <Badge variant="outline" className="text-blue-700 border-blue-200 bg-blue-50">
                           <Building2 className="w-3 h-3 mr-1" />
-                          {propertyData.propertyType}
+                          Military
                         </Badge>
                       </div>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={handleEditProperty}>
-                          <Edit className="w-4 h-4 mr-2" />
-                          Edit Property Details
+                      <div className="flex gap-2 ml-4">
+                        <Button variant="ghost" size="icon" onClick={handleEditProperty} className="h-8 w-8">
+                          <Edit className="w-4 h-4" />
                         </Button>
-                        <Button variant="outline" size="sm" onClick={handleViewOnMap}>
-                          <Map className="w-4 h-4 mr-2" />
-                          View on Map
+                        <Button variant="ghost" size="icon" onClick={handleViewOnMap} className="h-8 w-8">
+                          <Map className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
                     
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <div className="flex items-center text-gray-600">
                         <MapPin className="w-4 h-4 mr-2" />
                         <span>
@@ -147,25 +145,19 @@ const Property = () => {
                         </span>
                       </div>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                        {propertyData.yearBuilt && (
-                          <div>
-                            <p className="text-sm font-medium text-gray-600">Year Built</p>
-                            <p className="text-lg font-semibold text-gray-900">{propertyData.yearBuilt}</p>
-                          </div>
-                        )}
-                        {propertyData.buildingType && (
-                          <div>
-                            <p className="text-sm font-medium text-gray-600">Building Type</p>
-                            <p className="text-lg font-semibold text-gray-900">{propertyData.buildingType}</p>
-                          </div>
-                        )}
-                        {propertyData.assetManager && (
-                          <div>
-                            <p className="text-sm font-medium text-gray-600">Asset Manager</p>
-                            <p className="text-lg font-semibold text-gray-900">{propertyData.assetManager}</p>
-                          </div>
-                        )}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                          <p className="text-sm font-medium text-gray-600">Year Built</p>
+                          <p className="text-lg font-semibold text-gray-900">{propertyData.yearBuilt || '2020'}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-600">Building Type</p>
+                          <p className="text-lg font-semibold text-gray-900">{propertyData.buildingType || 'Residential Complex'}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-600">Asset Manager</p>
+                          <p className="text-lg font-semibold text-gray-900">{propertyData.assetManager || 'John Smith'}</p>
+                        </div>
                       </div>
                     </div>
                   </Card>
