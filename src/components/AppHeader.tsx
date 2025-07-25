@@ -7,7 +7,7 @@ import Logo from "@/components/Logo";
 
 export function AppHeader() {
   return (
-    <header className="bg-white shadow-sm border-b">
+    <header className="sticky top-0 z-50 bg-white shadow-sm border-b">
       <div className="flex items-center justify-between px-4 py-3 min-w-0 gap-2">
         <div className="flex items-center space-x-4">
           <SidebarTrigger />
