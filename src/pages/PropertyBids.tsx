@@ -452,6 +452,9 @@ export default function PropertyBids() {
                     <div key={category.id} className="border-l-4 border-l-primary/30 pl-6 py-4 space-y-4">
                        <div className="flex items-center justify-between">
                          <div className="flex items-center gap-3">
+                           <div className="cursor-pointer" onClick={() => toggleCategoryExpansion(category.id)}>
+                             <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
+                           </div>
                            <Select value={category.name} onValueChange={(value) => updateJobCategory(category.id, "name", value)}>
                              <SelectTrigger className="w-48">
                                <SelectValue />
@@ -471,9 +474,6 @@ export default function PropertyBids() {
                                <SelectItem value="Landscaping">Landscaping</SelectItem>
                              </SelectContent>
                            </Select>
-                           <div className="cursor-pointer" onClick={() => toggleCategoryExpansion(category.id)}>
-                             <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
-                           </div>
                          </div>
                          <Button
                            variant="ghost"
