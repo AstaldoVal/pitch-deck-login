@@ -219,7 +219,18 @@ const Sidebar = React.forwardRef<
         data-variant={variant}
         data-side={side}
       >
-        {/* Spacer div removed to eliminate gap between sidebar and content */}
+        {/* This is what handles the sidebar gap on desktop */}
+        <div
+          className={cn(
+            "duration-200 relative h-svh bg-transparent transition-[width] ease-linear",
+            "group-data-[collapsible=offcanvas]:w-0",
+            "group-data-[side=right]:rotate-180",
+            // Standard sidebar width without extra padding
+            "w-[--sidebar-width]",
+            // Icon mode width without extra padding
+            "group-data-[collapsible=icon]:w-[--sidebar-width-icon]"
+          )}
+        />
         <div
           className={cn(
             "duration-200 fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] ease-linear md:flex",
