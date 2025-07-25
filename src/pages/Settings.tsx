@@ -107,7 +107,8 @@ const Settings = () => {
     
     toast({
       title: "Success",
-      description: "Job type updated successfully"
+      description: "Job type updated successfully",
+      variant: "success"
     });
   };
 
@@ -122,7 +123,8 @@ const Settings = () => {
     
     toast({
       title: "Success",
-      description: "Job type deleted successfully"
+      description: "Job type deleted successfully",
+      variant: "success"
     });
   };
 
@@ -144,7 +146,8 @@ const Settings = () => {
     
     toast({
       title: "Success",
-      description: "New job type added successfully"
+      description: "New job type added successfully",
+      variant: "success"
     });
   };
 
