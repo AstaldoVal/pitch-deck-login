@@ -248,8 +248,8 @@ export default function PropertyBids() {
                     <Building className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-medium">Property Information</h3>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-7">
-                    <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4 pl-7">
                       <div>
                         <Label className="text-sm text-muted-foreground">Property Name</Label>
                         <p className="font-medium mt-1">{propertyData.name}</p>
@@ -259,7 +259,7 @@ export default function PropertyBids() {
                         <p className="font-medium mt-1">{propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}</p>
                       </div>
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-4 pl-7">
                       <div>
                         <Label className="text-sm text-muted-foreground">Year Built</Label>
                         <p className="font-medium mt-1">{propertyData.yearBuilt || "Not specified"}</p>
