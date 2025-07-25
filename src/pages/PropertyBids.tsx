@@ -56,15 +56,7 @@ export default function PropertyBids() {
   const [endDate, setEndDate] = useState<Date>();
   const [contractors, setContractors] = useState<Contractor[]>([]);
   const [scopeType, setScopeType] = useState<"job-type" | "unit-based">("job-type");
-  const [jobCategories, setJobCategories] = useState<JobCategory[]>([
-    { id: "1", name: "Flooring" },
-    { id: "2", name: "Kitchen" },
-    { id: "3", name: "Bathroom" },
-    { id: "4", name: "Painting" },
-    { id: "5", name: "HVAC" },
-    { id: "6", name: "Plumbing" },
-    { id: "7", name: "Electrical" }
-  ]);
+  const [jobCategories, setJobCategories] = useState<JobCategory[]>([]);
   const [newContractor, setNewContractor] = useState<Contractor>({
     id: "",
     companyName: "",
@@ -115,10 +107,14 @@ export default function PropertyBids() {
 
   const addJobCategory = () => {
     if (newCategory.trim()) {
-      setJobCategories([...jobCategories, {
-        id: Date.now().toString(),
-        name: newCategory.trim()
-      }]);
+      // Check if category already exists
+      const categoryExists = jobCategories.some(cat => cat.name === newCategory.trim());
+      if (!categoryExists) {
+        setJobCategories([...jobCategories, {
+          id: Date.now().toString(),
+          name: newCategory.trim()
+        }]);
+      }
       setNewCategory("");
     }
   };
@@ -387,87 +383,112 @@ export default function PropertyBids() {
               <CardHeader>
                 <CardTitle>Job Categories</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {jobCategories.map((category) => (
-                  <div key={category.id} className="border rounded-lg p-4 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <Badge variant="secondary">{category.name}</Badge>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeJobCategory(category.id)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label>Material Spec/Finish</Label>
-                        <Input
-                          placeholder="Specify materials or finishes"
-                          value={category.materialSpec || ""}
-                          onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Product Information</Label>
-                        <Input
-                          placeholder="Product details"
-                          value={category.productInfo || ""}
-                          onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Dimensions</Label>
-                        <Input
-                          placeholder="Size specifications"
-                          value={category.dimensions || ""}
-                          onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Quantity</Label>
-                        <Input
-                          placeholder="Number of units"
-                          value={category.quantity || ""}
-                          onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label>Notes</Label>
-                      <Textarea
-                        placeholder="Additional notes or requirements"
-                        value={category.notes || ""}
-                        onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label>Additional Files</Label>
-                      <Button variant="outline" className="w-full">
-                        <Upload className="mr-2 h-4 w-4" />
-                        Upload Files
-                      </Button>
+              <CardContent className="space-y-6">
+                {/* Add New Job Category */}
+                <div className="space-y-4 p-4 border rounded-lg bg-muted/20">
+                  <h4 className="font-medium">Add Job Category</h4>
+                  <div className="flex gap-2">
+                    <Select value={newCategory} onValueChange={setNewCategory}>
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="Select job type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Flooring">Flooring</SelectItem>
+                        <SelectItem value="Kitchen">Kitchen</SelectItem>
+                        <SelectItem value="Bathroom">Bathroom</SelectItem>
+                        <SelectItem value="Painting">Painting</SelectItem>
+                        <SelectItem value="HVAC">HVAC</SelectItem>
+                        <SelectItem value="Plumbing">Plumbing</SelectItem>
+                        <SelectItem value="Electrical">Electrical</SelectItem>
+                        <SelectItem value="Appliances">Appliances</SelectItem>
+                        <SelectItem value="Windows">Windows</SelectItem>
+                        <SelectItem value="Doors">Doors</SelectItem>
+                        <SelectItem value="Roofing">Roofing</SelectItem>
+                        <SelectItem value="Landscaping">Landscaping</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button onClick={addJobCategory} disabled={!newCategory}>
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Selected Job Categories */}
+                {jobCategories.length > 0 && (
+                  <div className="space-y-4">
+                    <h4 className="font-medium text-sm text-muted-foreground">Selected Job Categories</h4>
+                    <div className="grid gap-4">
+                      {jobCategories.map((category) => (
+                        <div key={category.id} className="border rounded-lg p-4 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Badge variant="secondary">{category.name}</Badge>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeJobCategory(category.id)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label>Material Spec/Finish</Label>
+                              <Input
+                                placeholder="Specify materials or finishes"
+                                value={category.materialSpec || ""}
+                                onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Product Information</Label>
+                              <Input
+                                placeholder="Product details"
+                                value={category.productInfo || ""}
+                                onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Dimensions</Label>
+                              <Input
+                                placeholder="Size specifications"
+                                value={category.dimensions || ""}
+                                onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Quantity</Label>
+                              <Input
+                                placeholder="Number of units"
+                                value={category.quantity || ""}
+                                onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label>Notes</Label>
+                            <Textarea
+                              placeholder="Additional notes or requirements"
+                              value={category.notes || ""}
+                              onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label>Additional Files</Label>
+                            <Button variant="outline" className="w-full">
+                              <Upload className="mr-2 h-4 w-4" />
+                              Upload Files
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
-
-                <Separator />
-
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Add custom job category"
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    onKeyPress={(e) => e.key === "Enter" && addJobCategory()}
-                  />
-                  <Button onClick={addJobCategory}>
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
+                )}
               </CardContent>
             </Card>
           </div>
