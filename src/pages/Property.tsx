@@ -83,9 +83,9 @@ const Property = () => {
           <div className="flex-1">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {/* Property Header and Account Setup Progress */}
-              <div className="mb-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Property Header */}
-                <div className="lg:col-span-2">
+                <div>
                   <Card className="p-6 h-full">
                     <div className="flex items-center justify-between mb-4">
                       <div>
@@ -109,7 +109,7 @@ const Property = () => {
                 </div>
 
                 {/* Account Setup Progress */}
-                <div className="lg:col-span-1">
+                <div>
                   <AccountSetupProgress 
                     hasRentRoll={propertyData.hasRentRoll}
                     rentRollFile={propertyData.rentRollFile}
