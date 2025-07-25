@@ -14,7 +14,8 @@ import {
   AlertCircle,
   FileText,
   Edit,
-  Map
+  Map,
+  Minus
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -137,30 +138,67 @@ const Property = () => {
                         </Button>
                       </div>
                     </div>
-                    
-                    <div className="space-y-4">
-                      <div className="flex items-center text-gray-600">
-                        <MapPin className="w-4 h-4 mr-2" />
-                        <span>
-                          {propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}
-                        </span>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                          <p className="text-sm font-medium text-gray-600">Year Built</p>
-                          <p className="text-lg font-semibold text-gray-900">{propertyData.yearBuilt || '2020'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-600">Building Type</p>
-                          <p className="text-lg font-semibold text-gray-900">{propertyData.buildingType || 'Residential Complex'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-600">Asset Manager</p>
-                          <p className="text-lg font-semibold text-gray-900">{propertyData.assetManager || 'John Smith'}</p>
-                        </div>
-                      </div>
-                    </div>
+                     
+                     <div className="space-y-3">
+                       {/* Address */}
+                       <div className="flex items-center justify-between">
+                         <div className="flex items-center text-gray-600">
+                           <MapPin className="w-4 h-4 mr-2" />
+                           <span className="text-sm font-medium">Address</span>
+                         </div>
+                         <span className="text-sm text-gray-900">
+                           {propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}
+                         </span>
+                       </div>
+
+                       {/* Year Built */}
+                       <div className="flex items-center justify-between">
+                         <div className="flex items-center text-gray-600">
+                           <Building2 className="w-4 h-4 mr-2" />
+                           <span className="text-sm font-medium">Year Built</span>
+                         </div>
+                         {propertyData.yearBuilt ? (
+                           <span className="text-sm text-gray-900">{propertyData.yearBuilt}</span>
+                         ) : (
+                           <div className="flex items-center text-gray-400">
+                             <Minus className="w-3 h-3 mr-1" />
+                             <span className="text-sm">Not specified</span>
+                           </div>
+                         )}
+                       </div>
+
+                       {/* Building Type */}
+                       <div className="flex items-center justify-between">
+                         <div className="flex items-center text-gray-600">
+                           <Building2 className="w-4 h-4 mr-2" />
+                           <span className="text-sm font-medium">Building Type</span>
+                         </div>
+                         {propertyData.buildingType ? (
+                           <span className="text-sm text-gray-900">{propertyData.buildingType}</span>
+                         ) : (
+                           <div className="flex items-center text-gray-400">
+                             <Minus className="w-3 h-3 mr-1" />
+                             <span className="text-sm">Not specified</span>
+                           </div>
+                         )}
+                       </div>
+
+                       {/* Asset Manager */}
+                       <div className="flex items-center justify-between">
+                         <div className="flex items-center text-gray-600">
+                           <Users className="w-4 h-4 mr-2" />
+                           <span className="text-sm font-medium">Asset Manager</span>
+                         </div>
+                         {propertyData.assetManager ? (
+                           <span className="text-sm text-gray-900">{propertyData.assetManager}</span>
+                         ) : (
+                           <div className="flex items-center text-gray-400">
+                             <Minus className="w-3 h-3 mr-1" />
+                             <span className="text-sm">Not assigned</span>
+                           </div>
+                         )}
+                       </div>
+                     </div>
                   </Card>
                 </div>
 
