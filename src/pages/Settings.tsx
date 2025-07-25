@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { 
   Settings as SettingsIcon, 
@@ -48,7 +49,8 @@ const Settings = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState("");
   const [newJobType, setNewJobType] = useState("");
-  const [isAddingNew, setIsAddingNew] = useState(false);
+  const [isAddingNew, setIsAddingNew] = useState<'Interior' | 'Exterior' | null>(null);
+  const [activeTab, setActiveTab] = useState<'Interior' | 'Exterior'>('Interior');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -125,7 +127,7 @@ const Settings = () => {
   };
 
   const handleAddNew = () => {
-    if (!newJobType.trim()) {
+    if (!newJobType.trim() || !isAddingNew) {
       toast({
         title: "Error",
         description: "Job type name cannot be empty",
@@ -135,10 +137,10 @@ const Settings = () => {
     }
 
     const newId = Date.now().toString();
-    const updatedJobTypes = [...jobTypes, { id: newId, name: newJobType.trim(), category: "Interior" as const }];
+    const updatedJobTypes = [...jobTypes, { id: newId, name: newJobType.trim(), category: isAddingNew }];
     saveJobTypes(updatedJobTypes);
     setNewJobType("");
-    setIsAddingNew(false);
+    setIsAddingNew(null);
     
     toast({
       title: "Success",
@@ -148,7 +150,7 @@ const Settings = () => {
 
   const handleCancelAdd = () => {
     setNewJobType("");
-    setIsAddingNew(false);
+    setIsAddingNew(null);
   };
 
   return (
@@ -170,59 +172,60 @@ const Settings = () => {
 
               {/* Job Types Management */}
               <Card className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900">Job Types</h2>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Manage the types of jobs available for your properties
-                    </p>
-                  </div>
-                  <Button 
-                    onClick={() => setIsAddingNew(true)}
-                    disabled={isAddingNew}
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Job Type
-                  </Button>
+                <div className="mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-1">Job Types</h2>
+                  <p className="text-sm text-gray-600">
+                    Manage the types of jobs available for your properties
+                  </p>
                 </div>
 
-                <div className="space-y-3">
-                  {/* Add New Job Type Row */}
-                  {isAddingNew && (
-                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                      <Input
-                        value={newJobType}
-                        onChange={(e) => setNewJobType(e.target.value)}
-                        placeholder="Enter job type name"
-                        className="flex-1"
-                        autoFocus
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') handleAddNew();
-                          if (e.key === 'Escape') handleCancelAdd();
-                        }}
-                      />
-                      <Button onClick={handleAddNew} size="sm" variant="default">
-                        <Check className="w-4 h-4" />
-                      </Button>
-                      <Button onClick={handleCancelAdd} size="sm" variant="outline">
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  )}
+                <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'Interior' | 'Exterior')}>
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="Interior">Interior</TabsTrigger>
+                    <TabsTrigger value="Exterior">Exterior</TabsTrigger>
+                  </TabsList>
+                  
+                  {(['Interior', 'Exterior'] as const).map((category) => (
+                    <TabsContent key={category} value={category} className="mt-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-medium text-gray-900">{category} Jobs</h3>
+                        <Button 
+                          onClick={() => setIsAddingNew(category)}
+                          disabled={isAddingNew !== null}
+                        >
+                          <Plus className="w-4 h-4 mr-2" />
+                          Add {category} Job
+                        </Button>
+                      </div>
 
-                  {/* Job Types List - Grouped by Category */}
-                  {['Interior', 'Exterior'].map((category) => {
-                    const categoryJobs = jobTypes.filter(job => job.category === category);
-                    
-                    if (categoryJobs.length === 0) return null;
-                    
-                    return (
-                      <div key={category} className="space-y-3">
-                        <h3 className="text-lg font-semibold text-gray-800 pt-4 first:pt-0">
-                          {category}
-                        </h3>
-                        <div className="space-y-2 pl-4">
-                          {categoryJobs.map((jobType) => (
+                      <div className="space-y-3">
+                        {/* Add New Job Type Row */}
+                        {isAddingNew === category && (
+                          <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <Input
+                              value={newJobType}
+                              onChange={(e) => setNewJobType(e.target.value)}
+                              placeholder={`Enter ${category.toLowerCase()} job type name`}
+                              className="flex-1"
+                              autoFocus
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleAddNew();
+                                if (e.key === 'Escape') handleCancelAdd();
+                              }}
+                            />
+                            <Button onClick={handleAddNew} size="sm" variant="default">
+                              <Check className="w-4 h-4" />
+                            </Button>
+                            <Button onClick={handleCancelAdd} size="sm" variant="outline">
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        )}
+
+                        {/* Job Types List for current category */}
+                        {jobTypes
+                          .filter(job => job.category === category)
+                          .map((jobType) => (
                             <div key={jobType.id} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50">
                               {editingId === jobType.id ? (
                                 <>
@@ -252,7 +255,7 @@ const Settings = () => {
                                     onClick={() => handleEdit(jobType)} 
                                     size="sm" 
                                     variant="outline"
-                                    disabled={editingId !== null || isAddingNew}
+                                    disabled={editingId !== null || isAddingNew !== null}
                                   >
                                     <Edit2 className="w-4 h-4" />
                                   </Button>
@@ -260,7 +263,7 @@ const Settings = () => {
                                     onClick={() => handleDelete(jobType.id)} 
                                     size="sm" 
                                     variant="outline"
-                                    disabled={editingId !== null || isAddingNew}
+                                    disabled={editingId !== null || isAddingNew !== null}
                                   >
                                     <Trash2 className="w-4 h-4" />
                                   </Button>
@@ -268,18 +271,17 @@ const Settings = () => {
                               )}
                             </div>
                           ))}
-                        </div>
-                      </div>
-                    );
-                  })}
 
-                  {jobTypes.length === 0 && !isAddingNew && (
-                    <div className="text-center py-8 text-gray-500">
-                      <p className="text-lg font-medium mb-2">No job types configured</p>
-                      <p className="text-sm">Add your first job type to get started</p>
-                    </div>
-                  )}
-                </div>
+                        {jobTypes.filter(job => job.category === category).length === 0 && isAddingNew !== category && (
+                          <div className="text-center py-8 text-gray-500">
+                            <p className="text-lg font-medium mb-2">No {category.toLowerCase()} job types configured</p>
+                            <p className="text-sm">Add your first {category.toLowerCase()} job type to get started</p>
+                          </div>
+                        )}
+                      </div>
+                    </TabsContent>
+                  ))}
+                </Tabs>
               </Card>
             </div>
           </div>
