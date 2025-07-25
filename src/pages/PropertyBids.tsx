@@ -10,7 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { CalendarIcon, Plus, X, Upload, FileText, User, Mail, Phone, Building } from "lucide-react";
+import { CalendarIcon, Plus, X, Upload, FileText, User, Mail, Phone, Building, ChevronDown } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { PropertySidebar } from "@/components/PropertySidebar";
@@ -48,6 +48,7 @@ interface JobCategory {
   quantity?: string;
   notes?: string;
   files?: File[];
+  isExpanded?: boolean;
 }
 
 export default function PropertyBids() {
@@ -110,13 +111,23 @@ export default function PropertyBids() {
       // Check if category already exists
       const categoryExists = jobCategories.some(cat => cat.name === newCategory.trim());
       if (!categoryExists) {
-        setJobCategories([...jobCategories, {
+        const newJobCategory = {
           id: Date.now().toString(),
-          name: newCategory.trim()
-        }]);
+          name: newCategory.trim(),
+          isExpanded: false
+        };
+        setJobCategories([newJobCategory, ...jobCategories]);
       }
       setNewCategory("");
     }
+  };
+
+  const toggleCategoryExpansion = (id: string) => {
+    setJobCategories(categories =>
+      categories.map(cat =>
+        cat.id === id ? { ...cat, isExpanded: !cat.isExpanded } : cat
+      )
+    );
   };
 
   const updateJobCategory = (id: string, field: keyof JobCategory, value: string) => {
@@ -381,109 +392,116 @@ export default function PropertyBids() {
             {/* Job Categories */}
             <Card>
               <CardHeader>
-                <CardTitle>Job Categories</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Job Categories</CardTitle>
+                  {/* Add New Job Category */}
+                  <div className="inline-flex items-center gap-2 p-3 border rounded-lg bg-muted/20">
+                    <span className="text-sm font-medium whitespace-nowrap">Add Job Category:</span>
+                    <Select value={newCategory} onValueChange={setNewCategory}>
+                      <SelectTrigger className="w-48">
+                        <SelectValue placeholder="Select job type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Flooring">Flooring</SelectItem>
+                        <SelectItem value="Kitchen">Kitchen</SelectItem>
+                        <SelectItem value="Bathroom">Bathroom</SelectItem>
+                        <SelectItem value="Painting">Painting</SelectItem>
+                        <SelectItem value="HVAC">HVAC</SelectItem>
+                        <SelectItem value="Plumbing">Plumbing</SelectItem>
+                        <SelectItem value="Electrical">Electrical</SelectItem>
+                        <SelectItem value="Appliances">Appliances</SelectItem>
+                        <SelectItem value="Windows">Windows</SelectItem>
+                        <SelectItem value="Doors">Doors</SelectItem>
+                        <SelectItem value="Roofing">Roofing</SelectItem>
+                        <SelectItem value="Landscaping">Landscaping</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button onClick={addJobCategory} disabled={!newCategory} size="sm">
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent className="space-y-6">
-                {/* Add New Job Category */}
-                <div className="inline-flex items-center gap-2 p-3 border rounded-lg bg-muted/20">
-                  <span className="text-sm font-medium whitespace-nowrap">Add Job Category:</span>
-                  <Select value={newCategory} onValueChange={setNewCategory}>
-                    <SelectTrigger className="w-48">
-                      <SelectValue placeholder="Select job type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Flooring">Flooring</SelectItem>
-                      <SelectItem value="Kitchen">Kitchen</SelectItem>
-                      <SelectItem value="Bathroom">Bathroom</SelectItem>
-                      <SelectItem value="Painting">Painting</SelectItem>
-                      <SelectItem value="HVAC">HVAC</SelectItem>
-                      <SelectItem value="Plumbing">Plumbing</SelectItem>
-                      <SelectItem value="Electrical">Electrical</SelectItem>
-                      <SelectItem value="Appliances">Appliances</SelectItem>
-                      <SelectItem value="Windows">Windows</SelectItem>
-                      <SelectItem value="Doors">Doors</SelectItem>
-                      <SelectItem value="Roofing">Roofing</SelectItem>
-                      <SelectItem value="Landscaping">Landscaping</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button onClick={addJobCategory} disabled={!newCategory} size="sm">
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
 
                 {/* Selected Job Categories */}
                 {jobCategories.length > 0 && (
                   <div className="space-y-4">
                     <h4 className="font-medium text-sm text-muted-foreground">Selected Job Categories</h4>
                     <div className="grid gap-4">
-                      {jobCategories.map((category) => (
-                        <div key={category.id} className="border rounded-lg p-4 space-y-4">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Badge variant="secondary">{category.name}</Badge>
-                            </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeJobCategory(category.id)}
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          </div>
-                          
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label>Material Spec/Finish</Label>
-                              <Input
-                                placeholder="Specify materials or finishes"
-                                value={category.materialSpec || ""}
-                                onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Product Information</Label>
-                              <Input
-                                placeholder="Product details"
-                                value={category.productInfo || ""}
-                                onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Dimensions</Label>
-                              <Input
-                                placeholder="Size specifications"
-                                value={category.dimensions || ""}
-                                onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Quantity</Label>
-                              <Input
-                                placeholder="Number of units"
-                                value={category.quantity || ""}
-                                onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
-                              />
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <Label>Notes</Label>
-                            <Textarea
-                              placeholder="Additional notes or requirements"
-                              value={category.notes || ""}
-                              onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
-                            />
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <Label>Additional Files</Label>
-                            <Button variant="outline" className="w-full">
-                              <Upload className="mr-2 h-4 w-4" />
-                              Upload Files
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
+                       {jobCategories.map((category) => (
+                         <div key={category.id} className="border rounded-lg p-4 space-y-4">
+                           <div className="flex items-center justify-between">
+                             <div className="flex items-center gap-2 cursor-pointer" onClick={() => toggleCategoryExpansion(category.id)}>
+                               <ChevronDown className={cn("h-4 w-4 transition-transform", category.isExpanded ? "rotate-180" : "")} />
+                               <Badge variant="secondary">{category.name}</Badge>
+                             </div>
+                             <Button
+                               variant="ghost"
+                               size="sm"
+                               onClick={() => removeJobCategory(category.id)}
+                             >
+                               <X className="h-4 w-4" />
+                             </Button>
+                           </div>
+                           
+                           {category.isExpanded && (
+                             <>
+                               <div className="grid grid-cols-2 gap-4">
+                                 <div className="space-y-2">
+                                   <Label>Material Spec/Finish</Label>
+                                   <Input
+                                     placeholder="Specify materials or finishes"
+                                     value={category.materialSpec || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
+                                   />
+                                 </div>
+                                 <div className="space-y-2">
+                                   <Label>Product Information</Label>
+                                   <Input
+                                     placeholder="Product details"
+                                     value={category.productInfo || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
+                                   />
+                                 </div>
+                                 <div className="space-y-2">
+                                   <Label>Dimensions</Label>
+                                   <Input
+                                     placeholder="Size specifications"
+                                     value={category.dimensions || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
+                                   />
+                                 </div>
+                                 <div className="space-y-2">
+                                   <Label>Quantity</Label>
+                                   <Input
+                                     placeholder="Number of units"
+                                     value={category.quantity || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
+                                   />
+                                 </div>
+                               </div>
+                               
+                               <div className="space-y-2">
+                                 <Label>Notes</Label>
+                                 <Textarea
+                                   placeholder="Additional notes or requirements"
+                                   value={category.notes || ""}
+                                   onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
+                                 />
+                               </div>
+                               
+                               <div className="space-y-2">
+                                 <Label>Additional Files</Label>
+                                 <Button variant="outline" className="w-full">
+                                   <Upload className="mr-2 h-4 w-4" />
+                                   Upload Files
+                                 </Button>
+                               </div>
+                             </>
+                           )}
+                         </div>
+                       ))}
                     </div>
                   </div>
                 )}
