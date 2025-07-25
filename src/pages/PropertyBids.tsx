@@ -167,80 +167,43 @@ export default function PropertyBids() {
         <PropertySidebar />
         <div className="flex-1 flex flex-col">
           <AppHeader />
-          <div className="flex-1 p-8 space-y-8 max-w-6xl mx-auto">
+          <div className="flex-1 p-8 pb-24 space-y-6 max-w-6xl mx-auto">
             {/* Header */}
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
-                  Create Renovation Bid
-                </h1>
-                <p className="text-muted-foreground mt-3 text-lg">Generate detailed renovation proposals for contractors</p>
-              </div>
-              <Button size="lg" className="px-8 bg-gradient-to-r from-primary to-brand-blue-dark text-white shadow-medium hover:shadow-strong transition-all duration-300">
-                Create Bid
-              </Button>
+            <div>
+              <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+                Create Renovation Bid
+              </h1>
+              <p className="text-muted-foreground mt-3 text-lg">Generate detailed renovation proposals for contractors</p>
             </div>
 
-            {/* Step Navigation */}
-            <div className="bg-gradient-to-r from-background to-accent/10 p-6 rounded-xl border border-primary/20 shadow-soft">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-lg">Progress</h3>
+            {/* Compact Step Navigation */}
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-background to-accent/10 rounded-lg border border-primary/20 shadow-soft">
+              <div className="flex items-center gap-4">
                 <Badge variant="outline" className="px-3 py-1">
                   Step {currentStep} of {steps.length}
                 </Badge>
+                <div className="text-sm text-muted-foreground">
+                  {steps[currentStep - 1].title}
+                </div>
               </div>
               
-              <div className="grid grid-cols-4 gap-4 mb-6">
+              <div className="flex items-center gap-2">
                 {steps.map((step) => (
                   <button
                     key={step.number}
                     onClick={() => goToStep(step.number)}
                     className={cn(
-                      "p-4 text-left rounded-lg border-2 transition-all",
+                      "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all",
                       currentStep === step.number
-                        ? "border-primary bg-primary/10 text-primary"
+                        ? "bg-primary text-white"
                         : currentStep > step.number
-                        ? "border-primary/40 bg-primary/5 text-primary/80 hover:bg-primary/10"
-                        : "border-border bg-muted/20 text-muted-foreground hover:bg-muted/40"
+                        ? "bg-primary/80 text-white hover:bg-primary"
+                        : "bg-muted text-muted-foreground hover:bg-muted/60"
                     )}
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className={cn(
-                        "w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold",
-                        currentStep === step.number
-                          ? "bg-primary text-white"
-                          : currentStep > step.number
-                          ? "bg-primary/80 text-white"
-                          : "bg-muted text-muted-foreground"
-                      )}>
-                        {currentStep > step.number ? <Check className="h-3 w-3" /> : step.number}
-                      </div>
-                      <span className="font-medium text-sm">{step.title}</span>
-                    </div>
-                    <p className="text-xs opacity-80">{step.description}</p>
+                    {currentStep > step.number ? <Check className="h-3 w-3" /> : step.number}
                   </button>
                 ))}
-              </div>
-              
-              {/* Navigation Buttons */}
-              <div className="flex justify-between">
-                <Button
-                  variant="outline"
-                  onClick={prevStep}
-                  disabled={currentStep === 1}
-                  className="flex items-center gap-2"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  Previous
-                </Button>
-                <Button
-                  onClick={nextStep}
-                  disabled={currentStep === steps.length}
-                  className="flex items-center gap-2 bg-gradient-to-r from-primary to-brand-blue-dark"
-                >
-                  Next
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
               </div>
             </div>
 
@@ -714,6 +677,42 @@ export default function PropertyBids() {
                 )}
               </section>
             )}
+          </div>
+          
+          {/* Fixed Bottom Navigation */}
+          <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border p-4 shadow-lg">
+            <div className="max-w-6xl mx-auto flex justify-between items-center">
+              <Button
+                variant="outline"
+                onClick={prevStep}
+                disabled={currentStep === 1}
+                className="flex items-center gap-2"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <span>Step {currentStep} of {steps.length}</span>
+                <span>•</span>
+                <span>{steps[currentStep - 1].title}</span>
+              </div>
+              
+              {currentStep === steps.length ? (
+                <Button className="flex items-center gap-2 bg-gradient-to-r from-primary to-brand-blue-dark text-white shadow-medium hover:shadow-strong transition-all duration-300">
+                  Create Bid
+                  <Check className="h-4 w-4" />
+                </Button>
+              ) : (
+                <Button
+                  onClick={nextStep}
+                  className="flex items-center gap-2 bg-gradient-to-r from-primary to-brand-blue-dark"
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
