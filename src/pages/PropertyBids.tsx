@@ -115,7 +115,7 @@ export default function PropertyBids() {
           <AppHeader />
           <div className="flex-1 p-6 space-y-6">
             <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold">Renovation Bid</h1>
+              <h1 className="text-3xl font-bold">Create Renovation Bid</h1>
               <Button>Submit Bid</Button>
             </div>
 
