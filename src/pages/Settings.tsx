@@ -18,23 +18,29 @@ import { AppHeader } from "@/components/AppHeader";
 interface JobType {
   id: string;
   name: string;
+  category: 'Interior' | 'Exterior';
 }
 
 const defaultJobTypes: JobType[] = [
-  { id: "1", name: "Appliances" },
-  { id: "2", name: "Cabinets" },
-  { id: "3", name: "Countertops" },
-  { id: "4", name: "Electrical" },
-  { id: "5", name: "Flooring" },
-  { id: "6", name: "Make Ready" },
-  { id: "7", name: "Miscellaneous" },
-  { id: "8", name: "Plumbing" },
-  { id: "9", name: "Smart Tech" },
-  { id: "10", name: "Paint" },
-  { id: "11", name: "Rough Close Doors" },
-  { id: "12", name: "HVAC Doors" },
-  { id: "13", name: "Balcony" },
-  { id: "14", name: "Miscellaneous" }
+  // Interior
+  { id: "1", name: "Appliances", category: "Interior" },
+  { id: "2", name: "Cabinets", category: "Interior" },
+  { id: "3", name: "Countertops", category: "Interior" },
+  { id: "4", name: "Electrical", category: "Interior" },
+  { id: "5", name: "Flooring", category: "Interior" },
+  { id: "6", name: "Make Ready", category: "Interior" },
+  { id: "7", name: "Miscellaneous", category: "Interior" },
+  { id: "8", name: "Plumbing", category: "Interior" },
+  { id: "9", name: "Smart Tech", category: "Interior" },
+  { id: "10", name: "Paint", category: "Interior" },
+  { id: "11", name: "Rough Close Doors", category: "Interior" },
+  { id: "12", name: "HVAC", category: "Interior" },
+  
+  // Exterior  
+  { id: "13", name: "Balcony", category: "Exterior" },
+  { id: "14", name: "Landscaping", category: "Exterior" },
+  { id: "15", name: "Exterior Paint", category: "Exterior" },
+  { id: "16", name: "Roofing", category: "Exterior" }
 ];
 
 const Settings = () => {
@@ -115,7 +121,7 @@ const Settings = () => {
     }
 
     const newId = Date.now().toString();
-    const updatedJobTypes = [...jobTypes, { id: newId, name: newJobType.trim() }];
+    const updatedJobTypes = [...jobTypes, { id: newId, name: newJobType.trim(), category: "Interior" as const }];
     saveJobTypes(updatedJobTypes);
     setNewJobType("");
     setIsAddingNew(false);
@@ -190,53 +196,68 @@ const Settings = () => {
                     </div>
                   )}
 
-                  {/* Job Types List */}
-                  {jobTypes.map((jobType) => (
-                    <div key={jobType.id} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50">
-                      {editingId === jobType.id ? (
-                        <>
-                          <Input
-                            value={editingName}
-                            onChange={(e) => setEditingName(e.target.value)}
-                            className="flex-1"
-                            autoFocus
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') handleSaveEdit();
-                              if (e.key === 'Escape') handleCancelEdit();
-                            }}
-                          />
-                          <Button onClick={handleSaveEdit} size="sm" variant="default">
-                            <Check className="w-4 h-4" />
-                          </Button>
-                          <Button onClick={handleCancelEdit} size="sm" variant="outline">
-                            <X className="w-4 h-4" />
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          <span className="flex-1 font-medium text-gray-900">
-                            {jobType.name}
-                          </span>
-                          <Button 
-                            onClick={() => handleEdit(jobType)} 
-                            size="sm" 
-                            variant="outline"
-                            disabled={editingId !== null || isAddingNew}
-                          >
-                            <Edit2 className="w-4 h-4" />
-                          </Button>
-                          <Button 
-                            onClick={() => handleDelete(jobType.id)} 
-                            size="sm" 
-                            variant="outline"
-                            disabled={editingId !== null || isAddingNew}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                  ))}
+                  {/* Job Types List - Grouped by Category */}
+                  {['Interior', 'Exterior'].map((category) => {
+                    const categoryJobs = jobTypes.filter(job => job.category === category);
+                    
+                    if (categoryJobs.length === 0) return null;
+                    
+                    return (
+                      <div key={category} className="space-y-3">
+                        <h3 className="text-lg font-semibold text-gray-800 pt-4 first:pt-0">
+                          {category}
+                        </h3>
+                        <div className="space-y-2 pl-4">
+                          {categoryJobs.map((jobType) => (
+                            <div key={jobType.id} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50">
+                              {editingId === jobType.id ? (
+                                <>
+                                  <Input
+                                    value={editingName}
+                                    onChange={(e) => setEditingName(e.target.value)}
+                                    className="flex-1"
+                                    autoFocus
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter') handleSaveEdit();
+                                      if (e.key === 'Escape') handleCancelEdit();
+                                    }}
+                                  />
+                                  <Button onClick={handleSaveEdit} size="sm" variant="default">
+                                    <Check className="w-4 h-4" />
+                                  </Button>
+                                  <Button onClick={handleCancelEdit} size="sm" variant="outline">
+                                    <X className="w-4 h-4" />
+                                  </Button>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="flex-1 font-medium text-gray-900">
+                                    {jobType.name}
+                                  </span>
+                                  <Button 
+                                    onClick={() => handleEdit(jobType)} 
+                                    size="sm" 
+                                    variant="outline"
+                                    disabled={editingId !== null || isAddingNew}
+                                  >
+                                    <Edit2 className="w-4 h-4" />
+                                  </Button>
+                                  <Button 
+                                    onClick={() => handleDelete(jobType.id)} 
+                                    size="sm" 
+                                    variant="outline"
+                                    disabled={editingId !== null || isAddingNew}
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
 
                   {jobTypes.length === 0 && !isAddingNew && (
                     <div className="text-center py-8 text-gray-500">
