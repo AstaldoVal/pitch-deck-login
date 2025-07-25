@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, Building2, Users, Settings, MessageCircle, FileText, BarChart3 } from "lucide-react";
+import { Home, Building2, Settings, MessageCircle } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import {
@@ -15,11 +15,8 @@ import {
 } from "@/components/ui/sidebar";
 
 const mainItems = [
-  { title: "Dashboard", url: "/property", icon: Home },
+  { title: "Dashboard", url: "/", icon: Home },
   { title: "Properties", url: "/properties", icon: Building2 },
-  { title: "Units", url: "/units", icon: Users },
-  { title: "Analytics", url: "/analytics", icon: BarChart3 },
-  { title: "Documents", url: "/documents", icon: FileText },
 ];
 
 const supportItems = [

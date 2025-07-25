@@ -18,7 +18,7 @@ import {
   Minus
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { AppSidebar } from "@/components/AppSidebar";
+import { PropertySidebar } from "@/components/PropertySidebar";
 import { AppHeader } from "@/components/AppHeader";
 import { AccountSetupProgress } from "@/components/AccountSetupProgress";
 
@@ -92,7 +92,7 @@ const Property = () => {
     return (
       <SidebarProvider>
         <div className="min-h-screen w-full flex">
-          <AppSidebar />
+          <PropertySidebar />
           <div className="flex-1 flex flex-col">
             <AppHeader />
             <div className="flex-1 flex items-center justify-center">
@@ -109,7 +109,7 @@ const Property = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen w-full flex">
-        <AppSidebar />
+        <PropertySidebar />
         <div className="flex-1 flex flex-col">
           <AppHeader />
           <div className="flex-1">

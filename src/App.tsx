@@ -8,6 +8,7 @@ import Properties from "./pages/Properties";
 import PropertyOnboarding from "./pages/PropertyOnboarding";
 import PropertyEdit from "./pages/PropertyEdit";
 import Property from "./pages/Property";
+import PropertyUnits from "./pages/PropertyUnits";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/onboarding" element={<PropertyOnboarding />} />
           <Route path="/property/edit/:id" element={<PropertyEdit />} />
           <Route path="/property" element={<Property />} />
+          <Route path="/property/units" element={<PropertyUnits />} />
           <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
