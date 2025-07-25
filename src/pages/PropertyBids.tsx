@@ -243,7 +243,7 @@ export default function PropertyBids() {
 
               {/* Property Information */}
               {propertyData && (
-                <div className="pt-8 border-t border-border/40">
+                <div className="pt-8 border-t-2 border-border/60">
                   <div className="flex items-center gap-2 mb-6">
                     <Building className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-medium">Property Information</h3>
@@ -275,7 +275,7 @@ export default function PropertyBids() {
             </section>
 
             {/* Contractors Section */}
-            <section className="space-y-8 pt-8 border-t border-border/40">
+            <section className="space-y-8 pt-8 border-t-2 border-border/60">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-semibold">Contractors</h2>
@@ -394,7 +394,7 @@ export default function PropertyBids() {
             </section>
 
             {/* Scope Selection */}
-            <section className="space-y-8 pt-8 border-t border-border/40">
+            <section className="space-y-8 pt-8 border-t-2 border-border/60">
               <div>
                 <h2 className="text-2xl font-semibold">Scope Type</h2>
                 <p className="text-muted-foreground mt-1">Choose how to define the project scope</p>
@@ -433,7 +433,7 @@ export default function PropertyBids() {
             </section>
 
             {/* Job Categories */}
-            <section className="space-y-8 pt-8 border-t border-border/40">
+            <section className="space-y-8 pt-8 border-t-2 border-border/60">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-semibold">Job Categories</h2>
