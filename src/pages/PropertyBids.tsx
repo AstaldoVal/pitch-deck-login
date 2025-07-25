@@ -236,12 +236,20 @@ export default function PropertyBids() {
                           <p className="font-medium">{propertyData.name}</p>
                         </div>
                         <div>
-                          <Label className="text-xs text-muted-foreground">Property Type</Label>
-                          <p className="font-medium">Military</p>
-                        </div>
-                        <div>
                           <Label className="text-xs text-muted-foreground">Address</Label>
                           <p className="font-medium">{propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}</p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-muted-foreground">Year Built</Label>
+                          <p className="font-medium">{propertyData.yearBuilt || "Not specified"}</p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-muted-foreground">Building Type</Label>
+                          <p className="font-medium">{propertyData.buildingType || "Not specified"}</p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-muted-foreground">Asset Manager</Label>
+                          <p className="font-medium">{propertyData.assetManager || "Not assigned"}</p>
                         </div>
                       </div>
                     </div>
