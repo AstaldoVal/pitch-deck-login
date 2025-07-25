@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Home, Building2, Users, Settings, MessageCircle, ArrowLeft } from "lucide-react";
+import { Home, Building2, Users, Settings, MessageCircle, ArrowLeft, Gavel, Briefcase, DollarSign, BarChart3, HardHat } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -31,6 +31,11 @@ interface PropertyData {
 const propertyItems = [
   { title: "Dashboard", url: "/property", icon: Home },
   { title: "Units", url: "/property/units", icon: Users },
+  { title: "Bids", url: "/property/bids", icon: Gavel },
+  { title: "Jobs", url: "/property/jobs", icon: Briefcase },
+  { title: "Budget", url: "/property/budget", icon: DollarSign },
+  { title: "Gantt Chart", url: "/property/gantt", icon: BarChart3 },
+  { title: "Contractors", url: "/property/contractors", icon: HardHat },
 ];
 
 const supportItems = [
