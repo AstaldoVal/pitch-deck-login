@@ -66,7 +66,6 @@ export default function PropertyBids() {
     email: "",
     location: ""
   });
-  const [newCategory, setNewCategory] = useState("");
   const [showContractorForm, setShowContractorForm] = useState(false);
   
   // Form data with defaults
@@ -109,19 +108,13 @@ export default function PropertyBids() {
   };
 
   const addJobCategory = () => {
-    if (newCategory.trim()) {
-      // Check if category already exists
-      const categoryExists = jobCategories.some(cat => cat.name === newCategory.trim());
-      if (!categoryExists) {
-        const newJobCategory = {
-          id: Date.now().toString(),
-          name: newCategory.trim(),
-          isExpanded: false
-        };
-        setJobCategories([newJobCategory, ...jobCategories]);
-      }
-      setNewCategory("");
-    }
+    const categories = ["Flooring", "Kitchen", "Bathroom", "Painting", "HVAC", "Plumbing", "Electrical", "Appliances", "Windows", "Doors", "Roofing", "Landscaping"];
+    const newJobCategory = {
+      id: Date.now().toString(),
+      name: categories[0], // По умолчанию первая категория
+      isExpanded: false
+    };
+    setJobCategories([...jobCategories, newJobCategory]);
   };
 
   const toggleCategoryExpansion = (id: string) => {
@@ -438,32 +431,10 @@ export default function PropertyBids() {
                   <h2 className="text-2xl font-semibold">Job Categories</h2>
                   <p className="text-muted-foreground mt-1">Define the work scope for contractors</p>
                 </div>
-                {/* Add New Job Category */}
-                <div className="flex items-center gap-3 p-3 bg-muted/20 rounded-lg border">
-                  <span className="text-sm font-medium whitespace-nowrap">Add Category:</span>
-                  <Select value={newCategory} onValueChange={setNewCategory}>
-                    <SelectTrigger className="w-48">
-                      <SelectValue placeholder="Select job type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Flooring">Flooring</SelectItem>
-                      <SelectItem value="Kitchen">Kitchen</SelectItem>
-                      <SelectItem value="Bathroom">Bathroom</SelectItem>
-                      <SelectItem value="Painting">Painting</SelectItem>
-                      <SelectItem value="HVAC">HVAC</SelectItem>
-                      <SelectItem value="Plumbing">Plumbing</SelectItem>
-                      <SelectItem value="Electrical">Electrical</SelectItem>
-                      <SelectItem value="Appliances">Appliances</SelectItem>
-                      <SelectItem value="Windows">Windows</SelectItem>
-                      <SelectItem value="Doors">Doors</SelectItem>
-                      <SelectItem value="Roofing">Roofing</SelectItem>
-                      <SelectItem value="Landscaping">Landscaping</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button onClick={addJobCategory} disabled={!newCategory} size="sm">
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
+                <Button onClick={addJobCategory} className="bg-gradient-to-r from-primary to-brand-blue-dark">
+                  <Plus className="mr-2 h-4 w-4" />
+                  N-Job
+                </Button>
               </div>
 
               {/* Selected Job Categories */}
@@ -471,20 +442,40 @@ export default function PropertyBids() {
                 <div className="space-y-6">
                   {jobCategories.map((category) => (
                     <div key={category.id} className="border-l-4 border-l-primary/30 pl-6 py-4 space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 cursor-pointer" onClick={() => toggleCategoryExpansion(category.id)}>
-                          <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
-                          <Badge variant="secondary" className="text-base px-3 py-1">{category.name}</Badge>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => removeJobCategory(category.id)}
-                          className="text-muted-foreground hover:text-destructive"
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </div>
+                       <div className="flex items-center justify-between">
+                         <div className="flex items-center gap-3">
+                           <Select value={category.name} onValueChange={(value) => updateJobCategory(category.id, "name", value)}>
+                             <SelectTrigger className="w-48">
+                               <SelectValue />
+                             </SelectTrigger>
+                             <SelectContent>
+                               <SelectItem value="Flooring">Flooring</SelectItem>
+                               <SelectItem value="Kitchen">Kitchen</SelectItem>
+                               <SelectItem value="Bathroom">Bathroom</SelectItem>
+                               <SelectItem value="Painting">Painting</SelectItem>
+                               <SelectItem value="HVAC">HVAC</SelectItem>
+                               <SelectItem value="Plumbing">Plumbing</SelectItem>
+                               <SelectItem value="Electrical">Electrical</SelectItem>
+                               <SelectItem value="Appliances">Appliances</SelectItem>
+                               <SelectItem value="Windows">Windows</SelectItem>
+                               <SelectItem value="Doors">Doors</SelectItem>
+                               <SelectItem value="Roofing">Roofing</SelectItem>
+                               <SelectItem value="Landscaping">Landscaping</SelectItem>
+                             </SelectContent>
+                           </Select>
+                           <div className="cursor-pointer" onClick={() => toggleCategoryExpansion(category.id)}>
+                             <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
+                           </div>
+                         </div>
+                         <Button
+                           variant="ghost"
+                           size="sm"
+                           onClick={() => removeJobCategory(category.id)}
+                           className="text-muted-foreground hover:text-destructive"
+                         >
+                           <X className="h-4 w-4" />
+                         </Button>
+                       </div>
                       
                       {category.isExpanded && (
                         <div className="space-y-6 pt-4">
