@@ -433,7 +433,7 @@ export default function PropertyBids() {
                 </div>
                 <Button onClick={addJobCategory} className="bg-gradient-to-r from-primary to-brand-blue-dark">
                   <Plus className="mr-2 h-4 w-4" />
-                  N-Job
+                  Add Job
                 </Button>
               </div>
 
