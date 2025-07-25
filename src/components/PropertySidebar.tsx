@@ -62,7 +62,7 @@ export function PropertySidebar() {
       className={`${!open ? "w-14" : "w-60"} bg-blue-600 border-r-0`}
       collapsible="icon"
     >
-      <SidebarContent className="bg-blue-600">
+      <SidebarContent className="bg-blue-600 flex flex-col h-full">
         {/* Back to Properties */}
         <SidebarGroup>
           <SidebarGroupContent>
@@ -130,7 +130,10 @@ export function PropertySidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Support */}
+        {/* Spacer to push Support to bottom */}
+        <div className="flex-1"></div>
+
+        {/* Support Section at bottom */}
         <SidebarGroup>
           <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
             Support
