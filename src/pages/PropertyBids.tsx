@@ -397,7 +397,7 @@ export default function PropertyBids() {
             <section className="space-y-8 pt-8 border-t-2 border-border/60">
               <div>
                 <h2 className="text-2xl font-semibold">Project Timeline</h2>
-                <p className="text-muted-foreground mt-1">Set target start and end dates for the job</p>
+                <p className="text-muted-foreground mt-1">Set target start and end dates for the bid</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
