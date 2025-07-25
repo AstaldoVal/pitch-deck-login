@@ -111,25 +111,20 @@ export function AppSidebar() {
         </SidebarContent>
       </Sidebar>
 
-      {/* Right Settings Panel */}
+      {/* Settings Popup */}
       {showSettingsPanel && (
-        <div className="w-48 bg-white border-r border-gray-200 shadow-lg z-50">
-          <div className="p-4">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Settings</h3>
-            <nav>
-              <NavLink 
-                to="/settings" 
-                className={({ isActive }) =>
-                  `flex items-center px-3 py-2 text-sm rounded-md ${
-                    isActive ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:bg-gray-100"
-                  }`
-                }
-              >
-                <FileText className="h-4 w-4 mr-2" />
-                Job Types
-              </NavLink>
-            </nav>
-          </div>
+        <div className="absolute left-60 top-20 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+          <NavLink 
+            to="/settings" 
+            className={({ isActive }) =>
+              `flex items-center px-3 py-2 text-sm rounded-lg ${
+                isActive ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <FileText className="h-4 w-4 mr-2" />
+            Job Types
+          </NavLink>
         </div>
       )}
     </>
