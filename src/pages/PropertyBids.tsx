@@ -144,17 +144,21 @@ export default function PropertyBids() {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen w-full flex">
+      <div className="min-h-screen w-full flex bg-gradient-to-br from-background via-background to-accent/10">
         <PropertySidebar />
         <div className="flex-1 flex flex-col">
           <AppHeader />
-          <div className="flex-1 p-8 space-y-12 max-w-6xl mx-auto">
+          <div className="flex-1 p-8 space-y-16 max-w-6xl mx-auto">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-4xl font-bold tracking-tight">Create Renovation Bid</h1>
-                <p className="text-muted-foreground mt-2">Generate detailed renovation proposals for contractors</p>
+                <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+                  Create Renovation Bid
+                </h1>
+                <p className="text-muted-foreground mt-3 text-lg">Generate detailed renovation proposals for contractors</p>
               </div>
-              <Button size="lg" className="px-8">Submit Bid</Button>
+              <Button size="lg" className="px-8 bg-gradient-to-r from-primary to-brand-blue-dark text-white shadow-medium hover:shadow-strong transition-all duration-300">
+                Submit Bid
+              </Button>
             </div>
 
             {/* Basic Information */}
