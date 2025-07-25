@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -38,6 +39,7 @@ const Property = () => {
   const [propertyData, setPropertyData] = useState<PropertyData | null>(null);
   const [showOnboardingTip, setShowOnboardingTip] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleRentRollUploaded = (fileName: string) => {
     if (propertyData) {
@@ -73,10 +75,8 @@ const Property = () => {
   };
 
   const handleEditProperty = () => {
-    toast({
-      title: "Edit Property",
-      description: "Property editing feature coming soon"
-    });
+    // Navigate to property edit page with a default ID
+    navigate('/property/edit/1');
   };
 
   const handleViewOnMap = () => {
