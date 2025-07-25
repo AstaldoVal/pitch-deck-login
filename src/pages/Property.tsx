@@ -82,37 +82,40 @@ const Property = () => {
           <AppHeader />
           <div className="flex-1">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              {/* Property Header */}
-              <div className="mb-8">
-                <Card className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                        {propertyData.name}
-                      </h1>
-                      <Badge variant="outline" className="text-blue-700 border-blue-200 bg-blue-50">
-                        <Building2 className="w-3 h-3 mr-1" />
-                        {propertyData.propertyType}
-                      </Badge>
+              {/* Property Header and Account Setup Progress */}
+              <div className="mb-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Property Header */}
+                <div className="lg:col-span-2">
+                  <Card className="p-6 h-full">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                          {propertyData.name}
+                        </h1>
+                        <Badge variant="outline" className="text-blue-700 border-blue-200 bg-blue-50">
+                          <Building2 className="w-3 h-3 mr-1" />
+                          {propertyData.propertyType}
+                        </Badge>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-center text-gray-600">
-                    <MapPin className="w-4 h-4 mr-2" />
-                    <span>
-                      {propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}
-                    </span>
-                  </div>
-                </Card>
-              </div>
+                    
+                    <div className="flex items-center text-gray-600">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      <span>
+                        {propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}
+                      </span>
+                    </div>
+                  </Card>
+                </div>
 
-              {/* Account Setup Progress */}
-              <div className="mb-8">
-                <AccountSetupProgress 
-                  hasRentRoll={propertyData.hasRentRoll}
-                  rentRollFile={propertyData.rentRollFile}
-                  uploadTime={new Date()}
-                />
+                {/* Account Setup Progress */}
+                <div className="lg:col-span-1">
+                  <AccountSetupProgress 
+                    hasRentRoll={propertyData.hasRentRoll}
+                    rentRollFile={propertyData.rentRollFile}
+                    uploadTime={new Date()}
+                  />
+                </div>
               </div>
 
               {/* Stats Cards */}
