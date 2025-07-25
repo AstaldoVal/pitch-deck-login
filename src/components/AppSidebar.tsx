@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, Building2, Settings, MessageCircle } from "lucide-react";
+import { Home, Building2, Settings, MessageCircle, ChevronDown, ChevronRight, FileText } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import {
@@ -20,13 +20,13 @@ const mainItems = [
 
 const supportItems = [
   { title: "Live Chat", url: "/chat", icon: MessageCircle },
-  { title: "Settings", url: "/settings", icon: Settings },
 ];
 
 export function AppSidebar() {
   const { open } = useSidebar();
   const location = useLocation();
   const currentPath = location.pathname;
+  const [settingsExpanded, setSettingsExpanded] = useState(false);
 
   const isActive = (path: string) => currentPath === path;
 
@@ -61,6 +61,55 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Settings Section with expandable Job Types */}
+        <SidebarGroup>
+          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+            Settings
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <button 
+                    onClick={() => setSettingsExpanded(!settingsExpanded)}
+                    className={`w-full text-left flex items-center justify-between ${
+                      currentPath === '/settings' ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
+                    }`}
+                  >
+                    <div className="flex items-center">
+                      <Settings className="h-5 w-5 text-current" />
+                      {open && <span className="font-medium ml-3">Settings</span>}
+                    </div>
+                    {open && (
+                      settingsExpanded ? 
+                        <ChevronDown className="h-4 w-4" /> : 
+                        <ChevronRight className="h-4 w-4" />
+                    )}
+                  </button>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              {/* Submenu for Job Types */}
+              {settingsExpanded && open && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <NavLink 
+                      to="/settings" 
+                      className={({ isActive }) =>
+                        `ml-8 flex items-center ${isActive ? "bg-blue-400 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"}`
+                      }
+                    >
+                      <FileText className="h-4 w-4 text-current" />
+                      <span className="font-medium ml-2">Job Types</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Support Section moved to bottom */}
         <SidebarGroup>
           <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
             Support
