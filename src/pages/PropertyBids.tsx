@@ -187,7 +187,7 @@ export default function PropertyBids() {
                         <Input 
                           value={generatedBy}
                           onChange={(e) => setGeneratedBy(e.target.value)}
-                          className="mt-1 border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
+                          className="mt-1"
                         />
                       </div>
                       {propertyData && (
@@ -217,7 +217,7 @@ export default function PropertyBids() {
                           type="email" 
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="mt-1 border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
+                          className="mt-1"
                         />
                       </div>
                       <div>
@@ -229,7 +229,7 @@ export default function PropertyBids() {
                           type="tel" 
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          className="mt-1 border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
+                          className="mt-1"
                         />
                       </div>
                       <div>
@@ -240,7 +240,7 @@ export default function PropertyBids() {
                         <Input 
                           value={companyName}
                           onChange={(e) => setCompanyName(e.target.value)}
-                          className="mt-1 border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
+                          className="mt-1"
                         />
                       </div>
                     </div>
@@ -312,7 +312,6 @@ export default function PropertyBids() {
                         value={newContractor.companyName}
                         onChange={(e) => setNewContractor({...newContractor, companyName: e.target.value})}
                         placeholder="Company name"
-                        className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                       />
                     </div>
                     <div className="space-y-2">
@@ -321,7 +320,6 @@ export default function PropertyBids() {
                         value={newContractor.location}
                         onChange={(e) => setNewContractor({...newContractor, location: e.target.value})}
                         placeholder="City, State"
-                        className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                       />
                     </div>
                     <div className="space-y-2">
@@ -330,7 +328,6 @@ export default function PropertyBids() {
                         value={newContractor.firstName}
                         onChange={(e) => setNewContractor({...newContractor, firstName: e.target.value})}
                         placeholder="First name"
-                        className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                       />
                     </div>
                     <div className="space-y-2">
@@ -339,7 +336,6 @@ export default function PropertyBids() {
                         value={newContractor.lastName}
                         onChange={(e) => setNewContractor({...newContractor, lastName: e.target.value})}
                         placeholder="Last name"
-                        className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
@@ -349,7 +345,6 @@ export default function PropertyBids() {
                         value={newContractor.email}
                         onChange={(e) => setNewContractor({...newContractor, email: e.target.value})}
                         placeholder="email@company.com"
-                        className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                       />
                     </div>
                   </div>
@@ -500,7 +495,6 @@ export default function PropertyBids() {
                                 placeholder="Specify materials or finishes"
                                 value={category.materialSpec || ""}
                                 onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
-                                className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                               />
                             </div>
                             <div className="space-y-2">
@@ -509,7 +503,6 @@ export default function PropertyBids() {
                                 placeholder="Product details"
                                 value={category.productInfo || ""}
                                 onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
-                                className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                               />
                             </div>
                             <div className="space-y-2">
@@ -518,7 +511,6 @@ export default function PropertyBids() {
                                 placeholder="Size specifications"
                                 value={category.dimensions || ""}
                                 onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
-                                className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                               />
                             </div>
                             <div className="space-y-2">
@@ -527,7 +519,6 @@ export default function PropertyBids() {
                                 placeholder="Number of units"
                                 value={category.quantity || ""}
                                 onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
-                                className="border-0 border-b border-border rounded-none bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
                               />
                             </div>
                           </div>
