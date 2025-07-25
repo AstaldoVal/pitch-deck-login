@@ -167,7 +167,7 @@ export default function PropertyBids() {
         <PropertySidebar />
         <div className="flex-1 flex flex-col">
           <AppHeader />
-          <div className="flex-1 p-8 pb-24 space-y-6 max-w-6xl mx-auto">
+          <div className="flex-1 p-8 pb-24 space-y-6">
             {/* Header */}
             <div>
               <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
@@ -681,7 +681,7 @@ export default function PropertyBids() {
           
           {/* Fixed Bottom Navigation */}
           <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border p-4 shadow-lg">
-            <div className="max-w-6xl mx-auto flex justify-between items-center">
+            <div className="flex justify-between items-center px-8">
               <Button
                 variant="outline"
                 onClick={prevStep}
