@@ -225,8 +225,10 @@ const Sidebar = React.forwardRef<
             "duration-200 relative h-svh bg-transparent transition-[width] ease-linear",
             "group-data-[collapsible=offcanvas]:w-0",
             "group-data-[side=right]:rotate-180",
-            // Remove all width, making this a zero-width spacer
-            "w-0"
+            // Standard sidebar width
+            "w-[--sidebar-width]",
+            // Icon mode width
+            "group-data-[collapsible=icon]:w-[--sidebar-width-icon]"
           )}
         />
         <div
