@@ -152,7 +152,7 @@ export default function PropertyBids() {
                 <p className="text-muted-foreground mt-3 text-lg">Generate detailed renovation proposals for contractors</p>
               </div>
               <Button size="lg" className="px-8 bg-gradient-to-r from-primary to-brand-blue-dark text-white shadow-medium hover:shadow-strong transition-all duration-300">
-                Submit Bid
+                Create Bid
               </Button>
             </div>
 
