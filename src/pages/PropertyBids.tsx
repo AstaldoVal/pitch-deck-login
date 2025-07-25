@@ -154,30 +154,6 @@ export default function PropertyBids() {
                   <CardTitle>Basic Information</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Property Information */}
-                  {propertyData && (
-                    <div className="space-y-4 p-4 border rounded-lg bg-muted/30">
-                      <div className="flex items-center gap-2">
-                        <Building className="h-4 w-4 text-muted-foreground" />
-                        <h4 className="font-medium text-sm text-muted-foreground">Property Information</h4>
-                      </div>
-                      <div className="grid grid-cols-3 gap-4 text-sm">
-                        <div>
-                          <Label className="text-xs text-muted-foreground">Property Name</Label>
-                          <p className="font-medium">{propertyData.name}</p>
-                        </div>
-                        <div>
-                          <Label className="text-xs text-muted-foreground">Property Type</Label>
-                          <p className="font-medium">Military</p>
-                        </div>
-                        <div>
-                          <Label className="text-xs text-muted-foreground">Address</Label>
-                          <p className="font-medium">{propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
                   {/* Bid Details */}
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-4 p-4 border rounded-lg bg-muted/20">
@@ -246,6 +222,30 @@ export default function PropertyBids() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Property Information */}
+                  {propertyData && (
+                    <div className="space-y-4 p-4 border rounded-lg bg-muted/30">
+                      <div className="flex items-center gap-2">
+                        <Building className="h-4 w-4 text-muted-foreground" />
+                        <h4 className="font-medium text-sm text-muted-foreground">Property Information</h4>
+                      </div>
+                      <div className="space-y-3">
+                        <div>
+                          <Label className="text-xs text-muted-foreground">Property Name</Label>
+                          <p className="font-medium">{propertyData.name}</p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-muted-foreground">Property Type</Label>
+                          <p className="font-medium">Military</p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-muted-foreground">Address</Label>
+                          <p className="font-medium">{propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
