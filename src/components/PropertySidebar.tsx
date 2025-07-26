@@ -64,10 +64,10 @@ export function PropertySidebar() {
 
   return (
     <Sidebar
-      className={`${!open ? "w-14" : "w-64"} bg-gradient-to-b from-card to-accent/20 border-r border-border shadow-medium`}
+      className={`${!open ? "w-14" : "w-64"} bg-gradient-to-b from-primary/10 via-card to-accent/10 border-r border-border shadow-lg`}
       collapsible="icon"
     >
-      <SidebarContent className="bg-gradient-to-b from-card to-accent/20 flex flex-col h-full">
+      <SidebarContent className="bg-gradient-to-b from-primary/5 via-card to-accent/10 flex flex-col h-full">
         {/* Back to Properties */}
         <SidebarGroup className="px-3 py-4 border-b border-border">
           <SidebarGroupContent>
