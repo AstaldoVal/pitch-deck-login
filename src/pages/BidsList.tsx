@@ -133,65 +133,67 @@ export default function BidsList() {
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                      <div className="flex flex-col lg:flex-row lg:gap-12 space-y-6 lg:space-y-0 max-w-6xl">
-                        {/* Project Timeline */}
-                        <div className="flex-shrink-0 min-w-[200px]">
-                          <div className="flex items-center gap-2 mb-4">
-                            <Calendar className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-sm font-medium">Project Timeline</span>
-                          </div>
-                          <div className="space-y-3 pl-6 border-l-2 border-muted">
-                            <div>
-                              <span className="text-sm text-muted-foreground">Start: </span>
-                              <span className="text-sm font-medium">{formatBidDate(bid.startDate)}</span>
+                      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start space-y-6 lg:space-y-0">
+                        <div className="flex flex-col lg:flex-row lg:gap-12 space-y-6 lg:space-y-0">
+                          {/* Project Timeline */}
+                          <div className="flex-shrink-0 min-w-[200px]">
+                            <div className="flex items-center gap-2 mb-4">
+                              <Calendar className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-sm font-medium">Project Timeline</span>
                             </div>
-                            <div>
-                              <span className="text-sm text-muted-foreground">End: </span>
-                              <span className="text-sm font-medium">{formatBidDate(bid.endDate)}</span>
+                            <div className="space-y-3 pl-6 border-l-2 border-muted">
+                              <div>
+                                <span className="text-sm text-muted-foreground">Start: </span>
+                                <span className="text-sm font-medium">{formatBidDate(bid.startDate)}</span>
+                              </div>
+                              <div>
+                                <span className="text-sm text-muted-foreground">End: </span>
+                                <span className="text-sm font-medium">{formatBidDate(bid.endDate)}</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        {/* Contractors */}
-                        <div className="flex-shrink-0 min-w-[280px]">
-                          <div className="flex items-center gap-2 mb-4">
-                            <Users className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-sm font-medium">Contractors ({bid.contractors.length})</span>
-                          </div>
-                          <div className="space-y-3 pl-6 border-l-2 border-muted">
-                            {bid.contractors.length > 0 ? (
-                              bid.contractors.slice(0, 3).map((contractor, index) => (
-                                <div key={index} className="text-sm flex items-center justify-between py-1">
-                                  <div>
-                                    <span className="font-medium">
-                                      {contractor.firstName && contractor.lastName 
-                                        ? `${contractor.firstName} ${contractor.lastName}`
-                                        : contractor.name || 'Unknown Name'
-                                      }
-                                    </span>
-                                    <span className="text-muted-foreground"> - {contractor.email}</span>
+                          {/* Contractors */}
+                          <div className="flex-shrink-0 min-w-[280px]">
+                            <div className="flex items-center gap-2 mb-4">
+                              <Users className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-sm font-medium">Contractors ({bid.contractors.length})</span>
+                            </div>
+                            <div className="space-y-3 pl-6 border-l-2 border-muted">
+                              {bid.contractors.length > 0 ? (
+                                bid.contractors.slice(0, 3).map((contractor, index) => (
+                                  <div key={index} className="text-sm flex items-center justify-between py-1">
+                                    <div>
+                                      <span className="font-medium">
+                                        {contractor.firstName && contractor.lastName 
+                                          ? `${contractor.firstName} ${contractor.lastName}`
+                                          : contractor.name || 'Unknown Name'
+                                        }
+                                      </span>
+                                      <span className="text-muted-foreground"> - {contractor.email}</span>
+                                    </div>
+                                    <Badge 
+                                      variant={contractor.hasSubmitted ? "default" : "secondary"}
+                                      className="text-xs ml-3 flex-shrink-0"
+                                    >
+                                      {contractor.hasSubmitted ? "Submitted" : "Pending"}
+                                    </Badge>
                                   </div>
-                                  <Badge 
-                                    variant={contractor.hasSubmitted ? "default" : "secondary"}
-                                    className="text-xs ml-3 flex-shrink-0"
-                                  >
-                                    {contractor.hasSubmitted ? "Submitted" : "Pending"}
-                                  </Badge>
-                                </div>
-                              ))
-                            ) : (
-                              <span className="text-sm text-muted-foreground">No contractors selected</span>
-                            )}
-                            {bid.contractors.length > 3 && (
-                              <span className="text-xs text-muted-foreground">
-                                +{bid.contractors.length - 3} more
-                              </span>
-                            )}
+                                ))
+                              ) : (
+                                <span className="text-sm text-muted-foreground">No contractors selected</span>
+                              )}
+                              {bid.contractors.length > 3 && (
+                                <span className="text-xs text-muted-foreground">
+                                  +{bid.contractors.length - 3} more
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
 
-                        {/* Total Proposed Budget */}
-                        <div className="flex-shrink-0 min-w-[160px]">
+                        {/* Total Proposed Budget - Fixed on the right */}
+                        <div className="flex-shrink-0 min-w-[180px] lg:ml-8">
                           <div className="flex items-center gap-2 mb-4">
                             <Building className="h-4 w-4 text-muted-foreground" />
                             <span className="text-sm font-medium">Total Budget</span>
