@@ -203,7 +203,7 @@ export default function PropertyBids() {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
-                  Create Innovation Bid
+                  Create Renovation Bid
                 </h1>
                 <p className="text-muted-foreground mt-3 text-lg">Generate detailed renovation proposals for contractors</p>
               </div>

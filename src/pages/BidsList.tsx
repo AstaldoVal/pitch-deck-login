@@ -78,7 +78,7 @@ export default function BidsList() {
           <main className="flex-1 p-6 space-y-6">
             <div className="flex justify-between items-center">
               <div>
-                <h1 className="text-3xl font-bold text-foreground">Innovation Bids</h1>
+                <h1 className="text-3xl font-bold text-foreground">Renovation Bids</h1>
                 <p className="text-muted-foreground mt-1">
                   Manage and track your property bids
                 </p>
@@ -99,7 +99,7 @@ export default function BidsList() {
                 </div>
                 <h3 className="text-lg font-semibold mb-2">No bids created yet</h3>
                 <p className="text-muted-foreground mb-4">
-                  Get started by creating your first innovation bid
+                  Get started by creating your first renovation bid
                 </p>
                 <Button onClick={handleCreateNewBid}>
                   <Plus className="h-4 w-4 mr-2" />
