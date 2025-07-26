@@ -133,7 +133,7 @@ export default function BidsList() {
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="flex flex-col lg:flex-row lg:gap-8 space-y-4 lg:space-y-0 max-w-4xl">
+                      <div className="flex flex-col lg:flex-row lg:gap-8 space-y-4 lg:space-y-0 max-w-6xl">
                         {/* Project Timeline */}
                         <div className="flex-shrink-0">
                           <div className="flex items-center gap-2 mb-3">
@@ -189,15 +189,18 @@ export default function BidsList() {
                             )}
                           </div>
                         </div>
-                      </div>
-                      
-                      {/* Total Proposed Budget */}
-                      <div className="border-t pt-4">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium text-foreground">Total Proposed Budget:</span>
-                          <span className="text-lg font-bold text-foreground">
-                            {bid.totalBudget ? `$${bid.totalBudget.toLocaleString()}` : 'Not specified'}
-                          </span>
+
+                        {/* Total Proposed Budget */}
+                        <div className="flex-shrink-0">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Building className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">Total Proposed Budget</span>
+                          </div>
+                          <div className="pl-6">
+                            <span className="text-lg font-bold text-foreground">
+                              {bid.totalBudget ? `$${bid.totalBudget.toLocaleString()}` : 'Not specified'}
+                            </span>
+                          </div>
                         </div>
                       </div>
                       
