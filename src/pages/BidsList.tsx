@@ -132,51 +132,61 @@ export default function BidsList() {
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm font-medium">Start Date</p>
-                            <p className="text-sm text-muted-foreground">
-                              {formatBidDate(bid.startDate)}
-                            </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Project Timeline */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-3">
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">Project Timeline</span>
+                          </div>
+                          <div className="space-y-2 pl-6">
+                            <div className="flex justify-between">
+                              <span className="text-sm text-muted-foreground">Start:</span>
+                              <span className="text-sm font-medium">{formatBidDate(bid.startDate)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-sm text-muted-foreground">End:</span>
+                              <span className="text-sm font-medium">{formatBidDate(bid.endDate)}</span>
+                            </div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm font-medium">End Date</p>
-                            <p className="text-sm text-muted-foreground">
-                              {formatBidDate(bid.endDate)}
-                            </p>
+
+                        {/* Contractors */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-3">
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">Contractors ({bid.contractors.length})</span>
                           </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Users className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm font-medium">Contractors</p>
-                            <p className="text-sm text-muted-foreground">
-                              {bid.contractors.length} selected
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Building className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm font-medium">Scope</p>
-                            <p className="text-sm text-muted-foreground">
-                              {bid.scopeType}
-                            </p>
+                          <div className="space-y-1 pl-6">
+                            {bid.contractors.length > 0 ? (
+                              bid.contractors.slice(0, 3).map((contractor, index) => (
+                                <div key={index} className="text-sm">
+                                  <span className="font-medium">{contractor.name}</span>
+                                  <span className="text-muted-foreground"> - {contractor.email}</span>
+                                </div>
+                              ))
+                            ) : (
+                              <span className="text-sm text-muted-foreground">No contractors selected</span>
+                            )}
+                            {bid.contractors.length > 3 && (
+                              <span className="text-xs text-muted-foreground">
+                                +{bid.contractors.length - 3} more
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
                       
+                      {/* Job Types */}
                       {bid.jobCategories.length > 0 && (
                         <div>
-                          <p className="text-sm font-medium mb-2">Job Categories</p>
+                          <div className="flex items-center gap-2 mb-3">
+                            <Building className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">Job Types ({bid.jobCategories.length})</span>
+                          </div>
                           <div className="flex flex-wrap gap-2">
                             {bid.jobCategories.map((category, index) => (
-                              <Badge key={index} variant="secondary">
+                              <Badge key={index} variant="outline" className="text-xs">
                                 {category.name}
                               </Badge>
                             ))}
