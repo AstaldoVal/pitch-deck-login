@@ -132,15 +132,15 @@ export default function BidsList() {
                         </Badge>
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex flex-col lg:flex-row lg:gap-8 space-y-4 lg:space-y-0 max-w-6xl">
+                    <CardContent className="space-y-6">
+                      <div className="flex flex-col lg:flex-row lg:gap-12 space-y-6 lg:space-y-0 max-w-6xl">
                         {/* Project Timeline */}
-                        <div className="flex-shrink-0">
-                          <div className="flex items-center gap-2 mb-3">
+                        <div className="flex-shrink-0 min-w-[200px]">
+                          <div className="flex items-center gap-2 mb-4">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
                             <span className="text-sm font-medium">Project Timeline</span>
                           </div>
-                          <div className="space-y-2 pl-6">
+                          <div className="space-y-3 pl-6 border-l-2 border-muted">
                             <div>
                               <span className="text-sm text-muted-foreground">Start: </span>
                               <span className="text-sm font-medium">{formatBidDate(bid.startDate)}</span>
@@ -153,15 +153,15 @@ export default function BidsList() {
                         </div>
 
                         {/* Contractors */}
-                        <div className="flex-shrink-0">
-                          <div className="flex items-center gap-2 mb-3">
+                        <div className="flex-shrink-0 min-w-[280px]">
+                          <div className="flex items-center gap-2 mb-4">
                             <Users className="h-4 w-4 text-muted-foreground" />
                             <span className="text-sm font-medium">Contractors ({bid.contractors.length})</span>
                           </div>
-                          <div className="space-y-1 pl-6">
+                          <div className="space-y-3 pl-6 border-l-2 border-muted">
                             {bid.contractors.length > 0 ? (
                               bid.contractors.slice(0, 3).map((contractor, index) => (
-                                <div key={index} className="text-sm flex items-center justify-between">
+                                <div key={index} className="text-sm flex items-center justify-between py-1">
                                   <div>
                                     <span className="font-medium">
                                       {contractor.firstName && contractor.lastName 
@@ -173,7 +173,7 @@ export default function BidsList() {
                                   </div>
                                   <Badge 
                                     variant={contractor.hasSubmitted ? "default" : "secondary"}
-                                    className="text-xs ml-2"
+                                    className="text-xs ml-3 flex-shrink-0"
                                   >
                                     {contractor.hasSubmitted ? "Submitted" : "Pending"}
                                   </Badge>
@@ -191,12 +191,12 @@ export default function BidsList() {
                         </div>
 
                         {/* Total Proposed Budget */}
-                        <div className="flex-shrink-0">
-                          <div className="flex items-center gap-2 mb-3">
+                        <div className="flex-shrink-0 min-w-[160px]">
+                          <div className="flex items-center gap-2 mb-4">
                             <Building className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-sm font-medium">Total Proposed Budget</span>
+                            <span className="text-sm font-medium">Total Budget</span>
                           </div>
-                          <div className="pl-6">
+                          <div className="pl-6 border-l-2 border-muted">
                             <span className="text-lg font-bold text-foreground">
                               {bid.totalBudget ? `$${bid.totalBudget.toLocaleString()}` : 'Not specified'}
                             </span>
