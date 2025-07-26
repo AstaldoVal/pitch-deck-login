@@ -64,22 +64,22 @@ export function PropertySidebar() {
 
   return (
     <Sidebar
-      className={`${!open ? "w-14" : "w-60"} bg-blue-600 border-r-0`}
+      className={`${!open ? "w-14" : "w-64"} bg-gradient-to-b from-sidebar to-sidebar-accent border-r border-border/50 shadow-lg`}
       collapsible="icon"
     >
-      <SidebarContent className="bg-blue-600 flex flex-col h-full">
+      <SidebarContent className="bg-gradient-to-b from-sidebar to-sidebar-accent flex flex-col h-full">
         {/* Back to Properties */}
-        <SidebarGroup>
+        <SidebarGroup className="px-3 py-4 border-b border-border/30">
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild className="group">
                   <button 
                     onClick={handleBackToProperties}
-                    className="w-full text-left hover:bg-blue-500/20 text-blue-100 flex items-center gap-2"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium text-left text-sidebar-foreground hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground hover:scale-[1.01] hover:shadow-sm"
                   >
-                    <ArrowLeft className="h-5 w-5 text-current" />
-                    {open && <span className="font-medium">Back to Properties</span>}
+                    <ArrowLeft className={`h-5 w-5 transition-transform duration-200 ${!open ? "mx-auto" : "group-hover:scale-110"}`} />
+                    {open && <span className="truncate">Back to Properties</span>}
                   </button>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -89,18 +89,18 @@ export function PropertySidebar() {
 
         {/* Current Property Info */}
         {propertyData && (
-          <SidebarGroup>
-            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+          <SidebarGroup className="px-3 py-4 border-b border-border/30">
+            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
               Current Property
             </SidebarGroupLabel>
             <SidebarGroupContent>
               {open && (
-                <div className="px-3 py-2 text-blue-100">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Building2 className="h-4 w-4" />
-                    <span className="font-medium text-sm truncate">{propertyData.name}</span>
+                <div className="px-3 py-3 bg-sidebar-accent/50 rounded-lg border border-border/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Building2 className="h-4 w-4 text-sidebar-foreground/80" />
+                    <span className="font-semibold text-sm text-sidebar-foreground truncate">{propertyData.name}</span>
                   </div>
-                  <p className="text-xs text-blue-200 truncate">
+                  <p className="text-xs text-sidebar-foreground/60 truncate">
                     {propertyData.city}, {propertyData.state}
                   </p>
                 </div>
@@ -110,23 +110,27 @@ export function PropertySidebar() {
         )}
 
         {/* Property Navigation */}
-        <SidebarGroup>
-          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+        <SidebarGroup className="px-3 py-4 flex-1">
+          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
             Property
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-1">
               {propertyItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild className="group">
                     <NavLink 
                       to={item.url} 
                       className={({ isActive }) =>
-                        isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
+                        `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium ${
+                          isActive 
+                            ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
+                            : "text-sidebar-foreground hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground hover:scale-[1.01] hover:shadow-sm"
+                        }`
                       }
                     >
-                      <item.icon className="h-5 w-5 text-current" />
-                      {open && <span className="font-medium">{item.title}</span>}
+                      <item.icon className={`h-5 w-5 transition-transform duration-200 ${!open ? "mx-auto" : "group-hover:scale-110"}`} />
+                      {open && <span className="truncate">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -135,27 +139,28 @@ export function PropertySidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Spacer to push Support to bottom */}
-        <div className="flex-1"></div>
-
         {/* Support Section at bottom */}
-        <SidebarGroup>
-          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+        <SidebarGroup className="px-3 py-4 border-t border-border/30">
+          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
             Support
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-1">
               {supportItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild className="group">
                     <NavLink 
                       to={item.url} 
                       className={({ isActive }) =>
-                        isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
+                        `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium ${
+                          isActive 
+                            ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
+                            : "text-sidebar-foreground hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground hover:scale-[1.01] hover:shadow-sm"
+                        }`
                       }
                     >
-                      <item.icon className="h-5 w-5 text-current" />
-                      {open && <span className="font-medium">{item.title}</span>}
+                      <item.icon className={`h-5 w-5 transition-transform duration-200 ${!open ? "mx-auto" : "group-hover:scale-110"}`} />
+                      {open && <span className="truncate">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
