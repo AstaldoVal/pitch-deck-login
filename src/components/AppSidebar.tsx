@@ -38,31 +38,31 @@ export function AppSidebar() {
   return (
     <>
       <Sidebar
-        className={`${!open ? "w-14" : "w-64"} bg-gradient-to-b from-primary/10 via-card to-accent/10 border-r border-border shadow-lg`}
+        className={`${!open ? "w-14" : "w-64"} bg-white border-r border-gray-200 shadow-lg`}
         collapsible="icon"
       >
-        <SidebarContent className="bg-gradient-to-b from-primary/5 via-card to-accent/10 flex flex-col h-full">
+        <SidebarContent className="bg-white flex flex-col h-full">
           {/* Main Navigation */}
           <SidebarGroup className="px-3 py-4">
-            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-muted-foreground text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
+            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-gray-500 text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
               Navigation
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
                 {mainItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="group">
+                    <SidebarMenuButton asChild>
                       <NavLink 
                         to={item.url} 
                         className={({ isActive }) =>
                           `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium ${
                             isActive 
-                              ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
-                              : "text-foreground hover:bg-accent hover:text-accent-foreground hover:scale-[1.01] hover:shadow-sm"
+                              ? "bg-blue-600 text-white shadow-md" 
+                              : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                           }`
                         }
                       >
-                        <item.icon className={`h-5 w-5 transition-transform duration-200 ${!open ? "mx-auto" : "group-hover:scale-110"}`} />
+                        <item.icon className="h-5 w-5" />
                         {open && <span className="truncate">{item.title}</span>}
                       </NavLink>
                     </SidebarMenuButton>
@@ -76,8 +76,8 @@ export function AppSidebar() {
           <div className="flex-1"></div>
 
           {/* Support Section at bottom */}
-          <SidebarGroup className="px-3 py-4 border-t border-border">
-            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-muted-foreground text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
+          <SidebarGroup className="px-3 py-4 border-t border-gray-200">
+            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-gray-500 text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
               Support
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -86,30 +86,30 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.title}>
                     {item.title === "Settings" ? (
                       <div className="relative">
-                        <SidebarMenuButton asChild className="group">
+                        <SidebarMenuButton asChild>
                           <button 
                             onClick={handleSettingsClick}
                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium text-left ${
                               currentPath === '/settings' 
-                                ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
-                                : "text-foreground hover:bg-accent hover:text-accent-foreground hover:scale-[1.01] hover:shadow-sm"
+                                ? "bg-blue-600 text-white shadow-md" 
+                                : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                             }`}
                           >
-                            <item.icon className={`h-5 w-5 transition-transform duration-200 ${!open ? "mx-auto" : "group-hover:scale-110"}`} />
+                            <item.icon className="h-5 w-5" />
                             {open && <span className="truncate">{item.title}</span>}
                           </button>
                         </SidebarMenuButton>
                         
                         {/* Settings Popup positioned relative to Settings button */}
                         {showSettingsPanel && (
-                          <div className="absolute left-full top-0 ml-2 w-44 bg-popover border border-border rounded-lg shadow-lg z-50 animate-scale-in">
+                          <div className="absolute left-full top-0 ml-2 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                             <NavLink 
                               to="/settings" 
                               className={({ isActive }) =>
                                 `flex items-center gap-2 px-3 py-2.5 text-sm rounded-lg transition-all duration-200 font-medium ${
                                   isActive 
-                                    ? "bg-primary text-primary-foreground" 
-                                    : "text-popover-foreground hover:bg-accent hover:text-accent-foreground"
+                                    ? "bg-blue-600 text-white" 
+                                    : "text-gray-700 hover:bg-gray-100"
                                 }`
                               }
                               onClick={() => setShowSettingsPanel(false)}
@@ -121,18 +121,18 @@ export function AppSidebar() {
                         )}
                       </div>
                     ) : (
-                      <SidebarMenuButton asChild className="group">
+                      <SidebarMenuButton asChild>
                         <NavLink 
                           to={item.url} 
                           className={({ isActive }) =>
                             `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium ${
                               isActive 
-                                ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
-                                : "text-foreground hover:bg-accent hover:text-accent-foreground hover:scale-[1.01] hover:shadow-sm"
+                                ? "bg-blue-600 text-white shadow-md" 
+                                : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                             }`
                           }
                         >
-                          <item.icon className={`h-5 w-5 transition-transform duration-200 ${!open ? "mx-auto" : "group-hover:scale-110"}`} />
+                          <item.icon className="h-5 w-5" />
                           {open && <span className="truncate">{item.title}</span>}
                         </NavLink>
                       </SidebarMenuButton>
