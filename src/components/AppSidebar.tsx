@@ -38,13 +38,13 @@ export function AppSidebar() {
   return (
     <>
       <Sidebar
-        className={`${!open ? "w-14" : "w-64"} bg-gradient-to-b from-sidebar to-sidebar-accent border-r border-border/50 shadow-lg`}
+        className={`${!open ? "w-14" : "w-64"} bg-gradient-to-b from-card to-accent/20 border-r border-border shadow-medium`}
         collapsible="icon"
       >
-        <SidebarContent className="bg-gradient-to-b from-sidebar to-sidebar-accent flex flex-col h-full">
+        <SidebarContent className="bg-gradient-to-b from-card to-accent/20 flex flex-col h-full">
           {/* Main Navigation */}
           <SidebarGroup className="px-3 py-4">
-            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
+            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-muted-foreground text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
               Navigation
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -58,7 +58,7 @@ export function AppSidebar() {
                           `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium ${
                             isActive 
                               ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
-                              : "text-sidebar-foreground hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground hover:scale-[1.01] hover:shadow-sm"
+                              : "text-foreground hover:bg-accent hover:text-accent-foreground hover:scale-[1.01] hover:shadow-sm"
                           }`
                         }
                       >
@@ -76,8 +76,8 @@ export function AppSidebar() {
           <div className="flex-1"></div>
 
           {/* Support Section at bottom */}
-          <SidebarGroup className="px-3 py-4 border-t border-border/30">
-            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
+          <SidebarGroup className="px-3 py-4 border-t border-border">
+            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-muted-foreground text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
               Support
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -92,7 +92,7 @@ export function AppSidebar() {
                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium text-left ${
                               currentPath === '/settings' 
                                 ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
-                                : "text-sidebar-foreground hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground hover:scale-[1.01] hover:shadow-sm"
+                                : "text-foreground hover:bg-accent hover:text-accent-foreground hover:scale-[1.01] hover:shadow-sm"
                             }`}
                           >
                             <item.icon className={`h-5 w-5 transition-transform duration-200 ${!open ? "mx-auto" : "group-hover:scale-110"}`} />
@@ -128,7 +128,7 @@ export function AppSidebar() {
                             `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium ${
                               isActive 
                                 ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
-                                : "text-sidebar-foreground hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground hover:scale-[1.01] hover:shadow-sm"
+                                : "text-foreground hover:bg-accent hover:text-accent-foreground hover:scale-[1.01] hover:shadow-sm"
                             }`
                           }
                         >
