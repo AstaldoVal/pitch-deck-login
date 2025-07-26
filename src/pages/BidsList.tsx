@@ -132,9 +132,9 @@ export default function BidsList() {
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="flex flex-col lg:flex-row lg:gap-8 space-y-4 lg:space-y-0 max-w-4xl">
                         {/* Project Timeline */}
-                        <div>
+                        <div className="flex-shrink-0">
                           <div className="flex items-center gap-2 mb-3">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
                             <span className="text-sm font-medium">Project Timeline</span>
@@ -152,7 +152,7 @@ export default function BidsList() {
                         </div>
 
                         {/* Contractors */}
-                        <div>
+                        <div className="flex-shrink-0">
                           <div className="flex items-center gap-2 mb-3">
                             <Users className="h-4 w-4 text-muted-foreground" />
                             <span className="text-sm font-medium">Contractors ({bid.contractors.length})</span>
