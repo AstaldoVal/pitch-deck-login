@@ -140,12 +140,12 @@ export default function BidsList() {
                             <span className="text-sm font-medium">Project Timeline</span>
                           </div>
                           <div className="space-y-2 pl-6">
-                            <div className="flex justify-between">
-                              <span className="text-sm text-muted-foreground">Start:</span>
+                            <div>
+                              <span className="text-sm text-muted-foreground">Start: </span>
                               <span className="text-sm font-medium">{formatBidDate(bid.startDate)}</span>
                             </div>
-                            <div className="flex justify-between">
-                              <span className="text-sm text-muted-foreground">End:</span>
+                            <div>
+                              <span className="text-sm text-muted-foreground">End: </span>
                               <span className="text-sm font-medium">{formatBidDate(bid.endDate)}</span>
                             </div>
                           </div>
