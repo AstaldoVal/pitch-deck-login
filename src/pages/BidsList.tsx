@@ -48,8 +48,17 @@ export default function BidsList() {
     const startDate = bid.startDate ? new Date(bid.startDate) : null;
     const endDate = bid.endDate ? new Date(bid.endDate) : null;
     
+    console.log('Checking bid status:', {
+      bidId: bid.id,
+      startDate: startDate,
+      endDate: endDate,
+      isStartValid: startDate && !isNaN(startDate.getTime()),
+      isEndValid: endDate && !isNaN(endDate.getTime())
+    });
+    
     if (!startDate || !endDate || isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-      return "Unknown";
+      console.log('Invalid dates, returning Not started');
+      return "Not started";
     }
     
     if (now < startDate) return "Not started";
