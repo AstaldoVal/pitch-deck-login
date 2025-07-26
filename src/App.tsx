@@ -11,6 +11,7 @@ import Property from "./pages/Property";
 import PropertyUnits from "./pages/PropertyUnits";
 import PropertyBids from "./pages/PropertyBids";
 import BidsList from "./pages/BidsList";
+import BidDetails from "./pages/BidDetails";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/property/units" element={<PropertyUnits />} />
           <Route path="/property/bids" element={<PropertyBids />} />
           <Route path="/property/bids-list" element={<BidsList />} />
+          <Route path="/property/bid/:bidId" element={<BidDetails />} />
           <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

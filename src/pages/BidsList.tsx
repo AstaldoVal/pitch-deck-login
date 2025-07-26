@@ -34,6 +34,10 @@ export default function BidsList() {
     setBids(savedBids);
   }, []);
 
+  const handleBidClick = (bidId: string) => {
+    navigate(`/property/bid/${bidId}`);
+  };
+
   const handleCreateNewBid = () => {
     navigate('/property/bids');
   };
@@ -109,7 +113,11 @@ export default function BidsList() {
             ) : (
               <div className="grid gap-6">
                 {bids.map((bid) => (
-                  <Card key={bid.id} className="hover:shadow-md transition-shadow">
+                  <Card 
+                    key={bid.id} 
+                    className="hover:shadow-md transition-shadow cursor-pointer"
+                    onClick={() => handleBidClick(bid.id)}
+                  >
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
