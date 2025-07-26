@@ -435,8 +435,7 @@ export default function PropertyBids() {
                 <div className="border border-border rounded-lg p-6 bg-card">
                   <div className="flex items-center gap-2 mb-6">
                     <CalendarIcon className="h-5 w-5 text-primary" />
-                    <h3 className="text-lg font-medium">Время активности</h3>
-                    <Badge variant="secondary" className="ml-2">Bid Collection Period</Badge>
+                    <h3 className="text-lg font-medium">Bid Collection Period</h3>
                   </div>
                   <p className="text-muted-foreground mb-6">
                     Set the timeframe for contractors to submit their proposals
