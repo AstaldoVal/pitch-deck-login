@@ -166,6 +166,37 @@ export default function PropertyBids() {
     setJobCategories(categories => categories.filter(cat => cat.id !== id));
   };
 
+  const handleSaveDraft = () => {
+    // Создаем объект бида с собранными данными со статусом "Not Started"
+    const bidData = {
+      id: generateBidNumber(),
+      generatedBy,
+      email,
+      phone,
+      companyName,
+      property: propertyData,
+      startDate,
+      endDate,
+      scopeType,
+      jobCategories,
+      contractors,
+      createdAt: new Date().toISOString(),
+      status: "Not started"
+    };
+
+    // Сохраняем бид в localStorage
+    const savedBids = JSON.parse(localStorage.getItem('propertyBids') || '[]');
+    savedBids.push(bidData);
+    localStorage.setItem('propertyBids', JSON.stringify(savedBids));
+
+    // Показываем уведомление и переходим на страницу списка бидов
+    toast({
+      title: "Draft Saved",
+      description: "Your bid has been saved as a draft.",
+    });
+    navigate('/property/bids-list');
+  };
+
   const handleCreateBid = () => {
     // Создаем объект бида с собранными данными
     const bidData = {
@@ -794,27 +825,36 @@ export default function PropertyBids() {
               </div>
               
               {currentStep === steps.length ? (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div>
-                        <Button 
-                          disabled={contractors.length === 0}
-                          onClick={handleCreateBid}
-                          className="flex items-center gap-2 bg-gradient-to-r from-primary to-brand-blue-dark text-white shadow-medium hover:shadow-strong transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          Create Bid
-                          <Check className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TooltipTrigger>
-                    {contractors.length === 0 && (
-                      <TooltipContent>
-                        <p>Please add at least one contractor to create the bid.</p>
-                      </TooltipContent>
-                    )}
-                  </Tooltip>
-                </TooltipProvider>
+                <div className="flex items-center gap-3">
+                  <Button 
+                    onClick={handleSaveDraft}
+                    variant="outline"
+                    className="flex items-center gap-2"
+                  >
+                    Save Draft
+                  </Button>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Button 
+                            disabled={contractors.length === 0}
+                            onClick={handleCreateBid}
+                            className="flex items-center gap-2 bg-gradient-to-r from-primary to-brand-blue-dark text-white shadow-medium hover:shadow-strong transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Create Bid
+                            <Check className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TooltipTrigger>
+                      {contractors.length === 0 && (
+                        <TooltipContent>
+                          <p>Please add at least one contractor to create the bid.</p>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               ) : (
                 <Button
                   onClick={nextStep}
