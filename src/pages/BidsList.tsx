@@ -161,7 +161,12 @@ export default function BidsList() {
                             {bid.contractors.length > 0 ? (
                               bid.contractors.slice(0, 3).map((contractor, index) => (
                                 <div key={index} className="text-sm">
-                                  <span className="font-medium">{contractor.name}</span>
+                                  <span className="font-medium">
+                                    {contractor.firstName && contractor.lastName 
+                                      ? `${contractor.firstName} ${contractor.lastName}`
+                                      : contractor.name || 'Unknown Name'
+                                    }
+                                  </span>
                                   <span className="text-muted-foreground"> - {contractor.email}</span>
                                 </div>
                               ))
