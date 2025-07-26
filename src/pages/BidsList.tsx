@@ -22,6 +22,7 @@ interface BidData {
   jobCategories: any[];
   contractors: any[];
   createdAt: string;
+  totalBudget?: number;
 }
 
 export default function BidsList() {
@@ -160,14 +161,22 @@ export default function BidsList() {
                           <div className="space-y-1 pl-6">
                             {bid.contractors.length > 0 ? (
                               bid.contractors.slice(0, 3).map((contractor, index) => (
-                                <div key={index} className="text-sm">
-                                  <span className="font-medium">
-                                    {contractor.firstName && contractor.lastName 
-                                      ? `${contractor.firstName} ${contractor.lastName}`
-                                      : contractor.name || 'Unknown Name'
-                                    }
-                                  </span>
-                                  <span className="text-muted-foreground"> - {contractor.email}</span>
+                                <div key={index} className="text-sm flex items-center justify-between">
+                                  <div>
+                                    <span className="font-medium">
+                                      {contractor.firstName && contractor.lastName 
+                                        ? `${contractor.firstName} ${contractor.lastName}`
+                                        : contractor.name || 'Unknown Name'
+                                      }
+                                    </span>
+                                    <span className="text-muted-foreground"> - {contractor.email}</span>
+                                  </div>
+                                  <Badge 
+                                    variant={contractor.hasSubmitted ? "default" : "secondary"}
+                                    className="text-xs ml-2"
+                                  >
+                                    {contractor.hasSubmitted ? "Submitted" : "Pending"}
+                                  </Badge>
                                 </div>
                               ))
                             ) : (
@@ -179,6 +188,16 @@ export default function BidsList() {
                               </span>
                             )}
                           </div>
+                        </div>
+                      </div>
+                      
+                      {/* Total Proposed Budget */}
+                      <div className="border-t pt-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-foreground">Total Proposed Budget:</span>
+                          <span className="text-lg font-bold text-foreground">
+                            {bid.totalBudget ? `$${bid.totalBudget.toLocaleString()}` : 'Not specified'}
+                          </span>
                         </div>
                       </div>
                       
