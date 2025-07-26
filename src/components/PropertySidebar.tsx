@@ -64,22 +64,22 @@ export function PropertySidebar() {
 
   return (
     <Sidebar
-      className={`${!open ? "w-14" : "w-64"} bg-white border-r border-gray-200 shadow-lg`}
+      className={`${!open ? "w-14" : "w-60"} bg-blue-600 border-r-0`}
       collapsible="icon"
     >
-      <SidebarContent className="bg-white flex flex-col h-full">
+      <SidebarContent className="bg-blue-600 flex flex-col h-full">
         {/* Back to Properties */}
-        <SidebarGroup className="px-3 py-4 border-b border-gray-200">
+        <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <button 
                     onClick={handleBackToProperties}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    className="w-full text-left hover:bg-blue-500/20 text-blue-100 flex items-center gap-2"
                   >
-                    <ArrowLeft className="h-5 w-5" />
-                    {open && <span className="truncate">Back to Properties</span>}
+                    <ArrowLeft className="h-5 w-5 text-current" />
+                    {open && <span className="font-medium">Back to Properties</span>}
                   </button>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -89,18 +89,18 @@ export function PropertySidebar() {
 
         {/* Current Property Info */}
         {propertyData && (
-          <SidebarGroup className="px-3 py-4 border-b border-gray-200">
-            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-gray-500 text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
+          <SidebarGroup>
+            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
               Current Property
             </SidebarGroupLabel>
             <SidebarGroupContent>
               {open && (
-                <div className="px-3 py-3 bg-gray-50 rounded-lg border border-gray-200">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Building2 className="h-4 w-4 text-gray-700" />
-                    <span className="font-semibold text-sm text-gray-900 truncate">{propertyData.name}</span>
+                <div className="px-3 py-2 text-blue-100">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Building2 className="h-4 w-4" />
+                    <span className="font-medium text-sm truncate">{propertyData.name}</span>
                   </div>
-                  <p className="text-xs text-gray-500 truncate">
+                  <p className="text-xs text-blue-200 truncate">
                     {propertyData.city}, {propertyData.state}
                   </p>
                 </div>
@@ -110,27 +110,23 @@ export function PropertySidebar() {
         )}
 
         {/* Property Navigation */}
-        <SidebarGroup className="px-3 py-4 flex-1">
-          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-gray-500 text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
+        <SidebarGroup>
+          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
             Property
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
+            <SidebarMenu>
               {propertyItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink 
                       to={item.url} 
                       className={({ isActive }) =>
-                        `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium ${
-                          isActive 
-                            ? "bg-blue-600 text-white shadow-md" 
-                            : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                        }`
+                        isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
                       }
                     >
-                      <item.icon className="h-5 w-5" />
-                      {open && <span className="truncate">{item.title}</span>}
+                      <item.icon className="h-5 w-5 text-current" />
+                      {open && <span className="font-medium">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -139,28 +135,27 @@ export function PropertySidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Spacer to push Support to bottom */}
+        <div className="flex-1"></div>
+
         {/* Support Section at bottom */}
-        <SidebarGroup className="px-3 py-4 border-t border-gray-200">
-          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-gray-500 text-xs font-semibold uppercase tracking-wider mb-3 px-2`}>
+        <SidebarGroup>
+          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
             Support
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
+            <SidebarMenu>
               {supportItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink 
                       to={item.url} 
                       className={({ isActive }) =>
-                        `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 font-medium ${
-                          isActive 
-                            ? "bg-blue-600 text-white shadow-md" 
-                            : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                        }`
+                        isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
                       }
                     >
-                      <item.icon className="h-5 w-5" />
-                      {open && <span className="truncate">{item.title}</span>}
+                      <item.icon className="h-5 w-5 text-current" />
+                      {open && <span className="font-medium">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
