@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useToast } from "@/hooks/use-toast";
 import { CalendarIcon, Plus, X, Upload, FileText, User, Mail, Phone, Building, ChevronDown, ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -53,6 +55,8 @@ interface JobCategory {
 }
 
 export default function PropertyBids() {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [propertyData, setPropertyData] = useState<PropertyData | null>(null);
   const [startDate, setStartDate] = useState<Date>();
@@ -160,6 +164,37 @@ export default function PropertyBids() {
 
   const removeJobCategory = (id: string) => {
     setJobCategories(categories => categories.filter(cat => cat.id !== id));
+  };
+
+  const handleCreateBid = () => {
+    // Создаем объект бида с собранными данными
+    const bidData = {
+      id: generateBidNumber(),
+      generatedBy,
+      email,
+      phone,
+      companyName,
+      property: propertyData,
+      startDate,
+      endDate,
+      scopeType,
+      jobCategories,
+      contractors,
+      createdAt: new Date().toISOString()
+    };
+
+    // Сохраняем бид в localStorage (можно заменить на API)
+    const savedBids = JSON.parse(localStorage.getItem('propertyBids') || '[]');
+    savedBids.push(bidData);
+    localStorage.setItem('propertyBids', JSON.stringify(savedBids));
+
+    // Переходим на страницу списка бидов и показываем тост
+    navigate('/property', { 
+      state: { 
+        showBidSuccess: true,
+        bidNumber: bidData.id 
+      }
+    });
   };
 
   return (
@@ -702,6 +737,7 @@ export default function PropertyBids() {
                       <div>
                         <Button 
                           disabled={contractors.length === 0}
+                          onClick={handleCreateBid}
                           className="flex items-center gap-2 bg-gradient-to-r from-primary to-brand-blue-dark text-white shadow-medium hover:shadow-strong transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Create Bid

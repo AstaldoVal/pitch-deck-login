@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +41,7 @@ const Property = () => {
   const [showOnboardingTip, setShowOnboardingTip] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleRentRollUploaded = (fileName: string) => {
     if (propertyData) {
@@ -59,7 +60,18 @@ const Property = () => {
     if (savedProperty) {
       setPropertyData(JSON.parse(savedProperty));
     }
-  }, []);
+
+    // Check if we came from bid creation
+    if (location.state?.showBidSuccess) {
+      toast({
+        title: "Bid Created Successfully!",
+        description: `Bid ${location.state.bidNumber} has been created and sent to contractors.`,
+      });
+      
+      // Clear the state to prevent showing toast on refresh
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.state, toast, navigate, location.pathname]);
 
   const handleAddUnits = () => {
     toast({
