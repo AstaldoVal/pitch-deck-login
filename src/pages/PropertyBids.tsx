@@ -189,12 +189,7 @@ export default function PropertyBids() {
     localStorage.setItem('propertyBids', JSON.stringify(savedBids));
 
     // Переходим на страницу списка бидов и показываем тост
-    navigate('/property', { 
-      state: { 
-        showBidSuccess: true,
-        bidNumber: bidData.id 
-      }
-    });
+    navigate('/property/bids-list');
   };
 
   return (

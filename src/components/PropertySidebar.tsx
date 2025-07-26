@@ -28,15 +28,21 @@ interface PropertyData {
   assetManager?: string;
 }
 
-const propertyItems = [
-  { title: "Dashboard", url: "/property", icon: Home },
-  { title: "Units", url: "/property/units", icon: Users },
-  { title: "Bids", url: "/property/bids", icon: Gavel },
-  { title: "Jobs", url: "/property/jobs", icon: Briefcase },
-  { title: "Budget", url: "/property/budget", icon: DollarSign },
-  { title: "Gantt Chart", url: "/property/gantt", icon: BarChart3 },
-  { title: "Contractors", url: "/property/contractors", icon: HardHat },
-];
+// Dynamic property items that check for existing bids
+const getPropertyItems = () => {
+  const savedBids = JSON.parse(localStorage.getItem('propertyBids') || '[]');
+  const hasBids = savedBids.length > 0;
+  
+  return [
+    { title: "Dashboard", url: "/property", icon: Home },
+    { title: "Units", url: "/property/units", icon: Users },
+    { title: "Bids", url: hasBids ? "/property/bids-list" : "/property/bids", icon: Gavel },
+    { title: "Jobs", url: "/property/jobs", icon: Briefcase },
+    { title: "Budget", url: "/property/budget", icon: DollarSign },
+    { title: "Gantt Chart", url: "/property/gantt", icon: BarChart3 },
+    { title: "Contractors", url: "/property/contractors", icon: HardHat },
+  ];
+};
 
 const supportItems = [
   { title: "Live Chat", url: "/chat", icon: MessageCircle },
@@ -49,6 +55,7 @@ export function PropertySidebar() {
   const navigate = useNavigate();
   const currentPath = location.pathname;
   const [propertyData, setPropertyData] = useState<PropertyData | null>(null);
+  const [propertyItems, setPropertyItems] = useState(getPropertyItems());
 
   useEffect(() => {
     // Load property data from localStorage
@@ -56,7 +63,10 @@ export function PropertySidebar() {
     if (savedProperty) {
       setPropertyData(JSON.parse(savedProperty));
     }
-  }, []);
+    
+    // Update property items when component mounts or location changes
+    setPropertyItems(getPropertyItems());
+  }, [location.pathname]);
 
   const handleBackToProperties = () => {
     navigate('/properties');
