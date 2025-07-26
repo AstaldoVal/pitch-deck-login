@@ -40,8 +40,12 @@ export default function BidsList() {
 
   const getBidStatus = (bid: BidData) => {
     const now = new Date();
-    const startDate = new Date(bid.startDate);
-    const endDate = new Date(bid.endDate);
+    const startDate = bid.startDate ? new Date(bid.startDate) : null;
+    const endDate = bid.endDate ? new Date(bid.endDate) : null;
+    
+    if (!startDate || !endDate || isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      return "Unknown";
+    }
     
     if (now < startDate) return "Pending";
     if (now >= startDate && now <= endDate) return "Active";
@@ -53,8 +57,16 @@ export default function BidsList() {
       case "Pending": return "bg-yellow-100 text-yellow-800";
       case "Active": return "bg-green-100 text-green-800";
       case "Completed": return "bg-gray-100 text-gray-800";
+      case "Unknown": return "bg-red-100 text-red-800";
       default: return "bg-gray-100 text-gray-800";
     }
+  };
+
+  const formatBidDate = (date: Date | string | undefined): string => {
+    if (!date) return "Not set";
+    const dateObj = new Date(date);
+    if (isNaN(dateObj.getTime())) return "Invalid date";
+    return format(dateObj, 'MMM dd, yyyy');
   };
 
   return (
@@ -118,7 +130,7 @@ export default function BidsList() {
                           <div>
                             <p className="text-sm font-medium">Start Date</p>
                             <p className="text-sm text-muted-foreground">
-                              {format(new Date(bid.startDate), 'MMM dd, yyyy')}
+                              {formatBidDate(bid.startDate)}
                             </p>
                           </div>
                         </div>
@@ -127,7 +139,7 @@ export default function BidsList() {
                           <div>
                             <p className="text-sm font-medium">End Date</p>
                             <p className="text-sm text-muted-foreground">
-                              {format(new Date(bid.endDate), 'MMM dd, yyyy')}
+                              {formatBidDate(bid.endDate)}
                             </p>
                           </div>
                         </div>
