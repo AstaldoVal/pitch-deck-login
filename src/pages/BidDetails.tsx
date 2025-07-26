@@ -101,6 +101,18 @@ export default function BidDetails() {
         <div className="flex-1 flex flex-col">
           <AppHeader />
           <main className="flex-1 p-6 space-y-6">
+            {/* Draft Design Notice */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-300">
+                  DRAFT DESIGN
+                </Badge>
+                <span className="text-amber-700 text-sm font-medium">
+                  This bid details page is currently in draft mode
+                </span>
+              </div>
+            </div>
+
             <div className="flex items-center gap-4">
               <Button 
                 variant="outline" 
@@ -112,7 +124,7 @@ export default function BidDetails() {
               </Button>
               <div className="flex-1">
                 <div className="flex items-center gap-3">
-                  <h1 className="text-3xl font-bold text-foreground">Bid #{bid.id}</h1>
+                  <h1 className="text-3xl font-bold text-foreground">Bid Details #{bid.id}</h1>
                   <Badge className={getStatusColor(getBidStatus(bid))}>
                     {getBidStatus(bid)}
                   </Badge>
