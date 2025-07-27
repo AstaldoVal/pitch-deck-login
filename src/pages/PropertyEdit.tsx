@@ -299,9 +299,9 @@ const PropertyEdit = () => {
                               <SelectValue placeholder="Please select" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="flat">Flat</SelectItem>
-                              <SelectItem value="pitched">Pitched</SelectItem>
-                              <SelectItem value="hip">Hip</SelectItem>
+                              <SelectItem value="Asphalt shingles">Asphalt shingles</SelectItem>
+                              <SelectItem value="Flat or slope">Flat or slope</SelectItem>
+                              <SelectItem value="Concrete clay or ceramic tile">Concrete clay or ceramic tile</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -313,9 +313,9 @@ const PropertyEdit = () => {
                               <SelectValue placeholder="Please select" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="single-hung">Single Hung</SelectItem>
-                              <SelectItem value="double-hung">Double Hung</SelectItem>
-                              <SelectItem value="casement">Casement</SelectItem>
+                              <SelectItem value="Aluminium-Framed">Aluminium-Framed</SelectItem>
+                              <SelectItem value="Wood-Framed">Wood-Framed</SelectItem>
+                              <SelectItem value="Vinyl-Framed">Vinyl-Framed</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -327,9 +327,8 @@ const PropertyEdit = () => {
                               <SelectValue placeholder="Please select" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="steel">Steel</SelectItem>
-                              <SelectItem value="wood">Wood</SelectItem>
-                              <SelectItem value="fiberglass">Fiberglass</SelectItem>
+                              <SelectItem value="Metal">Metal</SelectItem>
+                              <SelectItem value="Wood">Wood</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
