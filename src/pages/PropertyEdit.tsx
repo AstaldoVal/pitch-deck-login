@@ -25,6 +25,7 @@ interface PropertyFormData {
   state: string;
   zipCode: string;
   showExteriorParams: boolean;
+  exteriorRenovation: string[];
   roofType: string;
   windowType: string;
   doorType: string;
@@ -51,6 +52,7 @@ const PropertyEdit = () => {
     state: "",
     zipCode: "",
     showExteriorParams: false,
+    exteriorRenovation: [],
     roofType: "",
     windowType: "",
     doorType: "",
@@ -79,6 +81,7 @@ const PropertyEdit = () => {
         state: propertyData.state || "",
         zipCode: propertyData.zip || "",
         showExteriorParams: false,
+        exteriorRenovation: [],
         roofType: "",
         windowType: "",
         doorType: "",
@@ -289,7 +292,60 @@ const PropertyEdit = () => {
                   <div className="space-y-6">
                     <div>
                       <h3 className="text-lg font-semibold mb-4">Exterior</h3>
-                      <div className="text-sm text-gray-600 mb-4">Exterior and General Renovation</div>
+                      
+                      {/* Exterior and General Renovation Multi-select */}
+                      <div className="space-y-2 mb-6">
+                        <Label>Exterior and General Renovation</Label>
+                        <div className="border rounded-md p-3 space-y-2">
+                          {/* Selected items display */}
+                          {formData.exteriorRenovation.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mb-2">
+                              {formData.exteriorRenovation.map((item) => (
+                                <span key={item} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center">
+                                  {item}
+                                  <button
+                                    type="button"
+                                    onClick={() => setFormData({
+                                      ...formData, 
+                                      exteriorRenovation: formData.exteriorRenovation.filter(i => i !== item)
+                                    })}
+                                    className="ml-2 text-blue-600 hover:text-blue-800"
+                                  >
+                                    ×
+                                  </button>
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          
+                          {/* Checkboxes */}
+                          <div className="space-y-2">
+                            {['Brick', 'Cement', 'Stone', 'Stucco', 'Wood or vinyl siding'].map((option) => (
+                              <label key={option} className="flex items-center space-x-2">
+                                <input
+                                  type="checkbox"
+                                  checked={formData.exteriorRenovation.includes(option)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setFormData({
+                                        ...formData,
+                                        exteriorRenovation: [...formData.exteriorRenovation, option]
+                                      });
+                                    } else {
+                                      setFormData({
+                                        ...formData,
+                                        exteriorRenovation: formData.exteriorRenovation.filter(item => item !== option)
+                                      });
+                                    }
+                                  }}
+                                  className="rounded"
+                                />
+                                <span>{option}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="space-y-2">
