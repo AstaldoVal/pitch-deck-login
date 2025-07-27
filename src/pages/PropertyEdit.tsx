@@ -132,7 +132,7 @@ const PropertyEdit = () => {
           <AppHeader />
         </div>
         <div className="pt-16 h-screen overflow-auto">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="px-4 sm:px-6 lg:px-8 py-8">
             {/* Page Header */}
             <div className="flex items-center mb-8">
               <Button 
