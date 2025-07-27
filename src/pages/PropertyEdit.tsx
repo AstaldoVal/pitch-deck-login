@@ -348,9 +348,11 @@ const PropertyEdit = () => {
                                 <input
                                   type="checkbox"
                                   checked={formData.exteriorRenovation.includes(option)}
-                                  onChange={() => {}} // Controlled by parent div click
-                                  onClick={(e) => e.stopPropagation()}
+                                  onChange={() => {}}
+                                  onFocus={(e) => e.target.blur()}
                                   className="rounded pointer-events-none"
+                                  tabIndex={-1}
+                                  disabled={false}
                                   readOnly
                                 />
                                 <span>{option}</span>
