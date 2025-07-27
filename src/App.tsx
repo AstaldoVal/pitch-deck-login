@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Properties from "./pages/Properties";
 import PropertyOnboarding from "./pages/PropertyOnboarding";
 import PropertyEdit from "./pages/PropertyEdit";
+import PropertyAdd from "./pages/PropertyAdd";
 import Property from "./pages/Property";
 import PropertyUnits from "./pages/PropertyUnits";
 import PropertyBids from "./pages/PropertyBids";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/properties" element={<Properties />} />
           <Route path="/onboarding" element={<PropertyOnboarding />} />
+          <Route path="/property/add" element={<PropertyAdd />} />
           <Route path="/property/edit/:id" element={<PropertyEdit />} />
           <Route path="/property" element={<Property />} />
           <Route path="/property/units" element={<PropertyUnits />} />

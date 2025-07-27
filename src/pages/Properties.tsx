@@ -69,7 +69,7 @@ const Properties = () => {
   };
 
   const handleAddProperty = () => {
-    navigate("/onboarding");
+    navigate("/property/add");
   };
 
   const handlePropertyClick = (property: PropertyData) => {
