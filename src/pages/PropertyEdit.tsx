@@ -305,10 +305,14 @@ const PropertyEdit = () => {
                                   {item}
                                   <button
                                     type="button"
-                                    onClick={() => setFormData({
-                                      ...formData, 
-                                      exteriorRenovation: formData.exteriorRenovation.filter(i => i !== item)
-                                    })}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      setFormData({
+                                        ...formData, 
+                                        exteriorRenovation: formData.exteriorRenovation.filter(i => i !== item)
+                                      });
+                                    }}
                                     className="ml-2 text-blue-600 hover:text-blue-800"
                                   >
                                     ×
