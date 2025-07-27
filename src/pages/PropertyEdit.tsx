@@ -299,21 +299,26 @@ const PropertyEdit = () => {
                         <div className="border rounded-md p-3 space-y-2">
                           {/* Selected items display */}
                           {formData.exteriorRenovation.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mb-2">
+                            <div className="flex flex-wrap gap-2 mb-2" style={{ scrollSnapType: 'none' }}>
                               {formData.exteriorRenovation.map((item) => (
-                                <span key={item} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center">
+                                <span 
+                                  key={item} 
+                                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center select-none"
+                                  style={{ scrollSnapAlign: 'none' }}
+                                >
                                   {item}
                                   <button
                                     type="button"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       e.stopPropagation();
-                                      setFormData({
-                                        ...formData, 
-                                        exteriorRenovation: formData.exteriorRenovation.filter(i => i !== item)
-                                      });
+                                      setFormData(prev => ({
+                                        ...prev, 
+                                        exteriorRenovation: prev.exteriorRenovation.filter(i => i !== item)
+                                      }));
                                     }}
-                                    className="ml-2 text-blue-600 hover:text-blue-800"
+                                    className="ml-2 text-blue-600 hover:text-blue-800 select-none"
+                                    tabIndex={-1}
                                   >
                                     ×
                                   </button>
