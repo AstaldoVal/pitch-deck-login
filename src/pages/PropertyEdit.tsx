@@ -330,6 +330,8 @@ const PropertyEdit = () => {
                                   type="checkbox"
                                   checked={formData.exteriorRenovation.includes(option)}
                                   onChange={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
                                     if (e.target.checked) {
                                       setFormData({
                                         ...formData,
