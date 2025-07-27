@@ -154,10 +154,10 @@ const PropertyEdit = () => {
     
     return (
       <div className="flex-1 relative">
-        <div className={`fixed top-0 right-0 z-20 bg-white transition-all duration-200 ${open ? 'left-[240px]' : 'left-[56px]'}`}>
+        <div className={`h-16 fixed top-0 right-0 z-20 bg-white transition-all duration-200 ${open ? 'left-[240px]' : 'left-[56px]'}`}>
           <AppHeader />
         </div>
-        <div ref={containerRef} className="pt-16 h-screen overflow-y-auto" style={{ scrollBehavior: 'auto' }}>
+        <div ref={containerRef} className="flex-1 overflow-y-scroll pt-16 scroll-smooth">
           <div className="max-w-2xl px-4 sm:px-6 lg:px-8 py-8">
             {/* Page Header */}
             <div className="flex items-center mb-8">
