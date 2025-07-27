@@ -310,15 +310,13 @@ const PropertyEdit = () => {
                                   <button
                                     type="button"
                                     onClick={(e) => {
-                                      e.preventDefault();
                                       e.stopPropagation();
                                       setFormData(prev => ({
                                         ...prev, 
                                         exteriorRenovation: prev.exteriorRenovation.filter(i => i !== item)
                                       }));
                                     }}
-                                    className="ml-2 text-blue-600 hover:text-blue-800 select-none"
-                                    tabIndex={-1}
+                                    className="ml-2 text-blue-600 hover:text-blue-800"
                                   >
                                     ×
                                   </button>
@@ -328,32 +326,22 @@ const PropertyEdit = () => {
                           )}
                           
                           {/* Checkboxes */}
-                          <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
+                          <div className="space-y-2">
                             {['Brick', 'Cement', 'Stone', 'Stucco', 'Wood or vinyl siding'].map((option) => (
-                              <div 
-                                key={option} 
-                                className="flex items-center space-x-2 cursor-pointer select-none"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  const isCurrentlyChecked = formData.exteriorRenovation.includes(option);
-                                  setFormData(prev => ({
-                                    ...prev,
-                                    exteriorRenovation: isCurrentlyChecked 
-                                      ? prev.exteriorRenovation.filter(item => item !== option)
-                                      : [...prev.exteriorRenovation, option]
-                                  }));
-                                }}
-                              >
+                              <div key={option} className="flex items-center space-x-2">
                                 <input
                                   type="checkbox"
                                   checked={formData.exteriorRenovation.includes(option)}
-                                  onChange={() => {}}
-                                  onFocus={(e) => e.target.blur()}
-                                  className="rounded pointer-events-none"
-                                  tabIndex={-1}
-                                  disabled={false}
-                                  readOnly
+                                  onChange={(e) => {
+                                    const isCurrentlyChecked = formData.exteriorRenovation.includes(option);
+                                    setFormData(prev => ({
+                                      ...prev,
+                                      exteriorRenovation: isCurrentlyChecked 
+                                        ? prev.exteriorRenovation.filter(item => item !== option)
+                                        : [...prev.exteriorRenovation, option]
+                                    }));
+                                  }}
+                                  className="rounded"
                                 />
                                 <span>{option}</span>
                               </div>
@@ -419,12 +407,7 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.dogPark === true}
-                                  onChange={(e) => {
-                                    e.preventDefault();
-                                    setFormData({...formData, dogPark: true});
-                                  }}
-                                  onFocus={(e) => e.target.blur()}
-                                  tabIndex={-1}
+                                  onChange={() => setFormData({...formData, dogPark: true})}
                                 />
                                 <span>Yes</span>
                               </label>
@@ -432,12 +415,7 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.dogPark === false}
-                                  onChange={(e) => {
-                                    e.preventDefault();
-                                    setFormData({...formData, dogPark: false});
-                                  }}
-                                  onFocus={(e) => e.target.blur()}
-                                  tabIndex={-1}
+                                  onChange={() => setFormData({...formData, dogPark: false})}
                                 />
                                 <span>No</span>
                               </label>
@@ -453,12 +431,7 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.entranceGate === true}
-                                  onChange={(e) => {
-                                    e.preventDefault();
-                                    setFormData({...formData, entranceGate: true});
-                                  }}
-                                  onFocus={(e) => e.target.blur()}
-                                  tabIndex={-1}
+                                  onChange={() => setFormData({...formData, entranceGate: true})}
                                 />
                                 <span>Yes</span>
                               </label>
@@ -466,12 +439,7 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.entranceGate === false}
-                                  onChange={(e) => {
-                                    e.preventDefault();
-                                    setFormData({...formData, entranceGate: false});
-                                  }}
-                                  onFocus={(e) => e.target.blur()}
-                                  tabIndex={-1}
+                                  onChange={() => setFormData({...formData, entranceGate: false})}
                                 />
                                 <span>No</span>
                               </label>
@@ -487,12 +455,7 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.pool === true}
-                                  onChange={(e) => {
-                                    e.preventDefault();
-                                    setFormData({...formData, pool: true});
-                                  }}
-                                  onFocus={(e) => e.target.blur()}
-                                  tabIndex={-1}
+                                  onChange={() => setFormData({...formData, pool: true})}
                                 />
                                 <span>Yes</span>
                               </label>
@@ -500,12 +463,7 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.pool === false}
-                                  onChange={(e) => {
-                                    e.preventDefault();
-                                    setFormData({...formData, pool: false});
-                                  }}
-                                  onFocus={(e) => e.target.blur()}
-                                  tabIndex={-1}
+                                  onChange={() => setFormData({...formData, pool: false})}
                                 />
                                 <span>No</span>
                               </label>
