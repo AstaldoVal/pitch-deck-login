@@ -325,13 +325,12 @@ const PropertyEdit = () => {
                           {/* Checkboxes */}
                           <div className="space-y-2">
                             {['Brick', 'Cement', 'Stone', 'Stucco', 'Wood or vinyl siding'].map((option) => (
-                              <label key={option} className="flex items-center space-x-2">
+                              <div key={option} className="flex items-center space-x-2">
                                 <input
+                                  id={`exterior-${option}`}
                                   type="checkbox"
                                   checked={formData.exteriorRenovation.includes(option)}
                                   onChange={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
                                     if (e.target.checked) {
                                       setFormData({
                                         ...formData,
@@ -346,8 +345,8 @@ const PropertyEdit = () => {
                                   }}
                                   className="rounded"
                                 />
-                                <span>{option}</span>
-                              </label>
+                                <label htmlFor={`exterior-${option}`} className="cursor-pointer">{option}</label>
+                              </div>
                             ))}
                           </div>
                         </div>
