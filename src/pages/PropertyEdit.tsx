@@ -160,18 +160,21 @@ const PropertyEdit = () => {
         <div ref={containerRef} className="flex-1 overflow-y-scroll pt-16 scroll-smooth">
           <div className="max-w-2xl px-4 sm:px-6 lg:px-8 py-8">
             {/* Page Header */}
-            <div className="flex items-center mb-8">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleCancel}
-                className="mr-4"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <h1 className="text-3xl font-bold text-gray-900">Edit property</h1>
-              <span className="ml-4 text-sm text-red-500">* Mandatory fields</span>
+            <div className="relative mb-8">
+              <div className="absolute top-0 right-0">
+                <span className="text-sm text-red-500">Mandatory fields *</span>
+              </div>
+              <div className="flex items-center">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleCancel}
+                  className="mr-4 p-2"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </Button>
+                <h1 className="text-3xl font-bold text-gray-900">Edit property</h1>
+              </div>
             </div>
 
             <form onSubmit={handleSubmit}>
@@ -179,7 +182,7 @@ const PropertyEdit = () => {
                 {/* Basic Information */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name">* Name</Label>
+                    <Label htmlFor="name" className="text-red-500">Name *</Label>
                     <Input
                       id="name"
                       value={formData.name}
@@ -219,7 +222,7 @@ const PropertyEdit = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="buildings">* Buildings</Label>
+                    <Label htmlFor="buildings" className="text-red-500">Buildings *</Label>
                     <Input
                       id="buildings"
                       type="number"
@@ -257,7 +260,7 @@ const PropertyEdit = () => {
                 {/* Address Information */}
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="address">* Address</Label>
+                    <Label htmlFor="address" className="text-red-500">Address *</Label>
                     <Input
                       id="address"
                       value={formData.address}
@@ -268,7 +271,7 @@ const PropertyEdit = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="city">* City</Label>
+                      <Label htmlFor="city" className="text-red-500">City *</Label>
                       <Input
                         id="city"
                         value={formData.city}
@@ -278,7 +281,7 @@ const PropertyEdit = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="state">* State</Label>
+                      <Label htmlFor="state" className="text-red-500">State *</Label>
                       <Select value={formData.state} onValueChange={(value) => setFormDataWithScrollPreservation({...formData, state: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select state" />
@@ -293,7 +296,7 @@ const PropertyEdit = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="zipCode">* ZIP Code</Label>
+                      <Label htmlFor="zipCode" className="text-red-500">ZIP Code *</Label>
                       <Input
                         id="zipCode"
                         value={formData.zipCode}
