@@ -182,7 +182,7 @@ const PropertyEdit = () => {
                 {/* Basic Information */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="text-red-500">Name *</Label>
+                    <Label htmlFor="name">Name <span className="text-red-500">*</span></Label>
                     <Input
                       id="name"
                       value={formData.name}
@@ -222,7 +222,7 @@ const PropertyEdit = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="buildings" className="text-red-500">Buildings *</Label>
+                    <Label htmlFor="buildings">Buildings <span className="text-red-500">*</span></Label>
                     <Input
                       id="buildings"
                       type="number"
@@ -260,7 +260,7 @@ const PropertyEdit = () => {
                 {/* Address Information */}
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="address" className="text-red-500">Address *</Label>
+                    <Label htmlFor="address">Address <span className="text-red-500">*</span></Label>
                     <Input
                       id="address"
                       value={formData.address}
@@ -271,7 +271,7 @@ const PropertyEdit = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="city" className="text-red-500">City *</Label>
+                      <Label htmlFor="city">City <span className="text-red-500">*</span></Label>
                       <Input
                         id="city"
                         value={formData.city}
@@ -281,7 +281,7 @@ const PropertyEdit = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="state" className="text-red-500">State *</Label>
+                      <Label htmlFor="state">State <span className="text-red-500">*</span></Label>
                       <Select value={formData.state} onValueChange={(value) => setFormDataWithScrollPreservation({...formData, state: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select state" />
@@ -296,7 +296,7 @@ const PropertyEdit = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="zipCode" className="text-red-500">ZIP Code *</Label>
+                      <Label htmlFor="zipCode">ZIP Code <span className="text-red-500">*</span></Label>
                       <Input
                         id="zipCode"
                         value={formData.zipCode}
