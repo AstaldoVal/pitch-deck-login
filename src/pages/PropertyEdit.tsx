@@ -159,17 +159,6 @@ const PropertyEdit = () => {
                     />
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="portfolio">Portfolio</Label>
-                    <Select value={formData.portfolio} onValueChange={(value) => setFormData({...formData, portfolio: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select portfolio" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Apartment collection">Apartment collection</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="assetManager">Asset Manager</Label>
