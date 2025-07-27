@@ -424,7 +424,7 @@ const PropertyEdit = () => {
                     <div>
                       <h3 className="text-lg font-semibold mb-4">General</h3>
                       
-                      <div className="grid grid-cols-3 gap-8 mb-6">
+                      <div className="flex flex-wrap gap-8 mb-6">
                         <div className="space-y-4">
                           <div className="flex items-center justify-between">
                             <Label>Dog Park</Label>
