@@ -325,31 +325,30 @@ const PropertyEdit = () => {
                           {/* Checkboxes */}
                           <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                             {['Brick', 'Cement', 'Stone', 'Stucco', 'Wood or vinyl siding'].map((option) => (
-                              <div key={option} className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
+                              <div 
+                                key={option} 
+                                className="flex items-center space-x-2 cursor-pointer select-none"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  const isCurrentlyChecked = formData.exteriorRenovation.includes(option);
+                                  setFormData(prev => ({
+                                    ...prev,
+                                    exteriorRenovation: isCurrentlyChecked 
+                                      ? prev.exteriorRenovation.filter(item => item !== option)
+                                      : [...prev.exteriorRenovation, option]
+                                  }));
+                                }}
+                              >
                                 <input
-                                  id={`exterior-${option}`}
                                   type="checkbox"
                                   checked={formData.exteriorRenovation.includes(option)}
+                                  onChange={() => {}} // Controlled by parent div click
                                   onClick={(e) => e.stopPropagation()}
-                                  onChange={(e) => {
-                                    e.stopPropagation();
-                                    const isChecked = e.target.checked;
-                                    setFormData(prev => ({
-                                      ...prev,
-                                      exteriorRenovation: isChecked 
-                                        ? [...prev.exteriorRenovation, option]
-                                        : prev.exteriorRenovation.filter(item => item !== option)
-                                    }));
-                                  }}
-                                  className="rounded"
+                                  className="rounded pointer-events-none"
+                                  readOnly
                                 />
-                                <label 
-                                  htmlFor={`exterior-${option}`} 
-                                  className="cursor-pointer select-none"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  {option}
-                                </label>
+                                <span>{option}</span>
                               </div>
                             ))}
                           </div>
