@@ -424,76 +424,70 @@ const PropertyEdit = () => {
                     <div>
                       <h3 className="text-lg font-semibold mb-4">General</h3>
                       
-                      <div className="flex flex-wrap gap-8 mb-6">
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <Label>Dog Park</Label>
-                            <div className="flex space-x-4">
-                              <label className="flex items-center space-x-2">
-                                <input
-                                  type="radio"
-                                  checked={formData.dogPark === true}
-                                  onChange={() => setFormDataWithScrollPreservation({...formData, dogPark: true})}
-                                />
-                                <span>Yes</span>
-                              </label>
-                              <label className="flex items-center space-x-2">
-                                <input
-                                  type="radio"
-                                  checked={formData.dogPark === false}
-                                  onChange={() => setFormDataWithScrollPreservation({...formData, dogPark: false})}
-                                />
-                                <span>No</span>
-                              </label>
-                            </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div className="space-y-3">
+                          <Label className="text-sm font-medium">Dog Park</Label>
+                          <div className="flex space-x-4">
+                            <label className="flex items-center space-x-2">
+                              <input
+                                type="radio"
+                                checked={formData.dogPark === true}
+                                onChange={() => setFormDataWithScrollPreservation({...formData, dogPark: true})}
+                              />
+                              <span>Yes</span>
+                            </label>
+                            <label className="flex items-center space-x-2">
+                              <input
+                                type="radio"
+                                checked={formData.dogPark === false}
+                                onChange={() => setFormDataWithScrollPreservation({...formData, dogPark: false})}
+                              />
+                              <span>No</span>
+                            </label>
                           </div>
                         </div>
 
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <Label>Entrance/Exit Gate</Label>
-                            <div className="flex space-x-4">
-                              <label className="flex items-center space-x-2">
-                                <input
-                                  type="radio"
-                                  checked={formData.entranceGate === true}
-                                  onChange={() => setFormDataWithScrollPreservation({...formData, entranceGate: true})}
-                                />
-                                <span>Yes</span>
-                              </label>
-                              <label className="flex items-center space-x-2">
-                                <input
-                                  type="radio"
-                                  checked={formData.entranceGate === false}
-                                  onChange={() => setFormDataWithScrollPreservation({...formData, entranceGate: false})}
-                                />
-                                <span>No</span>
-                              </label>
-                            </div>
+                        <div className="space-y-3">
+                          <Label className="text-sm font-medium">Entrance/Exit Gate</Label>
+                          <div className="flex space-x-4">
+                            <label className="flex items-center space-x-2">
+                              <input
+                                type="radio"
+                                checked={formData.entranceGate === true}
+                                onChange={() => setFormDataWithScrollPreservation({...formData, entranceGate: true})}
+                              />
+                              <span>Yes</span>
+                            </label>
+                            <label className="flex items-center space-x-2">
+                              <input
+                                type="radio"
+                                checked={formData.entranceGate === false}
+                                onChange={() => setFormDataWithScrollPreservation({...formData, entranceGate: false})}
+                              />
+                              <span>No</span>
+                            </label>
                           </div>
                         </div>
 
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <Label>Pool</Label>
-                            <div className="flex space-x-4">
-                              <label className="flex items-center space-x-2">
-                                <input
-                                  type="radio"
-                                  checked={formData.pool === true}
-                                  onChange={() => setFormDataWithScrollPreservation({...formData, pool: true})}
-                                />
-                                <span>Yes</span>
-                              </label>
-                              <label className="flex items-center space-x-2">
-                                <input
-                                  type="radio"
-                                  checked={formData.pool === false}
-                                  onChange={() => setFormDataWithScrollPreservation({...formData, pool: false})}
-                                />
-                                <span>No</span>
-                              </label>
-                            </div>
+                        <div className="space-y-3">
+                          <Label className="text-sm font-medium">Pool</Label>
+                          <div className="flex space-x-4">
+                            <label className="flex items-center space-x-2">
+                              <input
+                                type="radio"
+                                checked={formData.pool === true}
+                                onChange={() => setFormDataWithScrollPreservation({...formData, pool: true})}
+                              />
+                              <span>Yes</span>
+                            </label>
+                            <label className="flex items-center space-x-2">
+                              <input
+                                type="radio"
+                                checked={formData.pool === false}
+                                onChange={() => setFormDataWithScrollPreservation({...formData, pool: false})}
+                              />
+                              <span>No</span>
+                            </label>
                           </div>
                         </div>
                       </div>
