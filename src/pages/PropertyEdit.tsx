@@ -419,7 +419,12 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.dogPark === true}
-                                  onChange={() => setFormData({...formData, dogPark: true})}
+                                  onChange={(e) => {
+                                    e.preventDefault();
+                                    setFormData({...formData, dogPark: true});
+                                  }}
+                                  onFocus={(e) => e.target.blur()}
+                                  tabIndex={-1}
                                 />
                                 <span>Yes</span>
                               </label>
@@ -427,7 +432,12 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.dogPark === false}
-                                  onChange={() => setFormData({...formData, dogPark: false})}
+                                  onChange={(e) => {
+                                    e.preventDefault();
+                                    setFormData({...formData, dogPark: false});
+                                  }}
+                                  onFocus={(e) => e.target.blur()}
+                                  tabIndex={-1}
                                 />
                                 <span>No</span>
                               </label>
@@ -443,7 +453,12 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.entranceGate === true}
-                                  onChange={() => setFormData({...formData, entranceGate: true})}
+                                  onChange={(e) => {
+                                    e.preventDefault();
+                                    setFormData({...formData, entranceGate: true});
+                                  }}
+                                  onFocus={(e) => e.target.blur()}
+                                  tabIndex={-1}
                                 />
                                 <span>Yes</span>
                               </label>
@@ -451,7 +466,12 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.entranceGate === false}
-                                  onChange={() => setFormData({...formData, entranceGate: false})}
+                                  onChange={(e) => {
+                                    e.preventDefault();
+                                    setFormData({...formData, entranceGate: false});
+                                  }}
+                                  onFocus={(e) => e.target.blur()}
+                                  tabIndex={-1}
                                 />
                                 <span>No</span>
                               </label>
@@ -467,7 +487,12 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.pool === true}
-                                  onChange={() => setFormData({...formData, pool: true})}
+                                  onChange={(e) => {
+                                    e.preventDefault();
+                                    setFormData({...formData, pool: true});
+                                  }}
+                                  onFocus={(e) => e.target.blur()}
+                                  tabIndex={-1}
                                 />
                                 <span>Yes</span>
                               </label>
@@ -475,7 +500,12 @@ const PropertyEdit = () => {
                                 <input
                                   type="radio"
                                   checked={formData.pool === false}
-                                  onChange={() => setFormData({...formData, pool: false})}
+                                  onChange={(e) => {
+                                    e.preventDefault();
+                                    setFormData({...formData, pool: false});
+                                  }}
+                                  onFocus={(e) => e.target.blur()}
+                                  tabIndex={-1}
                                 />
                                 <span>No</span>
                               </label>
