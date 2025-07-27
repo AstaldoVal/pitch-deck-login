@@ -180,8 +180,11 @@ const PropertyEdit = () => {
                         <SelectValue placeholder="Select property type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Affordable">Affordable</SelectItem>
+                        <SelectItem value="Student housing">Student housing</SelectItem>
+                        <SelectItem value="Military">Military</SelectItem>
                         <SelectItem value="Conventional">Conventional</SelectItem>
+                        <SelectItem value="Senior living housing">Senior living housing</SelectItem>
+                        <SelectItem value="Affordable">Affordable</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -214,9 +217,9 @@ const PropertyEdit = () => {
                         <SelectValue placeholder="Select building type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="High rise">High rise</SelectItem>
-                        <SelectItem value="Low rise">Low rise</SelectItem>
+                        <SelectItem value="Garden style">Garden style</SelectItem>
                         <SelectItem value="Mid rise">Mid rise</SelectItem>
+                        <SelectItem value="High rise">High rise</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
