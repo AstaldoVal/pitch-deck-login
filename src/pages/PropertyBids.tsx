@@ -365,12 +365,6 @@ export default function PropertyBids() {
                             className="mt-1"
                           />
                         </div>
-                        {propertyData && (
-                          <div>
-                            <Label className="text-sm text-muted-foreground">Asset Manager</Label>
-                            <p className="font-medium mt-1">{propertyData.assetManager || "Not assigned"}</p>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -449,6 +443,10 @@ export default function PropertyBids() {
                         <div>
                           <Label className="text-sm text-muted-foreground">Building Type</Label>
                           <p className="font-medium mt-1">{propertyData.buildingType || "Not specified"}</p>
+                        </div>
+                        <div>
+                          <Label className="text-sm text-muted-foreground">Asset Manager</Label>
+                          <p className="font-medium mt-1">{propertyData.assetManager || "Not assigned"}</p>
                         </div>
                       </div>
                     </div>
