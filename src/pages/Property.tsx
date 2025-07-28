@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { 
   Building2, 
   MapPin, 
@@ -305,16 +306,38 @@ const Property = () => {
                   <Target className="w-6 h-6 text-blue-600" />
                 </div>
 
-                {/* Overall Progress Bar */}
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-blue-600 mr-3" />
-                      <span className="text-lg font-semibold text-gray-900">18 of 112 Jobs Completed</span>
+                {/* Visual Progress Indicator */}
+                <div className="flex items-center justify-center mb-8">
+                  <div className="relative w-64 h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={[
+                            { name: 'Completed', value: 16 },
+                            { name: 'Remaining', value: 84 }
+                          ]}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={75}
+                          outerRadius={115}
+                          startAngle={90}
+                          endAngle={-270}
+                          dataKey="value"
+                        >
+                          <Cell fill="#3b82f6" />
+                          <Cell fill="#e5e7eb" />
+                        </Pie>
+                      </PieChart>
+                    </ResponsiveContainer>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-blue-600 mb-1">16%</div>
+                        <div className="text-xs text-gray-500 mb-2">Complete</div>
+                        <div className="text-sm font-semibold text-gray-900 mb-1">Balance to Complete</div>
+                        <div className="text-xl font-bold text-gray-900">$772,439</div>
+                      </div>
                     </div>
-                    <span className="text-2xl font-bold text-blue-600">16%</span>
                   </div>
-                  <Progress value={16} className="h-4" />
                 </div>
 
                 {/* Key Metrics Grid */}
