@@ -331,12 +331,12 @@ const Property = () => {
                           </Pie>
                         </PieChart>
                       </ResponsiveContainer>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-3xl font-bold text-blue-600 mb-1">16%</div>
-                          <div className="text-xs text-gray-500 mb-2">Complete</div>
-                          <div className="text-sm font-semibold text-gray-900 mb-1">Balance to Complete</div>
-                          <div className="text-lg font-bold text-gray-900">$772,439</div>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+                        <div className="text-center max-w-[100px]">
+                          <div className="text-2xl font-bold text-blue-600 mb-1">16%</div>
+                          <div className="text-xs text-gray-500 mb-1">Complete</div>
+                          <div className="text-xs font-semibold text-gray-900 mb-1 leading-tight">Balance to Complete</div>
+                          <div className="text-sm font-bold text-gray-900">$772,439</div>
                         </div>
                       </div>
                     </div>
