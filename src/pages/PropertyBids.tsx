@@ -1170,13 +1170,22 @@ export default function PropertyBids() {
                   </TooltipProvider>
                 </div>
               ) : (
-                <Button
-                  onClick={nextStep}
-                  className="flex items-center gap-2 bg-gradient-to-r from-primary to-brand-blue-dark"
-                >
-                  Next
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center gap-3">
+                  <Button
+                    variant="ghost"
+                    onClick={nextStep}
+                    className="flex items-center gap-2 text-muted-foreground"
+                  >
+                    Skip
+                  </Button>
+                  <Button
+                    onClick={nextStep}
+                    className="flex items-center gap-2 bg-gradient-to-r from-primary to-brand-blue-dark"
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
               )}
             </div>
           </div>
