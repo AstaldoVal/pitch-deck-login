@@ -357,32 +357,49 @@ const Property = () => {
                   </div>
                 </Card>
 
-                {/* Recent Activity */}
+                {/* Renovation Summary */}
                 <Card className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Recent Activity</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Renovation Summary</h2>
                   
                   <div className="space-y-4">
-                    <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">
-                          Property "{propertyData.name}" created
-                        </p>
-                        <p className="text-xs text-gray-500">Just now</p>
+                    {/* Last Draw Submission */}
+                    <div className="bg-green-50 rounded-lg p-4">
+                      <div className="flex items-center text-green-700 mb-1">
+                        <DollarSign className="w-4 h-4 mr-2" />
+                        <span className="text-sm font-medium">Last Draw Submission</span>
                       </div>
+                      <p className="text-lg font-bold text-green-900">03/20/2026</p>
+                      <p className="text-sm text-green-600">$125,000</p>
                     </div>
 
-                    {propertyData.hasRentRoll && (
-                      <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-                        <FileText className="w-4 h-4 text-blue-600" />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-900">
-                            Rent Roll "{propertyData.rentRollFile}" uploaded
-                          </p>
-                          <p className="text-xs text-gray-500">Processing...</p>
-                        </div>
+                    {/* Previous Draw Submission */}
+                    <div className="bg-blue-50 rounded-lg p-4">
+                      <div className="flex items-center text-blue-700 mb-1">
+                        <DollarSign className="w-4 h-4 mr-2" />
+                        <span className="text-sm font-medium">Previous Draw Submission</span>
                       </div>
-                    )}
+                      <p className="text-lg font-bold text-blue-900">10/21/2024</p>
+                      <p className="text-sm text-blue-600">$55,000</p>
+                    </div>
+
+                    {/* Next Scheduled Inspection */}
+                    <div className="bg-orange-50 rounded-lg p-4">
+                      <div className="flex items-center text-orange-700 mb-1">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        <span className="text-sm font-medium">Next Scheduled Inspection</span>
+                      </div>
+                      <p className="text-lg font-bold text-orange-900">11/15/2024</p>
+                    </div>
+
+                    {/* Last Inspection Date */}
+                    <div className="bg-purple-50 rounded-lg p-4">
+                      <div className="flex items-center text-purple-700 mb-1">
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        <span className="text-sm font-medium">Last Inspection Date</span>
+                      </div>
+                      <p className="text-lg font-bold text-purple-900">09/30/2025</p>
+                      <p className="text-sm text-purple-600">Approved</p>
+                    </div>
                   </div>
                 </Card>
               </div>
