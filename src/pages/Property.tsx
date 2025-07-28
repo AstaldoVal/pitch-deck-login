@@ -34,6 +34,8 @@ interface PropertyData {
   yearBuilt?: number;
   buildingType?: string;
   assetManager?: string;
+  managementCompany?: string;
+  renovationType?: string;
 }
 
 const Property = () => {
@@ -131,86 +133,62 @@ const Property = () => {
                 {/* Property Header */}
                 <div>
                   <Card className="p-6 h-full">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                          {propertyData.name}
-                        </h1>
-                        <Badge variant="outline" className="text-blue-700 border-blue-200 bg-blue-50">
-                          <Building2 className="w-3 h-3 mr-1" />
-                          Military
-                        </Badge>
-                      </div>
-                      <div className="flex gap-2 ml-4">
-                        <Button variant="ghost" size="icon" onClick={handleEditProperty} className="h-8 w-8">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={handleViewOnMap} className="h-8 w-8">
-                          <Map className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                     
-                     <div className="space-y-3">
-                       {/* Address */}
-                       <div className="flex items-center justify-between">
-                         <div className="flex items-center text-gray-600">
-                           <MapPin className="w-4 h-4 mr-2" />
-                           <span className="text-sm font-medium">Address</span>
-                         </div>
-                         <span className="text-sm text-gray-900">
-                           {propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}
-                         </span>
+                     <div className="flex items-start justify-between mb-4">
+                       <div className="flex-1">
+                         <h1 className="text-2xl font-bold text-gray-900 mb-1">
+                           Sunset Commons Apartments
+                         </h1>
+                         <p className="text-sm text-gray-600 mb-3">1457 Sunset Ave, Dallas, TX 75208</p>
+                         <Badge variant="outline" className="text-blue-700 border-blue-200 bg-blue-50">
+                           <Building2 className="w-3 h-3 mr-1" />
+                           Military
+                         </Badge>
                        </div>
-
-                       {/* Year Built */}
-                       <div className="flex items-center justify-between">
-                         <div className="flex items-center text-gray-600">
-                           <Building2 className="w-4 h-4 mr-2" />
-                           <span className="text-sm font-medium">Year Built</span>
-                         </div>
-                         {propertyData.yearBuilt ? (
-                           <span className="text-sm text-gray-900">{propertyData.yearBuilt}</span>
-                         ) : (
-                           <div className="flex items-center text-gray-400">
-                             <Minus className="w-3 h-3 mr-1" />
-                             <span className="text-sm">Not specified</span>
-                           </div>
-                         )}
-                       </div>
-
-                       {/* Building Type */}
-                       <div className="flex items-center justify-between">
-                         <div className="flex items-center text-gray-600">
-                           <Building2 className="w-4 h-4 mr-2" />
-                           <span className="text-sm font-medium">Building Type</span>
-                         </div>
-                         {propertyData.buildingType ? (
-                           <span className="text-sm text-gray-900">{propertyData.buildingType}</span>
-                         ) : (
-                           <div className="flex items-center text-gray-400">
-                             <Minus className="w-3 h-3 mr-1" />
-                             <span className="text-sm">Not specified</span>
-                           </div>
-                         )}
-                       </div>
-
-                       {/* Asset Manager */}
-                       <div className="flex items-center justify-between">
-                         <div className="flex items-center text-gray-600">
-                           <Users className="w-4 h-4 mr-2" />
-                           <span className="text-sm font-medium">Asset Manager</span>
-                         </div>
-                         {propertyData.assetManager ? (
-                           <span className="text-sm text-gray-900">{propertyData.assetManager}</span>
-                         ) : (
-                           <div className="flex items-center text-gray-400">
-                             <Minus className="w-3 h-3 mr-1" />
-                             <span className="text-sm">Not assigned</span>
-                           </div>
-                         )}
+                       <div className="flex gap-2 ml-4">
+                         <Button variant="ghost" size="icon" onClick={handleEditProperty} className="h-8 w-8">
+                           <Edit className="w-4 h-4" />
+                         </Button>
+                         <Button variant="ghost" size="icon" onClick={handleViewOnMap} className="h-8 w-8">
+                           <Map className="w-4 h-4" />
+                         </Button>
                        </div>
                      </div>
+                      
+                      <div className="space-y-3">
+                        {/* Management Company */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center text-gray-600">
+                            <Building2 className="w-4 h-4 mr-2" />
+                            <span className="text-sm font-medium">Management Company</span>
+                          </div>
+                          <span className="text-sm text-gray-900">Greystar</span>
+                        </div>
+
+                        {/* Renovation Type */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center text-gray-600">
+                            <FileText className="w-4 h-4 mr-2" />
+                            <span className="text-sm font-medium">Renovation Type</span>
+                          </div>
+                          <span className="text-sm text-gray-900">Interior, Exterior, General (Common)</span>
+                        </div>
+
+                        {/* Asset Manager */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center text-gray-600">
+                            <Users className="w-4 h-4 mr-2" />
+                            <span className="text-sm font-medium">Asset Manager</span>
+                          </div>
+                          {propertyData.assetManager ? (
+                            <span className="text-sm text-gray-900">{propertyData.assetManager}</span>
+                          ) : (
+                            <div className="flex items-center text-gray-400">
+                              <Minus className="w-3 h-3 mr-1" />
+                              <span className="text-sm">Not assigned</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                   </Card>
                 </div>
 
