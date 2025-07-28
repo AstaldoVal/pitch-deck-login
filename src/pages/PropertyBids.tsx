@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
-import { CalendarIcon, Plus, X, Upload, FileText, User, Mail, Phone, Building, ChevronDown, ChevronLeft, ChevronRight, Check } from "lucide-react";
+import { CalendarIcon, Plus, X, Upload, FileText, User, Mail, Phone, Building, ChevronDown, ChevronLeft, ChevronRight, Check, Home } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { PropertySidebar } from "@/components/PropertySidebar";
@@ -49,9 +49,24 @@ interface JobCategory {
   productInfo?: string;
   dimensions?: string;
   quantity?: string;
+  unitTypes?: string[];
+  laborHours?: string;
+  skillLevel?: string;
+  priority?: string;
   notes?: string;
   files?: File[];
   isExpanded?: boolean;
+}
+
+interface Unit {
+  id: string;
+  unitNumber: string;
+  unitType: string;
+  floorPlan: string;
+  sqft: number;
+  bedrooms: number;
+  bathrooms: number;
+  selected: boolean;
 }
 
 export default function PropertyBids() {
@@ -64,6 +79,9 @@ export default function PropertyBids() {
   const [contractors, setContractors] = useState<Contractor[]>([]);
   const [scopeType, setScopeType] = useState<"job-type" | "unit-based">("job-type");
   const [jobCategories, setJobCategories] = useState<JobCategory[]>([]);
+  const [units, setUnits] = useState<Unit[]>([]);
+  const [hasRentRoll, setHasRentRoll] = useState(false);
+  const [rentRollFile, setRentRollFile] = useState<File | null>(null);
   const [newContractor, setNewContractor] = useState<Contractor>({
     id: "",
     companyName: "",
@@ -83,8 +101,9 @@ export default function PropertyBids() {
   const steps = [
     { number: 1, title: "Basic Information", description: "Bid details and property info" },
     { number: 2, title: "Project Timeline", description: "Start and end dates" },
-    { number: 3, title: "Scope Type", description: "Define project scope" },
-    { number: 4, title: "Contractors", description: "Add contractors to bid" }
+    { number: 3, title: "Rent Roll Upload", description: "Upload property units data" },
+    { number: 4, title: "Scope Type", description: "Define project scope" },
+    { number: 5, title: "Contractors", description: "Add contractors to bid" }
   ];
 
   const goToStep = (step: number) => {
@@ -164,6 +183,45 @@ export default function PropertyBids() {
 
   const removeJobCategory = (id: string) => {
     setJobCategories(categories => categories.filter(cat => cat.id !== id));
+  };
+
+  const handleRentRollUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setRentRollFile(file);
+      setHasRentRoll(true);
+      
+      // Simulate parsing units from rent roll
+      const sampleUnits: Unit[] = [
+        { id: "1", unitNumber: "101", unitType: "1BR", floorPlan: "A", sqft: 650, bedrooms: 1, bathrooms: 1, selected: false },
+        { id: "2", unitNumber: "102", unitType: "1BR", floorPlan: "A", sqft: 650, bedrooms: 1, bathrooms: 1, selected: false },
+        { id: "3", unitNumber: "201", unitType: "2BR", floorPlan: "B", sqft: 950, bedrooms: 2, bathrooms: 2, selected: false },
+        { id: "4", unitNumber: "202", unitType: "2BR", floorPlan: "B", sqft: 950, bedrooms: 2, bathrooms: 2, selected: false },
+        { id: "5", unitNumber: "301", unitType: "3BR", floorPlan: "C", sqft: 1200, bedrooms: 3, bathrooms: 2, selected: false },
+      ];
+      setUnits(sampleUnits);
+      
+      toast({
+        title: "Rent Roll Uploaded",
+        description: `${file.name} has been processed and ${sampleUnits.length} units were found.`,
+      });
+    }
+  };
+
+  const toggleUnitSelection = (unitId: string) => {
+    setUnits(units => 
+      units.map(unit => 
+        unit.id === unitId ? { ...unit, selected: !unit.selected } : unit
+      )
+    );
+  };
+
+  const selectAllUnits = () => {
+    setUnits(units => units.map(unit => ({ ...unit, selected: true })));
+  };
+
+  const deselectAllUnits = () => {
+    setUnits(units => units.map(unit => ({ ...unit, selected: false })));
   };
 
   const handleSaveDraft = () => {
@@ -527,6 +585,130 @@ export default function PropertyBids() {
             )}
 
             {currentStep === 3 && (
+              /* Rent Roll Upload Section */
+              <section className="space-y-8">
+                <div>
+                  <h2 className="text-2xl font-semibold">Rent Roll Upload</h2>
+                  <p className="text-muted-foreground mt-1">Upload property units data to populate scope options</p>
+                </div>
+
+                {/* Rent Roll Upload */}
+                <div className="border border-border rounded-lg p-6 bg-card">
+                  <div className="flex items-center gap-2 mb-6">
+                    <Upload className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-medium">Upload Rent Roll</h3>
+                  </div>
+
+                  {!hasRentRoll ? (
+                    <div className="space-y-4">
+                      <p className="text-muted-foreground">
+                        Upload your rent roll file to automatically populate unit information and enable unit-based scoping.
+                      </p>
+                      <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
+                        <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                        <div className="space-y-2">
+                          <p className="text-lg font-medium">Upload Rent Roll</p>
+                          <p className="text-sm text-muted-foreground">
+                            Supported formats: .xlsx, .xls, .csv
+                          </p>
+                        </div>
+                        <div className="mt-4">
+                          <input
+                            type="file"
+                            accept=".xlsx,.xls,.csv"
+                            onChange={handleRentRollUpload}
+                            className="hidden"
+                            id="rent-roll-upload"
+                          />
+                          <label htmlFor="rent-roll-upload">
+                            <Button className="bg-gradient-to-r from-primary to-primary/80">
+                              Select File
+                            </Button>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg border border-green-200">
+                        <FileText className="h-5 w-5 text-green-600" />
+                        <div className="flex-1">
+                          <p className="font-medium text-green-900">
+                            {rentRollFile?.name}
+                          </p>
+                          <p className="text-sm text-green-700">
+                            {units.length} units found and processed
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setHasRentRoll(false);
+                            setRentRollFile(null);
+                            setUnits([]);
+                          }}
+                          className="text-green-700 hover:text-green-900"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+
+                      {/* Units Preview */}
+                      <div className="border border-border rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-medium">Units Overview</h4>
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline" onClick={selectAllUnits}>
+                              Select All
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={deselectAllUnits}>
+                              Deselect All
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-64 overflow-y-auto">
+                          {units.map((unit) => (
+                            <div
+                              key={unit.id}
+                              onClick={() => toggleUnitSelection(unit.id)}
+                              className={cn(
+                                "p-3 rounded-lg border cursor-pointer transition-all",
+                                unit.selected
+                                  ? "border-primary bg-primary/5"
+                                  : "border-border hover:border-border/60"
+                              )}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <p className="font-medium">{unit.unitNumber}</p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {unit.unitType} • {unit.sqft} sq ft
+                                  </p>
+                                </div>
+                                <input
+                                  type="checkbox"
+                                  checked={unit.selected}
+                                  onChange={() => toggleUnitSelection(unit.id)}
+                                  className="h-4 w-4"
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="mt-4 text-sm text-muted-foreground">
+                          {units.filter(u => u.selected).length} of {units.length} units selected
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </section>
+            )}
+
+            {currentStep === 4 && (
               <>
                 {/* Scope Selection */}
                 <section className="space-y-8">
@@ -552,19 +734,92 @@ export default function PropertyBids() {
                     </button>
                     <button
                       onClick={() => setScopeType("unit-based")}
+                      disabled={!hasRentRoll}
                       className={cn(
                         "p-6 text-left rounded-xl border-2 transition-all",
                         scopeType === "unit-based" 
                           ? "border-primary bg-primary/5" 
-                          : "border-border hover:border-border/60 hover:bg-muted/20"
+                          : "border-border hover:border-border/60 hover:bg-muted/20",
+                        !hasRentRoll && "opacity-50 cursor-not-allowed"
                       )}
                     >
                       <div className="font-semibold text-lg">Unit-Based Scope</div>
                       <div className="text-sm text-muted-foreground mt-2">
-                        Driven by selected units and associated job categories
+                        {hasRentRoll 
+                          ? "Driven by selected units and associated job categories"
+                          : "Upload rent roll first to enable unit-based scoping"
+                        }
                       </div>
+                      {!hasRentRoll && (
+                        <div className="mt-2">
+                          <Badge variant="outline" className="text-xs">
+                            Requires Rent Roll
+                          </Badge>
+                        </div>
+                      )}
                     </button>
                   </div>
+
+                  {/* Unit Selection for Unit-Based Scope */}
+                  {scopeType === "unit-based" && hasRentRoll && (
+                    <div className="border border-border rounded-lg p-6 bg-card">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-2">
+                          <Home className="h-5 w-5 text-primary" />
+                          <h3 className="text-lg font-medium">Select Units for Renovation</h3>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="outline" onClick={selectAllUnits}>
+                            Select All
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={deselectAllUnits}>
+                            Deselect All
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 max-h-64 overflow-y-auto">
+                        {units.map((unit) => (
+                          <div
+                            key={unit.id}
+                            onClick={() => toggleUnitSelection(unit.id)}
+                            className={cn(
+                              "p-4 rounded-lg border cursor-pointer transition-all hover:shadow-sm",
+                              unit.selected
+                                ? "border-primary bg-primary/5 shadow-sm"
+                                : "border-border hover:border-border/60"
+                            )}
+                          >
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="font-medium">{unit.unitNumber}</div>
+                              <input
+                                type="checkbox"
+                                checked={unit.selected}
+                                onChange={() => toggleUnitSelection(unit.id)}
+                                className="h-4 w-4"
+                              />
+                            </div>
+                            <div className="text-sm text-muted-foreground space-y-1">
+                              <div>{unit.unitType} • Plan {unit.floorPlan}</div>
+                              <div>{unit.sqft} sq ft</div>
+                              <div>{unit.bedrooms}BR/{unit.bathrooms}BA</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-4 flex items-center justify-between text-sm">
+                        <div className="text-muted-foreground">
+                          {units.filter(u => u.selected).length} of {units.length} units selected
+                        </div>
+                        {units.filter(u => u.selected).length > 0 && (
+                          <Badge variant="outline">
+                            Total: {units.filter(u => u.selected).reduce((sum, u) => sum + u.sqft, 0)} sq ft
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </section>
 
                 {/* Job Categories */}
@@ -620,61 +875,120 @@ export default function PropertyBids() {
                              </Button>
                            </div>
                           
-                          {category.isExpanded && (
-                            <div className="space-y-6 pt-4">
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                  <Label className="text-sm text-muted-foreground">Material Spec/Finish</Label>
-                                  <Input
-                                    placeholder="Specify materials or finishes"
-                                    value={category.materialSpec || ""}
-                                    onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label className="text-sm text-muted-foreground">Product Information</Label>
-                                  <Input
-                                    placeholder="Product details"
-                                    value={category.productInfo || ""}
-                                    onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label className="text-sm text-muted-foreground">Dimensions</Label>
-                                  <Input
-                                    placeholder="Size specifications"
-                                    value={category.dimensions || ""}
-                                    onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label className="text-sm text-muted-foreground">Quantity</Label>
-                                  <Input
-                                    placeholder="Number of units"
-                                    value={category.quantity || ""}
-                                    onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
-                                  />
-                                </div>
-                              </div>
-                              
-                              <div className="space-y-2">
-                                <Label className="text-sm font-medium">Notes</Label>
-                                <Textarea
-                                  placeholder="Additional notes or requirements"
-                                  value={category.notes || ""}
-                                  onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
-                                />
-                              </div>
-                              
-                              <div className="space-y-2">
-                                <Label className="text-sm font-medium">Additional Files</Label>
-                                <Button variant="outline" className="w-full">
-                                  <Upload className="mr-2 h-4 w-4" />
-                                  Upload Files
-                                </Button>
-                              </div>
-                            </div>
-                          )}
+                           {category.isExpanded && (
+                             <div className="space-y-6 pt-4">
+                               {/* Basic Information */}
+                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                 <div className="space-y-2">
+                                   <Label className="text-sm text-muted-foreground">Material Spec/Finish</Label>
+                                   <Input
+                                     placeholder="e.g., Luxury Vinyl Plank, Granite countertop"
+                                     value={category.materialSpec || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
+                                   />
+                                 </div>
+                                 <div className="space-y-2">
+                                   <Label className="text-sm text-muted-foreground">Product Information</Label>
+                                   <Input
+                                     placeholder="Brand, model, specifications"
+                                     value={category.productInfo || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
+                                   />
+                                 </div>
+                                 <div className="space-y-2">
+                                   <Label className="text-sm text-muted-foreground">Dimensions</Label>
+                                   <Input
+                                     placeholder="Size, area, linear feet"
+                                     value={category.dimensions || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
+                                   />
+                                 </div>
+                                 <div className="space-y-2">
+                                   <Label className="text-sm text-muted-foreground">Quantity</Label>
+                                   <Input
+                                     placeholder="Number of units affected"
+                                     value={category.quantity || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
+                                   />
+                                 </div>
+                               </div>
+
+                               {/* Project Details */}
+                               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                 <div className="space-y-2">
+                                   <Label className="text-sm text-muted-foreground">Estimated Labor Hours</Label>
+                                   <Input
+                                     placeholder="e.g., 8 hours per unit"
+                                     value={category.laborHours || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "laborHours", e.target.value)}
+                                   />
+                                 </div>
+                                 <div className="space-y-2">
+                                   <Label className="text-sm text-muted-foreground">Skill Level Required</Label>
+                                   <Select value={category.skillLevel || ""} onValueChange={(value) => updateJobCategory(category.id, "skillLevel", value)}>
+                                     <SelectTrigger>
+                                       <SelectValue placeholder="Select skill level" />
+                                     </SelectTrigger>
+                                     <SelectContent>
+                                       <SelectItem value="basic">Basic</SelectItem>
+                                       <SelectItem value="intermediate">Intermediate</SelectItem>
+                                       <SelectItem value="advanced">Advanced</SelectItem>
+                                       <SelectItem value="specialized">Specialized</SelectItem>
+                                     </SelectContent>
+                                   </Select>
+                                 </div>
+                                 <div className="space-y-2">
+                                   <Label className="text-sm text-muted-foreground">Priority Level</Label>
+                                   <Select value={category.priority || ""} onValueChange={(value) => updateJobCategory(category.id, "priority", value)}>
+                                     <SelectTrigger>
+                                       <SelectValue placeholder="Select priority" />
+                                     </SelectTrigger>
+                                     <SelectContent>
+                                       <SelectItem value="high">High</SelectItem>
+                                       <SelectItem value="medium">Medium</SelectItem>
+                                       <SelectItem value="low">Low</SelectItem>
+                                     </SelectContent>
+                                   </Select>
+                                 </div>
+                               </div>
+
+                               {/* Unit Types (if unit-based scope) */}
+                               {scopeType === "unit-based" && units.length > 0 && (
+                                 <div className="space-y-2">
+                                   <Label className="text-sm text-muted-foreground">Applicable Unit Types</Label>
+                                   <div className="flex flex-wrap gap-2">
+                                     {Array.from(new Set(units.map(u => u.unitType))).map(unitType => (
+                                       <Badge
+                                         key={unitType}
+                                         variant="outline"
+                                         className="cursor-pointer hover:bg-primary hover:text-white"
+                                       >
+                                         {unitType}
+                                       </Badge>
+                                     ))}
+                                   </div>
+                                 </div>
+                               )}
+                               
+                               <div className="space-y-2">
+                                 <Label className="text-sm font-medium">Detailed Work Description</Label>
+                                 <Textarea
+                                   placeholder="Provide detailed work requirements, standards, and any special instructions for contractors"
+                                   value={category.notes || ""}
+                                   onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
+                                   className="min-h-[100px]"
+                                 />
+                               </div>
+                               
+                               <div className="space-y-2">
+                                 <Label className="text-sm font-medium">Reference Documents & Images</Label>
+                                 <Button variant="outline" className="w-full">
+                                   <Upload className="mr-2 h-4 w-4" />
+                                   Upload Specs, Drawings, or Reference Images
+                                 </Button>
+                               </div>
+                             </div>
+                           )}
                         </div>
                       ))}
                     </div>
@@ -683,7 +997,7 @@ export default function PropertyBids() {
               </>
             )}
 
-            {currentStep === 4 && (
+            {currentStep === 5 && (
               /* Contractors Section */
               <section className="space-y-8">
                 <div className="flex items-center justify-between">
