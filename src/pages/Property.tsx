@@ -261,42 +261,42 @@ const Property = () => {
                 </div>
 
                 {/* Key Metrics Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                   {/* Total Bid */}
-                  <div className="space-y-2">
-                    <div className="flex items-center text-gray-600">
-                      <DollarSign className="w-4 h-4 mr-2" />
+                  <div className="bg-green-50 rounded-lg p-4">
+                    <div className="flex items-center text-green-700 mb-2">
+                      <DollarSign className="w-5 h-5 mr-2" />
                       <span className="text-sm font-medium">Total Bid</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-900">$1,522,439</p>
+                    <p className="text-2xl font-bold text-green-900">$1,522,439</p>
                   </div>
 
                   {/* Total Invoice */}
-                  <div className="space-y-2">
-                    <div className="flex items-center text-gray-600">
-                      <FileText className="w-4 h-4 mr-2" />
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <div className="flex items-center text-blue-700 mb-2">
+                      <FileText className="w-5 h-5 mr-2" />
                       <span className="text-sm font-medium">Total Invoice</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-900">$750,000</p>
+                    <p className="text-2xl font-bold text-blue-900">$750,000</p>
                   </div>
 
                   {/* Total Budget */}
-                  <div className="space-y-2">
-                    <div className="flex items-center text-gray-600">
-                      <Target className="w-4 h-4 mr-2" />
+                  <div className="bg-purple-50 rounded-lg p-4">
+                    <div className="flex items-center text-purple-700 mb-2">
+                      <Target className="w-5 h-5 mr-2" />
                       <span className="text-sm font-medium">Total Budget</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-900">$1,650,000</p>
+                    <p className="text-2xl font-bold text-purple-900">$1,650,000</p>
                   </div>
 
                   {/* Timeline */}
-                  <div className="space-y-2">
-                    <div className="flex items-center text-gray-600">
-                      <Calendar className="w-4 h-4 mr-2" />
+                  <div className="bg-orange-50 rounded-lg p-4">
+                    <div className="flex items-center text-orange-700 mb-2">
+                      <Calendar className="w-5 h-5 mr-2" />
                       <span className="text-sm font-medium">Target Date</span>
                     </div>
-                    <p className="text-lg font-bold text-gray-900">March 20, 2026</p>
-                    <p className="text-sm text-orange-600 font-medium">250 days remaining</p>
+                    <p className="text-lg font-bold text-orange-900">March 20, 2026</p>
+                    <p className="text-sm text-orange-600 font-medium mt-1">250 days left</p>
                   </div>
                 </div>
 
