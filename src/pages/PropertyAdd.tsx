@@ -83,12 +83,6 @@ const PropertyAdd = () => {
     }
   };
 
-  const setFormDataWithScrollPreservation = (newData: PropertyFormData | ((prev: PropertyFormData) => PropertyFormData)) => {
-    preserveScrollPosition();
-    setFormData(newData);
-    restoreScrollPosition();
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -156,7 +150,7 @@ const PropertyAdd = () => {
                     <Input
                       id="name"
                       value={formData.name}
-                      onChange={(e) => setFormDataWithScrollPreservation({...formData, name: e.target.value})}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
                       required
                     />
                   </div>
@@ -164,7 +158,7 @@ const PropertyAdd = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="assetManager">Asset Manager</Label>
-                    <Select value={formData.assetManager} onValueChange={(value) => setFormDataWithScrollPreservation({...formData, assetManager: value})}>
+                    <Select value={formData.assetManager} onValueChange={(value) => setFormData({...formData, assetManager: value})}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select asset manager" />
                       </SelectTrigger>
@@ -177,7 +171,7 @@ const PropertyAdd = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="propertyType">Property Type</Label>
-                    <Select value={formData.propertyType} onValueChange={(value) => setFormDataWithScrollPreservation({...formData, propertyType: value})}>
+                    <Select value={formData.propertyType} onValueChange={(value) => setFormData({...formData, propertyType: value})}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select property type" />
                       </SelectTrigger>
@@ -197,7 +191,7 @@ const PropertyAdd = () => {
                       id="buildings"
                       type="number"
                       value={formData.buildings}
-                      onChange={(e) => setFormDataWithScrollPreservation({...formData, buildings: e.target.value})}
+                      onChange={(e) => setFormData({...formData, buildings: e.target.value})}
                       required
                     />
                   </div>
@@ -208,13 +202,13 @@ const PropertyAdd = () => {
                       id="yearBuilt"
                       type="number"
                       value={formData.yearBuilt}
-                      onChange={(e) => setFormDataWithScrollPreservation({...formData, yearBuilt: e.target.value})}
+                      onChange={(e) => setFormData({...formData, yearBuilt: e.target.value})}
                     />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="buildingType">Building Type</Label>
-                    <Select value={formData.buildingType} onValueChange={(value) => setFormDataWithScrollPreservation({...formData, buildingType: value})}>
+                    <Select value={formData.buildingType} onValueChange={(value) => setFormData({...formData, buildingType: value})}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select building type" />
                       </SelectTrigger>
@@ -234,7 +228,7 @@ const PropertyAdd = () => {
                     <Input
                       id="address"
                       value={formData.address}
-                      onChange={(e) => setFormDataWithScrollPreservation({...formData, address: e.target.value})}
+                      onChange={(e) => setFormData({...formData, address: e.target.value})}
                       required
                     />
                   </div>
@@ -245,14 +239,14 @@ const PropertyAdd = () => {
                       <Input
                         id="city"
                         value={formData.city}
-                        onChange={(e) => setFormDataWithScrollPreservation({...formData, city: e.target.value})}
+                        onChange={(e) => setFormData({...formData, city: e.target.value})}
                         required
                       />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="state">State <span className="text-red-500">*</span></Label>
-                      <Select value={formData.state} onValueChange={(value) => setFormDataWithScrollPreservation({...formData, state: value})}>
+                      <Select value={formData.state} onValueChange={(value) => setFormData({...formData, state: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select state" />
                         </SelectTrigger>
@@ -270,7 +264,7 @@ const PropertyAdd = () => {
                       <Input
                         id="zipCode"
                         value={formData.zipCode}
-                        onChange={(e) => setFormDataWithScrollPreservation({...formData, zipCode: e.target.value})}
+                        onChange={(e) => setFormData({...formData, zipCode: e.target.value})}
                         required
                       />
                     </div>
@@ -281,7 +275,7 @@ const PropertyAdd = () => {
                 <div className="flex items-center space-x-2">
                   <Switch
                     checked={formData.showExteriorParams}
-                    onCheckedChange={(checked) => setFormDataWithScrollPreservation({...formData, showExteriorParams: checked})}
+                    onCheckedChange={(checked) => setFormData({...formData, showExteriorParams: checked})}
                   />
                   <Label>Show Exterior and General parameters</Label>
                 </div>
@@ -310,7 +304,7 @@ const PropertyAdd = () => {
                                     type="button"
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      setFormDataWithScrollPreservation(prev => ({
+                                      setFormData(prev => ({
                                         ...prev, 
                                         exteriorRenovation: prev.exteriorRenovation.filter(i => i !== item)
                                       }));
@@ -333,7 +327,7 @@ const PropertyAdd = () => {
                                   checked={formData.exteriorRenovation.includes(option)}
                                   onChange={(e) => {
                                     const isCurrentlyChecked = formData.exteriorRenovation.includes(option);
-                                    setFormDataWithScrollPreservation(prev => ({
+                                    setFormData(prev => ({
                                       ...prev,
                                       exteriorRenovation: isCurrentlyChecked 
                                         ? prev.exteriorRenovation.filter(item => item !== option)
@@ -352,7 +346,7 @@ const PropertyAdd = () => {
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="roofType">Roof Type</Label>
-                          <Select value={formData.roofType} onValueChange={(value) => setFormDataWithScrollPreservation({...formData, roofType: value})}>
+                          <Select value={formData.roofType} onValueChange={(value) => setFormData({...formData, roofType: value})}>
                             <SelectTrigger>
                               <SelectValue placeholder="Please select" />
                             </SelectTrigger>
@@ -366,7 +360,7 @@ const PropertyAdd = () => {
 
                         <div className="space-y-2">
                           <Label htmlFor="windowType">Window Type</Label>
-                          <Select value={formData.windowType} onValueChange={(value) => setFormDataWithScrollPreservation({...formData, windowType: value})}>
+                          <Select value={formData.windowType} onValueChange={(value) => setFormData({...formData, windowType: value})}>
                             <SelectTrigger>
                               <SelectValue placeholder="Please select" />
                             </SelectTrigger>
@@ -380,7 +374,7 @@ const PropertyAdd = () => {
 
                         <div className="space-y-2">
                           <Label htmlFor="doorType">Door Type</Label>
-                          <Select value={formData.doorType} onValueChange={(value) => setFormDataWithScrollPreservation({...formData, doorType: value})}>
+                          <Select value={formData.doorType} onValueChange={(value) => setFormData({...formData, doorType: value})}>
                             <SelectTrigger>
                               <SelectValue placeholder="Please select" />
                             </SelectTrigger>
@@ -405,7 +399,7 @@ const PropertyAdd = () => {
                               <input
                                 type="radio"
                                 checked={formData.dogPark === true}
-                                onChange={() => setFormDataWithScrollPreservation({...formData, dogPark: true})}
+                                onChange={() => setFormData({...formData, dogPark: true})}
                               />
                               <span>Yes</span>
                             </label>
@@ -413,7 +407,7 @@ const PropertyAdd = () => {
                               <input
                                 type="radio"
                                 checked={formData.dogPark === false}
-                                onChange={() => setFormDataWithScrollPreservation({...formData, dogPark: false})}
+                                onChange={() => setFormData({...formData, dogPark: false})}
                               />
                               <span>No</span>
                             </label>
@@ -427,7 +421,7 @@ const PropertyAdd = () => {
                               <input
                                 type="radio"
                                 checked={formData.entranceGate === true}
-                                onChange={() => setFormDataWithScrollPreservation({...formData, entranceGate: true})}
+                                onChange={() => setFormData({...formData, entranceGate: true})}
                               />
                               <span>Yes</span>
                             </label>
@@ -435,7 +429,7 @@ const PropertyAdd = () => {
                               <input
                                 type="radio"
                                 checked={formData.entranceGate === false}
-                                onChange={() => setFormDataWithScrollPreservation({...formData, entranceGate: false})}
+                                onChange={() => setFormData({...formData, entranceGate: false})}
                               />
                               <span>No</span>
                             </label>
@@ -449,7 +443,7 @@ const PropertyAdd = () => {
                               <input
                                 type="radio"
                                 checked={formData.pool === true}
-                                onChange={() => setFormDataWithScrollPreservation({...formData, pool: true})}
+                                onChange={() => setFormData({...formData, pool: true})}
                               />
                               <span>Yes</span>
                             </label>
@@ -457,7 +451,7 @@ const PropertyAdd = () => {
                               <input
                                 type="radio"
                                 checked={formData.pool === false}
-                                onChange={() => setFormDataWithScrollPreservation({...formData, pool: false})}
+                                onChange={() => setFormData({...formData, pool: false})}
                               />
                               <span>No</span>
                             </label>
@@ -472,7 +466,7 @@ const PropertyAdd = () => {
                             id="parkingSpots"
                             type="number"
                             value={formData.parkingSpots}
-                            onChange={(e) => setFormDataWithScrollPreservation({...formData, parkingSpots: e.target.value})}
+                            onChange={(e) => setFormData({...formData, parkingSpots: e.target.value})}
                           />
                         </div>
 
@@ -482,7 +476,7 @@ const PropertyAdd = () => {
                             id="grillStations"
                             type="number"
                             value={formData.grillStations}
-                            onChange={(e) => setFormDataWithScrollPreservation({...formData, grillStations: e.target.value})}
+                            onChange={(e) => setFormData({...formData, grillStations: e.target.value})}
                           />
                         </div>
                       </div>
