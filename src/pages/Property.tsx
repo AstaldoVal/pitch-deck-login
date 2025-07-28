@@ -15,7 +15,11 @@ import {
   FileText,
   Edit,
   Map,
-  Minus
+  Minus,
+  Calendar,
+  CheckCircle,
+  Clock,
+  Target
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PropertySidebar } from "@/components/PropertySidebar";
@@ -235,6 +239,107 @@ const Property = () => {
                   </div>
                 </Card>
               </div>
+
+              {/* Progress Summary */}
+              <Card className="p-6 mb-8">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900">Progress Summary</h2>
+                  <Target className="w-6 h-6 text-blue-600" />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                  {/* Jobs Completed */}
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-600">
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Jobs Completed</span>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">18 of 112</p>
+                    <p className="text-lg text-blue-600 font-semibold">16% Complete</p>
+                  </div>
+
+                  {/* Total Bid */}
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-600">
+                      <DollarSign className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Total Bid</span>
+                    </div>
+                    <p className="text-xl font-bold text-gray-900">$1,522,439</p>
+                  </div>
+
+                  {/* Total Invoice */}
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-600">
+                      <FileText className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Total Invoice</span>
+                    </div>
+                    <p className="text-xl font-bold text-gray-900">$750,000</p>
+                  </div>
+
+                  {/* Total Budget */}
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-600">
+                      <Target className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Total Budget</span>
+                    </div>
+                    <p className="text-xl font-bold text-gray-900">$1,650,000</p>
+                  </div>
+                </div>
+
+                {/* Target Completion */}
+                <div className="bg-blue-50 rounded-lg p-4 mb-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Calendar className="w-5 h-5 text-blue-600 mr-3" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">Target Completion Date</p>
+                        <p className="text-lg font-semibold text-blue-600">March 20, 2026</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-gray-600">Time Remaining</p>
+                      <p className="text-lg font-semibold text-orange-600">250 days</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Jobs Due Timeline */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Jobs Due</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">Next 7 days</p>
+                      <p className="text-xl font-bold text-red-600">3</p>
+                      <p className="text-xs text-red-600">2 outstanding</p>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">Next 2 weeks</p>
+                      <p className="text-xl font-bold text-orange-600">7</p>
+                      <p className="text-xs text-orange-600">1 outstanding</p>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">Next 30 days</p>
+                      <p className="text-xl font-bold text-yellow-600">12</p>
+                      <p className="text-xs text-gray-500">On track</p>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">Next 60 days</p>
+                      <p className="text-xl font-bold text-blue-600">25</p>
+                      <p className="text-xs text-gray-500">On track</p>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">Next 90 days</p>
+                      <p className="text-xl font-bold text-green-600">38</p>
+                      <p className="text-xs text-gray-500">On track</p>
+                    </div>
+                  </div>
+                </div>
+              </Card>
 
               {/* Main Content */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
