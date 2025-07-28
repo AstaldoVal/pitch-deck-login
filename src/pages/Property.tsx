@@ -306,42 +306,44 @@ const Property = () => {
                   <Target className="w-6 h-6 text-blue-600" />
                 </div>
 
-                {/* Visual Progress Indicator */}
-                <div className="flex items-center justify-center mb-8">
-                  <div className="relative w-64 h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={[
-                            { name: 'Completed', value: 16 },
-                            { name: 'Remaining', value: 84 }
-                          ]}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={75}
-                          outerRadius={115}
-                          startAngle={90}
-                          endAngle={-270}
-                          dataKey="value"
-                        >
-                          <Cell fill="#3b82f6" />
-                          <Cell fill="#e5e7eb" />
-                        </Pie>
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <div className="text-center">
-                        <div className="text-4xl font-bold text-blue-600 mb-1">16%</div>
-                        <div className="text-xs text-gray-500 mb-2">Complete</div>
-                        <div className="text-sm font-semibold text-gray-900 mb-1">Balance to Complete</div>
-                        <div className="text-xl font-bold text-gray-900">$772,439</div>
+                {/* Progress and Key Metrics */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                  {/* Visual Progress Indicator */}
+                  <div className="flex items-center justify-center">
+                    <div className="relative w-48 h-48">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { name: 'Completed', value: 16 },
+                              { name: 'Remaining', value: 84 }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={60}
+                            outerRadius={90}
+                            startAngle={90}
+                            endAngle={-270}
+                            dataKey="value"
+                          >
+                            <Cell fill="#3b82f6" />
+                            <Cell fill="#e5e7eb" />
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-3xl font-bold text-blue-600 mb-1">16%</div>
+                          <div className="text-xs text-gray-500 mb-2">Complete</div>
+                          <div className="text-sm font-semibold text-gray-900 mb-1">Balance to Complete</div>
+                          <div className="text-lg font-bold text-gray-900">$772,439</div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Key Metrics Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                  {/* Key Metrics Grid */}
+                  <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Total Bid */}
                   <div className="bg-green-50 rounded-lg p-4">
                     <div className="flex items-center text-green-700 mb-2">
@@ -370,15 +372,16 @@ const Property = () => {
                   </div>
 
                   {/* Timeline */}
-                  <div className="bg-orange-50 rounded-lg p-4">
-                    <div className="flex items-center text-orange-700 mb-2">
-                      <Calendar className="w-5 h-5 mr-2" />
-                      <span className="text-sm font-medium">Target Date</span>
-                    </div>
-                    <p className="text-lg font-bold text-orange-900">March 20, 2026</p>
-                    <p className="text-sm text-orange-600 font-medium mt-1">250 days left</p>
-                  </div>
-                </div>
+                   <div className="bg-orange-50 rounded-lg p-4">
+                     <div className="flex items-center text-orange-700 mb-2">
+                       <Calendar className="w-5 h-5 mr-2" />
+                       <span className="text-sm font-medium">Target Date</span>
+                     </div>
+                     <p className="text-lg font-bold text-orange-900">March 20, 2026</p>
+                     <p className="text-sm text-orange-600 font-medium mt-1">250 days left</p>
+                   </div>
+                 </div>
+               </div>
 
                 {/* Jobs Due Timeline */}
                 <div>
