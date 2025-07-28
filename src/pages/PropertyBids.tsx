@@ -97,6 +97,7 @@ export default function PropertyBids() {
   const [email, setEmail] = useState("roman.matsukatov@company.com");
   const [phone, setPhone] = useState("(555) 123-4567");
   const [companyName, setCompanyName] = useState("Property Management LLC");
+  const [totalBudget, setTotalBudget] = useState("");
 
   const steps = [
     { number: 1, title: "Basic Information", description: "Bid details and property info" },
@@ -232,6 +233,7 @@ export default function PropertyBids() {
       email,
       phone,
       companyName,
+      totalBudget,
       property: propertyData,
       startDate,
       endDate,
@@ -263,6 +265,7 @@ export default function PropertyBids() {
       email,
       phone,
       companyName,
+      totalBudget,
       property: propertyData,
       startDate,
       endDate,
@@ -349,6 +352,16 @@ export default function PropertyBids() {
                           <Input 
                             value={generatedBy}
                             onChange={(e) => setGeneratedBy(e.target.value)}
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-sm text-muted-foreground">Total Budget</Label>
+                          <Input 
+                            type="text"
+                            placeholder="$1,650,000"
+                            value={totalBudget}
+                            onChange={(e) => setTotalBudget(e.target.value)}
                             className="mt-1"
                           />
                         </div>
