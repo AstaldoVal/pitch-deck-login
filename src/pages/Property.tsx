@@ -308,39 +308,41 @@ const Property = () => {
 
                 {/* Progress and Key Metrics */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                  {/* Visual Progress Indicator */}
-                  <div className="flex items-center justify-center">
-                    <div className="relative w-48 h-48">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { name: 'Completed', value: 16 },
-                              { name: 'Remaining', value: 84 }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={90}
-                            startAngle={90}
-                            endAngle={-270}
-                            dataKey="value"
-                          >
-                            <Cell fill="#3b82f6" />
-                            <Cell fill="#e5e7eb" />
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-                        <div className="text-center max-w-[100px]">
-                          <div className="text-2xl font-bold text-blue-600 mb-1">16%</div>
-                          <div className="text-xs text-gray-500 mb-1">Complete</div>
-                          <div className="text-xs font-semibold text-gray-900 mb-1 leading-tight">Balance to Complete</div>
-                          <div className="text-sm font-bold text-gray-900">$772,439</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                   {/* Visual Progress Indicator */}
+                   <div className="flex flex-col items-center">
+                     <div className="relative w-48 h-48 mb-4">
+                       <ResponsiveContainer width="100%" height="100%">
+                         <PieChart>
+                           <Pie
+                             data={[
+                               { name: 'Completed', value: 16 },
+                               { name: 'Remaining', value: 84 }
+                             ]}
+                             cx="50%"
+                             cy="50%"
+                             innerRadius={60}
+                             outerRadius={90}
+                             startAngle={90}
+                             endAngle={-270}
+                             dataKey="value"
+                           >
+                             <Cell fill="#3b82f6" />
+                             <Cell fill="#e5e7eb" />
+                           </Pie>
+                         </PieChart>
+                       </ResponsiveContainer>
+                       <div className="absolute inset-0 flex flex-col items-center justify-center">
+                         <div className="text-center">
+                           <div className="text-3xl font-bold text-blue-600">16%</div>
+                           <div className="text-xs text-gray-500">Complete</div>
+                         </div>
+                       </div>
+                     </div>
+                     <div className="text-center">
+                       <div className="text-sm font-medium text-gray-600 mb-1">Balance to Complete</div>
+                       <div className="text-xl font-bold text-gray-900">$772,439</div>
+                     </div>
+                   </div>
 
                   {/* Key Metrics Grid */}
                   <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
