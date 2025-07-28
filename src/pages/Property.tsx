@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { 
   Building2, 
@@ -255,7 +256,13 @@ const Property = () => {
                       <span className="text-sm font-medium">Jobs Completed</span>
                     </div>
                     <p className="text-2xl font-bold text-gray-900">18 of 112</p>
-                    <p className="text-lg text-blue-600 font-semibold">16% Complete</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-600">Progress</span>
+                        <span className="text-sm font-semibold text-blue-600">16%</span>
+                      </div>
+                      <Progress value={16} className="h-2" />
+                    </div>
                   </div>
 
                   {/* Total Bid */}
