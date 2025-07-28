@@ -444,7 +444,7 @@ const Property = () => {
 
                 {/* Recent Activity */}
                 <Card className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Recent Activity</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Renovation Activity</h2>
                   
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
