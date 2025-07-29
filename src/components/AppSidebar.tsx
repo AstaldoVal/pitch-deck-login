@@ -16,7 +16,7 @@ import {
 
 const mainItems = [
   { title: "Properties", url: "/properties", icon: Building2 },
-  { title: "Contacts", url: "/contacts", icon: Users },
+  { title: "Contractors", url: "/property/contractors", icon: Users },
 ];
 
 const supportItems = [
