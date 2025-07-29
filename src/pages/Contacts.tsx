@@ -99,6 +99,7 @@ const getStatusBadge = (status: string) => {
 };
 
 export default function Contacts() {
+  // Contractors management page
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
