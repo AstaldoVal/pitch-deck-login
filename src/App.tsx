@@ -9,6 +9,7 @@ import PropertyOnboarding from "./pages/PropertyOnboarding";
 import PropertyEdit from "./pages/PropertyEdit";
 import PropertyAdd from "./pages/PropertyAdd";
 import Property from "./pages/Property";
+import PropertyEmpty from "./pages/PropertyEmpty";
 import PropertyUnits from "./pages/PropertyUnits";
 import PropertyBids from "./pages/PropertyBids";
 import BidsList from "./pages/BidsList";
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/property/add" element={<PropertyAdd />} />
           <Route path="/property/edit/:id" element={<PropertyEdit />} />
           <Route path="/property" element={<Property />} />
+          <Route path="/propertyEmpty" element={<PropertyEmpty />} />
           <Route path="/property/units" element={<PropertyUnits />} />
           <Route path="/property/bids" element={<PropertyBids />} />
           <Route path="/property/bids-list" element={<BidsList />} />
