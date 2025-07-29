@@ -195,52 +195,68 @@ const PropertyEmpty = () => {
                   </Card>
                 </div>
 
-                {/* Getting Started Guide */}
                 <div>
                   <Card className="p-6 h-full">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-6">Getting Started</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-6">Renovation Summary</h2>
                     
                     <div className="space-y-4">
-                      {/* Step 1 */}
-                      <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-2 border-blue-200">
-                        <div className="flex items-center">
-                          <div className="w-6 h-6 bg-blue-600 text-white text-xs font-bold rounded-full flex items-center justify-center mr-3">
-                            1
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-gray-900">Upload Rent Roll</p>
-                            <p className="text-xs text-gray-600">Import your unit data automatically</p>
-                          </div>
-                        </div>
-                        <Button size="sm" onClick={handleUploadRentRoll}>
-                          <Upload className="w-4 h-4 mr-1" />
-                          Upload
-                        </Button>
-                      </div>
-
-                      {/* Step 2 */}
+                      {/* Last Draw Submission */}
                       <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-center">
-                          <div className="w-6 h-6 bg-gray-400 text-white text-xs font-bold rounded-full flex items-center justify-center mr-3">
-                            2
-                          </div>
+                          <DollarSign className="w-5 h-5 text-gray-400 mr-3" />
                           <div>
-                            <p className="text-sm font-medium text-gray-500">Create Your First Bid</p>
-                            <p className="text-xs text-gray-400">Get quotes from contractors</p>
+                            <p className="text-sm font-medium text-gray-900">Last Draw Submission</p>
+                            <p className="text-xs text-gray-400">No submissions yet</p>
                           </div>
+                        </div>
+                        <div className="flex items-center text-gray-400">
+                          <Minus className="w-3 h-3 mr-1" />
+                          <span className="text-sm">$0</span>
                         </div>
                       </div>
 
-                      {/* Step 3 */}
+                      {/* Previous Draw Submission */}
                       <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-center">
-                          <div className="w-6 h-6 bg-gray-400 text-white text-xs font-bold rounded-full flex items-center justify-center mr-3">
-                            3
-                          </div>
+                          <DollarSign className="w-5 h-5 text-gray-400 mr-3" />
                           <div>
-                            <p className="text-sm font-medium text-gray-500">Track Progress</p>
-                            <p className="text-xs text-gray-400">Monitor renovation status</p>
+                            <p className="text-sm font-medium text-gray-900">Previous Draw Submission</p>
+                            <p className="text-xs text-gray-400">No previous submissions</p>
                           </div>
+                        </div>
+                        <div className="flex items-center text-gray-400">
+                          <Minus className="w-3 h-3 mr-1" />
+                          <span className="text-sm">$0</span>
+                        </div>
+                      </div>
+
+                      {/* Next Scheduled Inspection */}
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center">
+                          <Calendar className="w-5 h-5 text-gray-400 mr-3" />
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">Next Scheduled Inspection</p>
+                            <p className="text-xs text-gray-400">Not scheduled</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center text-gray-400">
+                          <Minus className="w-3 h-3 mr-1" />
+                          <span className="text-sm">Not set</span>
+                        </div>
+                      </div>
+
+                      {/* Last Inspection Date */}
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center">
+                          <Calendar className="w-5 h-5 text-gray-400 mr-3" />
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">Last Inspection Date</p>
+                            <p className="text-xs text-gray-400">No inspections yet</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center text-gray-400">
+                          <Minus className="w-3 h-3 mr-1" />
+                          <span className="text-sm">Not completed</span>
                         </div>
                       </div>
                     </div>
