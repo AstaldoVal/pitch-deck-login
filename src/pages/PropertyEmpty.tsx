@@ -293,6 +293,57 @@ const PropertyEmpty = () => {
                 </Card>
               </div>
 
+              {/* Renovation Summary */}
+              <Card className="p-6 mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 mb-6">Renovation Summary</h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-600">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Last Draw Submission</span>
+                    </div>
+                    <div className="flex items-center text-gray-400">
+                      <Minus className="w-3 h-3 mr-1" />
+                      <span className="text-sm">No submissions yet</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-600">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Previous Draw Submission</span>
+                    </div>
+                    <div className="flex items-center text-gray-400">
+                      <Minus className="w-3 h-3 mr-1" />
+                      <span className="text-sm">No previous submissions</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-600">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Next Scheduled Inspection</span>
+                    </div>
+                    <div className="flex items-center text-gray-400">
+                      <Minus className="w-3 h-3 mr-1" />
+                      <span className="text-sm">Not scheduled</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center text-gray-600">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Last Inspection Date</span>
+                    </div>
+                    <div className="flex items-center text-gray-400">
+                      <Minus className="w-3 h-3 mr-1" />
+                      <span className="text-sm">No inspections yet</span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
               {/* Main Content */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Units Section */}
