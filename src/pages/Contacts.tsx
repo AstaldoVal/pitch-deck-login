@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Users, Plus, Search, Filter, Mail, Phone, Building2, MapPin, Calendar, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { Users, Plus, Search, Filter, Mail, Phone, Building2, MapPin, Calendar, CheckCircle, XCircle, AlertCircle, Edit } from "lucide-react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
@@ -122,6 +122,16 @@ export default function Contacts() {
     console.log("Invite contractor clicked");
   };
 
+  const handleViewContractor = (contractorId: number) => {
+    // TODO: Implement view functionality
+    console.log("View contractor clicked:", contractorId);
+  };
+
+  const handleEditContractor = (contractorId: number) => {
+    // TODO: Implement edit functionality
+    console.log("Edit contractor clicked:", contractorId);
+  };
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50">
@@ -190,7 +200,11 @@ export default function Contacts() {
                   </TableHeader>
                   <TableBody>
                     {currentContractors.map((contractor) => (
-                      <TableRow key={contractor.id}>
+                      <TableRow 
+                        key={contractor.id} 
+                        className="cursor-pointer hover:bg-gray-50"
+                        onClick={() => handleViewContractor(contractor.id)}
+                      >
                         <TableCell>
                           <div className="flex items-center space-x-2">
                             <Building2 className="w-4 h-4 text-gray-400" />
@@ -206,7 +220,11 @@ export default function Contacts() {
                         <TableCell>
                           <div className="flex items-center space-x-2">
                             <Mail className="w-4 h-4 text-gray-400" />
-                            <a href={`mailto:${contractor.emailAddress}`} className="text-blue-600 hover:underline">
+                            <a 
+                              href={`mailto:${contractor.emailAddress}`} 
+                              className="text-blue-600 hover:underline"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               {contractor.emailAddress}
                             </a>
                           </div>
@@ -230,14 +248,17 @@ export default function Contacts() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center space-x-2">
-                            <Button variant="outline" size="sm">
-                              View
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              Edit
-                            </Button>
-                          </div>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEditContractor(contractor.id);
+                            }}
+                            className="h-8 w-8"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
