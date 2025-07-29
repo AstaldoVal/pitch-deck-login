@@ -27,6 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { AppHeader } from "@/components/AppHeader";
 import { AccountSetupProgress } from "@/components/AccountSetupProgress";
+import { PropertyComments } from "@/components/PropertyComments";
 
 interface PropertyData {
   name: string;
@@ -424,7 +425,7 @@ const Property = () => {
               </Card>
 
               {/* Main Content */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 {/* Units Section */}
                 <Card className="p-6">
                   <div className="flex items-center justify-between mb-6">
@@ -471,6 +472,9 @@ const Property = () => {
                   </div>
                 </Card>
               </div>
+
+              {/* Comments Section */}
+              <PropertyComments />
             </div>
           </div>
         </div>
