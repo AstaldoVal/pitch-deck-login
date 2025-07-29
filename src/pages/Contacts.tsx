@@ -23,72 +23,52 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-// Mock contact data
-const contacts = [
+// Mock contractor data
+const contractors = [
   {
     id: 1,
     companyName: "Electrical Solutions Inc",
-    firstName: "John",
-    lastName: "Smith",
-    email: "john@electrical.com",
-    phone: "(555) 123-4567",
-    assignedJobs: 5,
-    activeJobs: 2,
+    businessAddress: "123 Main St, New York, NY 10001",
+    phoneNumber: "(555) 123-4567",
+    emailAddress: "contact@electrical.com",
     status: "active",
-    joinDate: "2024-01-15",
-    location: "New York, NY"
+    dateAdded: "2024-01-15"
   },
   {
     id: 2,
     companyName: "Premier Flooring Co",
-    firstName: "Sarah",
-    lastName: "Johnson",
-    email: "sarah@flooring.com",
-    phone: "(555) 234-5678",
-    assignedJobs: 12,
-    activeJobs: 4,
+    businessAddress: "456 Oak Ave, Los Angeles, CA 90210",
+    phoneNumber: "(555) 234-5678",
+    emailAddress: "info@flooring.com",
     status: "active",
-    joinDate: "2023-11-22",
-    location: "Los Angeles, CA"
+    dateAdded: "2023-11-22"
   },
   {
     id: 3,
     companyName: "Reliable Plumbing",
-    firstName: "Mike",
-    lastName: "Wilson",
-    email: "mike@plumbing.com",
-    phone: "(555) 345-6789",
-    assignedJobs: 8,
-    activeJobs: 1,
+    businessAddress: "789 Pine St, Chicago, IL 60601",
+    phoneNumber: "(555) 345-6789",
+    emailAddress: "contact@plumbing.com",
     status: "pending",
-    joinDate: "2024-02-10",
-    location: "Chicago, IL"
+    dateAdded: "2024-02-10"
   },
   {
     id: 4,
     companyName: "ABC Construction",
-    firstName: "Emily",
-    lastName: "Davis",
-    email: "emily@abcconstruction.com",
-    phone: "(555) 456-7890",
-    assignedJobs: 15,
-    activeJobs: 6,
+    businessAddress: "321 Elm St, Houston, TX 77001",
+    phoneNumber: "(555) 456-7890",
+    emailAddress: "info@abcconstruction.com",
     status: "active",
-    joinDate: "2023-09-05",
-    location: "Houston, TX"
+    dateAdded: "2023-09-05"
   },
   {
     id: 5,
     companyName: "Tech Services Ltd",
-    firstName: "David",
-    lastName: "Brown",
-    email: "david@techservices.com",
-    phone: "(555) 567-8901",
-    assignedJobs: 3,
-    activeJobs: 0,
+    businessAddress: "654 Cedar Ave, Phoenix, AZ 85001",
+    phoneNumber: "(555) 567-8901",
+    emailAddress: "contact@techservices.com",
     status: "inactive",
-    joinDate: "2024-03-01",
-    location: "Phoenix, AZ"
+    dateAdded: "2024-03-01"
   }
 ];
 
@@ -123,23 +103,22 @@ export default function Contacts() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Filter contacts based on search term
-  const filteredContacts = contacts.filter(contact =>
-    contact.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.email.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filter contractors based on search term
+  const filteredContractors = contractors.filter(contractor =>
+    contractor.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    contractor.emailAddress.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    contractor.businessAddress.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Calculate pagination
-  const totalPages = Math.ceil(filteredContacts.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredContractors.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentContacts = filteredContacts.slice(startIndex, endIndex);
+  const currentContractors = filteredContractors.slice(startIndex, endIndex);
 
-  const handleInviteContact = () => {
+  const handleInviteContractor = () => {
     // TODO: Implement invite functionality
-    console.log("Invite contact clicked");
+    console.log("Invite contractor clicked");
   };
 
   return (
@@ -155,13 +134,13 @@ export default function Contacts() {
                 <SidebarTrigger />
                 <div className="flex items-center space-x-2">
                   <Users className="w-6 h-6 text-blue-600" />
-                  <h1 className="text-2xl font-bold text-gray-900">Contacts</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">Contractors</h1>
                 </div>
               </div>
               
-              <Button onClick={handleInviteContact} className="bg-blue-600 hover:bg-blue-700">
+              <Button onClick={handleInviteContractor} className="bg-blue-600 hover:bg-blue-700">
                 <Plus className="w-4 h-4 mr-2" />
-                Invite Contact
+                Invite Contractor
               </Button>
             </div>
           </header>
@@ -176,7 +155,7 @@ export default function Contacts() {
                     <div className="relative flex-1 max-w-md">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                       <Input
-                        placeholder="Search contacts..."
+                        placeholder="Search contractors..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="pl-10"
@@ -189,7 +168,7 @@ export default function Contacts() {
                   </div>
                   
                   <div className="text-sm text-gray-500">
-                    Total {filteredContacts.length} contacts
+                    Total {filteredContractors.length} contractors
                   </div>
                 </div>
               </div>
@@ -200,66 +179,53 @@ export default function Contacts() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Company Name</TableHead>
-                      <TableHead>Contact</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Phone</TableHead>
-                      <TableHead>Location</TableHead>
-                      <TableHead>Assigned Jobs</TableHead>
-                      <TableHead>Active Jobs</TableHead>
+                      <TableHead>Date Added</TableHead>
+                      <TableHead>Email Address</TableHead>
+                      <TableHead>Phone Number</TableHead>
+                      <TableHead>Business Address</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {currentContacts.map((contact) => (
-                      <TableRow key={contact.id}>
+                    {currentContractors.map((contractor) => (
+                      <TableRow key={contractor.id}>
                         <TableCell>
                           <div className="flex items-center space-x-2">
                             <Building2 className="w-4 h-4 text-gray-400" />
-                            <span className="font-medium">{contact.companyName}</span>
+                            <span className="font-medium">{contractor.companyName}</span>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <div>
-                            <div className="font-medium">{contact.firstName} {contact.lastName}</div>
-                            <div className="text-sm text-gray-500">
-                              <Calendar className="w-3 h-3 inline mr-1" />
-                              Joined {new Date(contact.joinDate).toLocaleDateString()}
-                            </div>
+                          <div className="text-sm text-gray-500">
+                            <Calendar className="w-3 h-3 inline mr-1" />
+                            Added {new Date(contractor.dateAdded).toLocaleDateString()}
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center space-x-2">
                             <Mail className="w-4 h-4 text-gray-400" />
-                            <a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline">
-                              {contact.email}
+                            <a href={`mailto:${contractor.emailAddress}`} className="text-blue-600 hover:underline">
+                              {contractor.emailAddress}
                             </a>
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center space-x-2">
                             <Phone className="w-4 h-4 text-gray-400" />
-                            <span>{contact.phone}</span>
+                            <span>{contractor.phoneNumber}</span>
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center space-x-2">
                             <MapPin className="w-4 h-4 text-gray-400" />
-                            <span className="text-sm">{contact.location}</span>
+                            <span className="text-sm">{contractor.businessAddress}</span>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline">{contact.assignedJobs}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={contact.activeJobs > 0 ? "default" : "secondary"}>
-                            {contact.activeJobs}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
                           <div className="flex items-center space-x-2">
-                            {getStatusIcon(contact.status)}
-                            {getStatusBadge(contact.status)}
+                            {getStatusIcon(contractor.status)}
+                            {getStatusBadge(contractor.status)}
                           </div>
                         </TableCell>
                         <TableCell>
