@@ -15,7 +15,8 @@ import {
   Minus,
   Calendar,
   Target,
-  Upload
+  Upload,
+  Clock
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PropertySidebar } from "@/components/PropertySidebar";
@@ -339,6 +340,108 @@ const PropertyEmpty = () => {
                     <div className="flex items-center text-gray-400">
                       <Minus className="w-3 h-3 mr-1" />
                       <span className="text-sm">No inspections yet</span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Progress Summary */}
+              <Card className="p-6 mb-8">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900">Progress Summary</h2>
+                  <Target className="w-6 h-6 text-blue-600" />
+                </div>
+
+                {/* Progress and Key Metrics */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                   {/* Visual Progress Indicator */}
+                   <div className="flex flex-col items-center">
+                     <div className="relative w-48 h-48 mb-4 flex items-center justify-center bg-gray-100 rounded-full">
+                       <div className="text-center">
+                         <div className="text-3xl font-bold text-gray-400">0%</div>
+                         <div className="text-xs text-gray-400">Complete</div>
+                       </div>
+                     </div>
+                     <div className="text-center">
+                       <div className="text-sm font-medium text-gray-600 mb-1">Balance to Complete</div>
+                       <div className="text-xl font-bold text-gray-400">$0</div>
+                     </div>
+                   </div>
+
+                  {/* Key Metrics Grid */}
+                  <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Total Bid */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="flex items-center text-gray-500 mb-2">
+                      <DollarSign className="w-5 h-5 mr-2" />
+                      <span className="text-sm font-medium">Total Bid</span>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-400">$0</p>
+                  </div>
+
+                  {/* Total Invoice */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="flex items-center text-gray-500 mb-2">
+                      <FileText className="w-5 h-5 mr-2" />
+                      <span className="text-sm font-medium">Total Invoice</span>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-400">$0</p>
+                  </div>
+
+                  {/* Total Budget */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="flex items-center text-gray-500 mb-2">
+                      <Target className="w-5 h-5 mr-2" />
+                      <span className="text-sm font-medium">Total Budget</span>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-400">$0</p>
+                  </div>
+
+                  {/* Timeline */}
+                   <div className="bg-gray-50 rounded-lg p-4">
+                     <div className="flex items-center text-gray-500 mb-2">
+                       <Calendar className="w-5 h-5 mr-2" />
+                       <span className="text-sm font-medium">Target Date</span>
+                     </div>
+                     <p className="text-lg font-bold text-gray-400">Not set</p>
+                     <p className="text-sm text-gray-400 font-medium mt-1">No timeline yet</p>
+                   </div>
+                 </div>
+               </div>
+
+                {/* Jobs Due Timeline */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Jobs Due</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <Clock className="w-5 h-5 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">Next 7 days</p>
+                      <p className="text-xl font-bold text-gray-400">0</p>
+                      <p className="text-xs text-gray-400">No jobs scheduled</p>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <Clock className="w-5 h-5 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">Next 2 weeks</p>
+                      <p className="text-xl font-bold text-gray-400">0</p>
+                      <p className="text-xs text-gray-400">No jobs scheduled</p>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <Clock className="w-5 h-5 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">Next 3 weeks</p>
+                      <p className="text-xl font-bold text-gray-400">0</p>
+                      <p className="text-xs text-gray-400">No jobs scheduled</p>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <Clock className="w-5 h-5 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">Next month</p>
+                      <p className="text-xl font-bold text-gray-400">0</p>
+                      <p className="text-xs text-gray-400">No jobs scheduled</p>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg">
+                      <Clock className="w-5 h-5 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-gray-600">Overdue</p>
+                      <p className="text-xl font-bold text-gray-400">0</p>
+                      <p className="text-xs text-gray-400">All clear</p>
                     </div>
                   </div>
                 </div>
