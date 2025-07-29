@@ -466,48 +466,6 @@ const PropertyEmpty = () => {
                 </Card>
               </div>
 
-              {/* Next Steps */}
-              <Card className="p-6 mt-8">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900">Next Steps</h2>
-                  <Target className="w-6 h-6 text-blue-600" />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
-                    <div className="flex items-center text-blue-700 mb-2">
-                      <Upload className="w-5 h-5 mr-2" />
-                      <span className="text-sm font-medium">Upload Rent Roll</span>
-                    </div>
-                    <p className="text-sm text-blue-600 mb-3">Import your unit data to get started</p>
-                    <Button size="sm" className="w-full" onClick={handleUploadRentRoll}>
-                      Upload Now
-                    </Button>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="flex items-center text-gray-500 mb-2">
-                      <FileText className="w-5 h-5 mr-2" />
-                      <span className="text-sm font-medium">Create First Bid</span>
-                    </div>
-                    <p className="text-sm text-gray-400 mb-3">Start getting quotes from contractors</p>
-                    <Button size="sm" className="w-full" variant="secondary" disabled>
-                      Coming Soon
-                    </Button>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="flex items-center text-gray-500 mb-2">
-                      <Target className="w-5 h-5 mr-2" />
-                      <span className="text-sm font-medium">Set Budget</span>
-                    </div>
-                    <p className="text-sm text-gray-400 mb-3">Define your renovation budget</p>
-                    <Button size="sm" className="w-full" variant="secondary" disabled>
-                      Coming Soon
-                    </Button>
-                  </div>
-                </div>
-              </Card>
             </div>
           </div>
         </div>
