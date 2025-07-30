@@ -109,7 +109,7 @@ export const MessagesSidebar = () => {
   const currentPropertyId = isOnPropertyPage ? 'sunset-commons' : null;
 
   // Если мы на странице property и sidebar открыт впервые, сразу показываем чат этой property
-  const shouldShowPropertyChat = isOnPropertyPage && currentPropertyId;
+  const shouldShowPropertyChat = isOnPropertyPage && currentPropertyId && !selectedPropertyId;
   const activePropertyId = shouldShowPropertyChat ? currentPropertyId : selectedPropertyId;
 
   const propertyChats = getPropertyChats();
@@ -183,7 +183,7 @@ export const MessagesSidebar = () => {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center">
-            {activePropertyId && !shouldShowPropertyChat && (
+            {(activePropertyId || isOnPropertyPage) && (
               <Button
                 variant="ghost"
                 size="sm"
