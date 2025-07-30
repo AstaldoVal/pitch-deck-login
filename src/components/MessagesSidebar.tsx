@@ -111,6 +111,9 @@ export const MessagesSidebar = () => {
   // Если мы на странице property и sidebar открыт впервые, сразу показываем чат этой property
   const shouldShowPropertyChat = isOnPropertyPage && currentPropertyId && !selectedPropertyId;
   const activePropertyId = shouldShowPropertyChat ? currentPropertyId : selectedPropertyId;
+  
+  // На странице property всегда показываем кнопку назад (даже когда показываем чат этой property)
+  const showBackButton = isOnPropertyPage || selectedPropertyId;
 
   const propertyChats = getPropertyChats();
   const activeComments = activePropertyId ? getCommentsForProperty(activePropertyId) : [];
@@ -183,7 +186,7 @@ export const MessagesSidebar = () => {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center">
-            {(activePropertyId || isOnPropertyPage) && (
+            {showBackButton && (
               <Button
                 variant="ghost"
                 size="sm"
