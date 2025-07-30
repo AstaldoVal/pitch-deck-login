@@ -143,6 +143,74 @@ export default function PropertyJobs() {
     setJobs(acceptedJobs);
   }, []);
 
+  const createTestData = () => {
+    const testBids: BidData[] = [
+      {
+        id: "BID-001",
+        generatedBy: "John Smith",
+        email: "john@example.com",
+        phone: "+1 (555) 123-4567",
+        companyName: "Premier Construction LLC",
+        property: { name: "Sunset Apartments" },
+        startDate: new Date('2024-01-15'),
+        endDate: new Date('2024-03-30'),
+        scopeType: "Unit-based",
+        jobCategories: [
+          { name: "Kitchen Renovation" },
+          { name: "Bathroom Renovation" },
+          { name: "Flooring" }
+        ],
+        contractors: [
+          { 
+            firstName: "Mike", 
+            lastName: "Johnson", 
+            email: "mike@contractors.com",
+            hasSubmitted: true
+          }
+        ],
+        createdAt: new Date().toISOString(),
+        totalBudget: 40000,
+        status: 'accepted' as const,
+        unitsIncluded: mockUnits,
+        notes: "Complete renovation of units 101-102 including kitchen, bathroom, and flooring updates to modernize the property and increase rental value."
+      },
+      {
+        id: "BID-002", 
+        generatedBy: "Sarah Davis",
+        email: "sarah@example.com",
+        phone: "+1 (555) 987-6543",
+        companyName: "Elite Renovations Inc",
+        property: { name: "Sunset Apartments" },
+        startDate: new Date('2024-02-01'),
+        endDate: new Date('2024-04-15'),
+        scopeType: "Job-type",
+        jobCategories: [
+          { name: "HVAC Systems" },
+          { name: "Electrical Work" }
+        ],
+        contractors: [
+          {
+            firstName: "Tom",
+            lastName: "Wilson", 
+            email: "tom@elite.com",
+            hasSubmitted: true
+          }
+        ],
+        createdAt: new Date().toISOString(),
+        totalBudget: 25000,
+        status: 'accepted' as const,
+        unitsIncluded: mockUnits.slice(0, 1), // Only first unit
+        notes: "HVAC and electrical system upgrades for improved efficiency and code compliance."
+      }
+    ];
+
+    // Save test bids to localStorage
+    localStorage.setItem('propertyBids', JSON.stringify(testBids));
+    
+    // Update jobs state
+    setJobs(testBids);
+  };
+
   const getDaysToComplete = (startDate: Date, endDate: Date) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -226,6 +294,9 @@ export default function PropertyJobs() {
                 <p className="text-muted-foreground mb-4">
                   Jobs will appear here when renovation bids are accepted
                 </p>
+                <Button onClick={createTestData} variant="outline">
+                  Create Test Data (Demo)
+                </Button>
               </Card>
             </main>
           </div>
