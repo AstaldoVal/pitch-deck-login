@@ -159,12 +159,12 @@ export default function Contacts() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold text-gray-900">Users list</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Contacts List</h1>
               </div>
               
               <Button onClick={handleInviteUser} className="bg-blue-600 hover:bg-blue-700">
                 <Plus className="w-4 h-4 mr-2" />
-                Invite user
+                Invite Contact
               </Button>
             </div>
           </header>
