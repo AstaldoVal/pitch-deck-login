@@ -13,6 +13,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Mock users data based on the screenshot
 const users = [
@@ -128,10 +135,17 @@ const getInviteIcon = (status: string) => {
 export default function Contacts() {
   const location = useLocation();
   const isContractorsPage = location.pathname === "/contractors";
+  const [userRoles, setUserRoles] = useState<{[key: number]: string}>(
+    users.reduce((acc, user) => ({ ...acc, [user.id]: user.role }), {})
+  );
 
   const handleInviteUser = () => {
     // TODO: Implement invite user functionality
     console.log("Invite user clicked");
+  };
+
+  const handleRoleChange = (userId: number, newRole: string) => {
+    setUserRoles(prev => ({ ...prev, [userId]: newRole }));
   };
 
   return (
@@ -176,7 +190,20 @@ export default function Contacts() {
                         <TableCell className="font-medium">{user.firstName}</TableCell>
                         <TableCell>{user.lastName}</TableCell>
                         <TableCell>{user.email}</TableCell>
-                        <TableCell>{user.role}</TableCell>
+                        <TableCell>
+                          <Select 
+                            value={userRoles[user.id]} 
+                            onValueChange={(value) => handleRoleChange(user.id, value)}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Asset manager">Asset Manager</SelectItem>
+                              <SelectItem value="Property Owner">Property Owner</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
                         <TableCell>
                           {getInviteIcon(user.inviteStatus)}
                         </TableCell>
