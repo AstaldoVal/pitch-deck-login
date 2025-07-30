@@ -103,13 +103,15 @@ export const MessagesSidebar = () => {
 
   const [newComment, setNewComment] = useState("");
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [forceShowAllChats, setForceShowAllChats] = useState(false);
 
   // Определяем, находимся ли мы на странице конкретной property
   const isOnPropertyPage = location.pathname === '/property';
   const currentPropertyId = isOnPropertyPage ? 'sunset-commons' : null;
 
   // Если мы на странице property и sidebar открыт впервые, сразу показываем чат этой property
-  const shouldShowPropertyChat = isOnPropertyPage && currentPropertyId && !selectedPropertyId;
+  // НО только если пользователь не принудительно запросил показ всех чатов
+  const shouldShowPropertyChat = isOnPropertyPage && currentPropertyId && !selectedPropertyId && !forceShowAllChats;
   const activePropertyId = shouldShowPropertyChat ? currentPropertyId : selectedPropertyId;
   
   // На странице property всегда показываем кнопку назад (даже когда показываем чат этой property)
@@ -145,11 +147,13 @@ export const MessagesSidebar = () => {
 
   const handleSelectProperty = (propertyId: string) => {
     setSelectedPropertyId(propertyId);
+    setForceShowAllChats(false);
     markAsRead(propertyId);
   };
 
   const handleBackToList = () => {
     setSelectedPropertyId(null);
+    setForceShowAllChats(true);
   };
 
   const getRoleColor = (role: string) => {
