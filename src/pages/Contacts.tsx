@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 
 // Mock users data based on the screenshot
 const users = [
@@ -135,6 +136,7 @@ const getInviteIcon = (status: string) => {
 export default function Contacts() {
   const location = useLocation();
   const isContractorsPage = location.pathname === "/contractors";
+  const { toast } = useToast();
   const [userRoles, setUserRoles] = useState<{[key: number]: string}>(
     users.reduce((acc, user) => ({ ...acc, [user.id]: user.role }), {})
   );
@@ -146,6 +148,39 @@ export default function Contacts() {
 
   const handleRoleChange = (userId: number, newRole: string) => {
     setUserRoles(prev => ({ ...prev, [userId]: newRole }));
+  };
+
+  const handleResendInvite = (userId: number, userEmail: string) => {
+    // TODO: Implement resend invite functionality
+    console.log("Resend invite for user:", userId);
+    toast({
+      title: "Invitation resent",
+      description: `Invitation has been resent to ${userEmail}`,
+    });
+  };
+
+  const renderInviteStatus = (user: typeof users[0]) => {
+    if (user.inviteStatus === "invited") {
+      return (
+        <div className="flex justify-center">
+          <CheckCircle className="w-4 h-4 text-green-600" />
+        </div>
+      );
+    } else if (user.inviteStatus === "pending") {
+      return (
+        <div className="flex justify-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleResendInvite(user.id, user.email)}
+            className="p-1 h-auto hover:bg-gray-100"
+          >
+            <RotateCcw className="w-4 h-4 text-orange-600" />
+          </Button>
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -205,7 +240,7 @@ export default function Contacts() {
                           </Select>
                         </TableCell>
                         <TableCell>
-                          {getInviteIcon(user.inviteStatus)}
+                          {renderInviteStatus(user)}
                         </TableCell>
                       </TableRow>
                     ))}
