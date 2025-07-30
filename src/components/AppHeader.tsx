@@ -1,11 +1,15 @@
-import { Bell, Search, User } from "lucide-react";
+import { Bell, Search, User, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import Logo from "@/components/Logo";
+import { useMessages } from "@/contexts/MessagesContext";
 
 export function AppHeader() {
+  const { setIsOpen, getPropertyChats } = useMessages();
+  
+  const totalUnreadCount = getPropertyChats().reduce((total, chat) => total + chat.unreadCount, 0);
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b">
       <div className="flex items-center justify-between px-4 py-3 min-w-0 gap-2">
@@ -23,6 +27,21 @@ export function AppHeader() {
               className="pl-10 w-48 xl:w-64"
             />
           </div>
+
+          {/* Messages */}
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="relative flex-shrink-0"
+            onClick={() => setIsOpen(true)}
+          >
+            <MessageSquare className="h-4 w-4" />
+            {totalUnreadCount > 0 && (
+              <Badge className="absolute -top-1 -right-1 h-5 w-5 text-xs p-0 flex items-center justify-center">
+                {totalUnreadCount}
+              </Badge>
+            )}
+          </Button>
 
           {/* Notifications */}
           <Button variant="ghost" size="sm" className="relative flex-shrink-0">

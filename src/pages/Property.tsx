@@ -473,8 +473,7 @@ const Property = () => {
                 </Card>
               </div>
 
-              {/* Comments Section */}
-              <PropertyComments />
+              {/* Comments section moved to global sidebar */}
             </div>
           </div>
         </div>
