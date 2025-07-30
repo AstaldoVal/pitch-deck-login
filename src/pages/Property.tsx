@@ -267,38 +267,6 @@ const Property = () => {
                 />
               </div>
 
-              {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Total Units</p>
-                      <p className="text-2xl font-bold text-gray-900">0</p>
-                    </div>
-                    <Users className="w-8 h-8 text-blue-600" />
-                  </div>
-                </Card>
-
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-                      <p className="text-2xl font-bold text-gray-900">$0</p>
-                    </div>
-                    <DollarSign className="w-8 h-8 text-green-600" />
-                  </div>
-                </Card>
-
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Occupancy</p>
-                      <p className="text-2xl font-bold text-gray-900">0%</p>
-                    </div>
-                    <Building2 className="w-8 h-8 text-orange-600" />
-                  </div>
-                </Card>
-              </div>
 
               {/* Progress Summary */}
               <Card className="p-6 mb-8">
