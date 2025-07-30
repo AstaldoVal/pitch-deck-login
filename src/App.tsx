@@ -13,6 +13,7 @@ import PropertyAdd from "./pages/PropertyAdd";
 import Property from "./pages/Property";
 import PropertyEmpty from "./pages/PropertyEmpty";
 import PropertyUnits from "./pages/PropertyUnits";
+import PropertyJobs from "./pages/PropertyJobs";
 import PropertyBids from "./pages/PropertyBids";
 import BidsList from "./pages/BidsList";
 import BidDetails from "./pages/BidDetails";
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/property" element={<Property />} />
             <Route path="/propertyEmpty" element={<PropertyEmpty />} />
             <Route path="/property/units" element={<PropertyUnits />} />
+            <Route path="/property/jobs" element={<PropertyJobs />} />
             <Route path="/property/bids" element={<PropertyBids />} />
             <Route path="/property/bids-list" element={<BidsList />} />
             <Route path="/property/bid/:bidId" element={<BidDetails />} />
