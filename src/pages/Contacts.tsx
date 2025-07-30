@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Users, Plus, Search, Filter, Mail, Phone, Building2, MapPin, Calendar, CheckCircle, XCircle, AlertCircle, Edit } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { AppSidebar } from "@/components/AppSidebar";
+import { PropertySidebar } from "@/components/PropertySidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -99,6 +101,9 @@ const getStatusBadge = (status: string) => {
 };
 
 export default function Contacts() {
+  const location = useLocation();
+  const isContractorsPage = location.pathname === "/contractors";
+  
   // Contractors management page
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -135,7 +140,7 @@ export default function Contacts() {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50">
-        <AppSidebar />
+        {isContractorsPage ? <PropertySidebar /> : <AppSidebar />}
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
