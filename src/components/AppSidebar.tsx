@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, Building2, Settings, MessageCircle, ChevronDown, ChevronRight, FileText, Users, Contact } from "lucide-react";
+import { Home, Building2, Settings, MessageCircle, FileText, Contact } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import {
@@ -11,21 +11,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
 
 const mainItems = [
-  { 
-    title: "Properties", 
-    url: "/properties", 
-    icon: Building2,
-    submenu: [
-      { title: "Contractors", url: "/property/contractors", icon: Users }
-    ]
-  },
+  { title: "Properties", url: "/properties", icon: Building2 },
+  { title: "Contacts", url: "/contacts", icon: Contact },
 ];
 
 const supportItems = [
@@ -38,19 +29,8 @@ export function AppSidebar() {
   const location = useLocation();
   const currentPath = location.pathname;
   const [showSettingsPanel, setShowSettingsPanel] = useState(false);
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const isActive = (path: string) => currentPath === path;
-  
-  const isItemExpanded = (title: string) => expandedItems.includes(title);
-  
-  const toggleItem = (title: string) => {
-    setExpandedItems(prev => 
-      prev.includes(title) 
-        ? prev.filter(item => item !== title)
-        : [...prev, title]
-    );
-  };
 
   const handleSettingsClick = () => {
     setShowSettingsPanel(!showSettingsPanel);
@@ -72,59 +52,17 @@ export function AppSidebar() {
               <SidebarMenu>
                 {mainItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    {item.submenu ? (
-                      <>
-                        <SidebarMenuButton
-                          onClick={() => toggleItem(item.title)}
-                          className={`${
-                            currentPath === item.url ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
-                          }`}
-                        >
-                          <item.icon className="h-5 w-5 text-current" />
-                          {open && (
-                            <>
-                              <span className="font-medium">{item.title}</span>
-                              {isItemExpanded(item.title) ? (
-                                <ChevronDown className="h-4 w-4 ml-auto" />
-                              ) : (
-                                <ChevronRight className="h-4 w-4 ml-auto" />
-                              )}
-                            </>
-                          )}
-                        </SidebarMenuButton>
-                        {isItemExpanded(item.title) && open && (
-                          <SidebarMenuSub>
-                            {item.submenu.map((subItem) => (
-                              <SidebarMenuSubItem key={subItem.title}>
-                                <SidebarMenuSubButton asChild>
-                                  <NavLink 
-                                    to={subItem.url}
-                                    className={({ isActive }) =>
-                                      isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
-                                    }
-                                  >
-                                    <subItem.icon className="h-4 w-4 text-current" />
-                                    <span className="font-medium">{subItem.title}</span>
-                                  </NavLink>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
-                          </SidebarMenuSub>
-                        )}
-                      </>
-                    ) : (
-                      <SidebarMenuButton asChild>
-                        <NavLink 
-                          to={item.url} 
-                          className={({ isActive }) =>
-                            isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
-                          }
-                        >
-                          <item.icon className="h-5 w-5 text-current" />
-                          {open && <span className="font-medium">{item.title}</span>}
-                        </NavLink>
-                      </SidebarMenuButton>
-                    )}
+                    <SidebarMenuButton asChild>
+                      <NavLink 
+                        to={item.url} 
+                        className={({ isActive }) =>
+                          isActive ? "bg-blue-500 text-white font-medium" : "hover:bg-blue-500/20 text-blue-100"
+                        }
+                      >
+                        <item.icon className="h-5 w-5 text-current" />
+                        {open && <span className="font-medium">{item.title}</span>}
+                      </NavLink>
+                    </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
