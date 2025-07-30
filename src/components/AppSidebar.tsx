@@ -26,7 +26,6 @@ const mainItems = [
       { title: "Contractors", url: "/property/contractors", icon: Users }
     ]
   },
-  { title: "Contacts", url: "/contacts", icon: Contact },
 ];
 
 const supportItems = [
