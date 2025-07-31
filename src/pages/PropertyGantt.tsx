@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/AppSidebar';
+import { PropertySidebar } from '@/components/PropertySidebar';
 import { AppHeader } from '@/components/AppHeader';
 import { GanttChart, GanttJob } from '@/components/GanttChart';
 
@@ -77,7 +77,7 @@ export default function PropertyGantt() {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <AppSidebar />
+        <PropertySidebar />
         <div className="flex-1 flex flex-col">
           <AppHeader />
           <main className="flex-1 p-6">
