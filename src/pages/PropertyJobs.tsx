@@ -336,32 +336,30 @@ export default function PropertyJobs() {
                     Units ({selectedJob.unitsIncluded?.length || 0})
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-0">
-                  <Tabs defaultValue="interior" className="w-full">
-                    <div className="px-6 pb-4">
-                      <TabsList className="grid w-full grid-cols-3">
-                        <TabsTrigger value="interior">Interior</TabsTrigger>
-                        <TabsTrigger value="exterior">Exterior</TabsTrigger>
-                        <TabsTrigger value="general">General</TabsTrigger>
-                      </TabsList>
-                    </div>
-                    
-                    <TabsContent value="interior" className="mt-0 w-full">
+                    <CardContent className="p-0">
+                      <Tabs defaultValue="interior" className="w-full">
+                        <div className="px-6 pb-4">
+                          <TabsList className="inline-flex">
+                            <TabsTrigger value="interior">Interior</TabsTrigger>
+                            <TabsTrigger value="exterior">Exterior</TabsTrigger>
+                            <TabsTrigger value="general">General</TabsTrigger>
+                          </TabsList>
+                        </div>
+                        
+                        <TabsContent value="interior" className="mt-0 w-full overflow-x-auto" style={{scrollbarWidth: 'thin'}}>
                           <Table className="w-full">
                             <TableHeader>
                               <TableRow>
-                                <TableHead className="w-8"></TableHead>
-                                <TableHead className="min-w-[80px]">Unit #</TableHead>
-                                <TableHead className="hidden sm:table-cell min-w-[100px]">Floor Plan</TableHead>
-                                <TableHead className="min-w-[90px]">Status</TableHead>
-                                <TableHead className="hidden md:table-cell min-w-[100px]">Total Bid</TableHead>
-                                <TableHead className="min-w-[100px]">Budget</TableHead>
-                                <TableHead className="hidden lg:table-cell min-w-[100px]">Invoiced</TableHead>
-                                <TableHead className="hidden xl:table-cell min-w-[80px]">% Done</TableHead>
-                                <TableHead className="hidden xl:table-cell min-w-[100px]">Pre-Rent</TableHead>
-                                <TableHead className="hidden xl:table-cell min-w-[100px]">Post-Rent</TableHead>
-                                <TableHead className="hidden 2xl:table-cell min-w-[90px]">Premium $</TableHead>
-                                <TableHead className="hidden 2xl:table-cell min-w-[90px]">Premium %</TableHead>
+                                 <TableHead className="w-8"></TableHead>
+                                 <TableHead className="min-w-[60px]">Unit</TableHead>
+                                 <TableHead className="hidden lg:table-cell min-w-[80px]">Plan</TableHead>
+                                 <TableHead className="min-w-[70px]">Status</TableHead>
+                                 <TableHead className="hidden xl:table-cell min-w-[80px]">Bid</TableHead>
+                                 <TableHead className="min-w-[80px]">Budget</TableHead>
+                                 <TableHead className="hidden lg:table-cell min-w-[80px]">Paid</TableHead>
+                                 <TableHead className="hidden xl:table-cell min-w-[50px]">%</TableHead>
+                                 <TableHead className="hidden 2xl:table-cell min-w-[70px]">Pre</TableHead>
+                                 <TableHead className="hidden 2xl:table-cell min-w-[70px]">Post</TableHead>
                               </TableRow>
                             </TableHeader>
                         <TableBody>
@@ -385,24 +383,18 @@ export default function PropertyJobs() {
                                     </Button>
                                   </TableCell>
                                    <TableCell className="font-medium">{unit.unitNumber}</TableCell>
-                                   <TableCell className="hidden sm:table-cell">{unit.floorPlan}</TableCell>
+                                   <TableCell className="hidden lg:table-cell">{unit.floorPlan}</TableCell>
                                    <TableCell>
                                      <Badge className={getStatusColor(unit.status)}>
                                        {unit.status}
                                      </Badge>
                                    </TableCell>
-                                   <TableCell className="hidden md:table-cell">{formatCurrency(unit.totalBid)}</TableCell>
+                                   <TableCell className="hidden xl:table-cell">{formatCurrency(unit.totalBid)}</TableCell>
                                    <TableCell>{formatCurrency(unit.totalBudget)}</TableCell>
                                    <TableCell className="hidden lg:table-cell">{formatCurrency(unit.totalInvoiced)}</TableCell>
                                    <TableCell className="hidden xl:table-cell">{unit.percentComplete}%</TableCell>
-                                   <TableCell className="hidden xl:table-cell">{formatCurrency(unit.preRenovationRent)}</TableCell>
-                                   <TableCell className="hidden xl:table-cell">{formatCurrency(unit.postRenovationRent)}</TableCell>
-                                   <TableCell className="hidden 2xl:table-cell text-green-600">
-                                     {formatCurrency(premium.dollarAmount)}
-                                   </TableCell>
-                                   <TableCell className="hidden 2xl:table-cell text-green-600">
-                                     {premium.percentage.toFixed(1)}%
-                                   </TableCell>
+                                   <TableCell className="hidden 2xl:table-cell">{formatCurrency(unit.preRenovationRent)}</TableCell>
+                                   <TableCell className="hidden 2xl:table-cell">{formatCurrency(unit.postRenovationRent)}</TableCell>
                                 </TableRow>
                                 
                                 {/* Expanded unit jobs */}
