@@ -346,7 +346,7 @@ export default function PropertyJobs() {
                       </TabsList>
                     </div>
                     
-                    <TabsContent value="interior" className="mt-0 w-full overflow-x-auto">
+                    <TabsContent value="interior" className="mt-0 w-full">
                       <Table className="w-full">
                         <TableHeader>
                           <TableRow>
