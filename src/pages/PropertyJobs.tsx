@@ -129,7 +129,6 @@ export default function PropertyJobs() {
   const [jobs, setJobs] = useState<BidData[]>([]);
   const [selectedJob, setSelectedJob] = useState<BidData | null>(null);
   const [expandedUnits, setExpandedUnits] = useState<Set<string>>(new Set());
-  const [showComments, setShowComments] = useState(false);
 
   useEffect(() => {
     // Load accepted bids as jobs from localStorage
@@ -327,13 +326,6 @@ export default function PropertyJobs() {
                     {selectedJob.property?.name || 'Property Name'} • {selectedJob.companyName}
                   </p>
                 </div>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowComments(!showComments)}
-                >
-                  <MessageCircle className="h-4 w-4 mr-2" />
-                  {showComments ? 'Hide' : 'Show'} Comments
-                </Button>
               </div>
 
               {/* Unit Listings with Tabs - Full Width */}
@@ -471,12 +463,6 @@ export default function PropertyJobs() {
                 </CardContent>
               </Card>
 
-              {/* Comments Sidebar */}
-              {showComments && (
-                <Card className="w-full mt-6">
-                  <PropertyComments />
-                </Card>
-              )}
             </main>
           </div>
         </div>

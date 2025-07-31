@@ -17,7 +17,9 @@ import {
   User,
   Clock,
   ArrowLeft,
-  X
+  X,
+  FileText,
+  Home
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMessages } from "@/contexts/MessagesContext";
@@ -88,47 +90,48 @@ const InviteModal = ({ open, onOpenChange, onInvite }: InviteModalProps) => {
 };
 
 export const MessagesSidebar = () => {
-  const location = useLocation();
   const { toast } = useToast();
   const {
     isOpen,
     setIsOpen,
     selectedPropertyId,
     setSelectedPropertyId,
+    selectedBidId,
+    setSelectedBidId,
+    viewMode,
+    setViewMode,
     addComment,
     getCommentsForProperty,
+    getCommentsForBid,
     getPropertyChats,
+    getBidChats,
     markAsRead
   } = useMessages();
 
   const [newComment, setNewComment] = useState("");
   const [showInviteModal, setShowInviteModal] = useState(false);
-  const [forceShowAllChats, setForceShowAllChats] = useState(false);
-
-  // Определяем, находимся ли мы на странице конкретной property
-  const isOnPropertyPage = location.pathname === '/property';
-  const currentPropertyId = isOnPropertyPage ? 'sunset-commons' : null;
-
-  // Если мы на странице property и sidebar открыт впервые, сразу показываем чат этой property
-  // НО только если пользователь не принудительно запросил показ всех чатов
-  const shouldShowPropertyChat = isOnPropertyPage && currentPropertyId && !selectedPropertyId && !forceShowAllChats;
-  const activePropertyId = shouldShowPropertyChat ? currentPropertyId : selectedPropertyId;
-  
-  // На странице property всегда показываем кнопку назад (даже когда показываем чат этой property)
-  const showBackButton = isOnPropertyPage || selectedPropertyId;
 
   const propertyChats = getPropertyChats();
-  const activeComments = activePropertyId ? getCommentsForProperty(activePropertyId) : [];
+  const bidChats = getBidChats();
+  
+  const activeComments = selectedPropertyId 
+    ? getCommentsForProperty(selectedPropertyId)
+    : selectedBidId 
+    ? getCommentsForBid(selectedBidId)
+    : [];
 
   const handleAddComment = () => {
-    if (newComment.trim() && activePropertyId) {
-      addComment({
+    if (newComment.trim()) {
+      const commentData = {
         author: "Current User",
-        role: "Manager",
+        role: "Manager" as const,
         content: newComment.trim(),
-        propertyId: activePropertyId
-      });
+        type: selectedPropertyId ? "property" as const : "bid" as const,
+        ...(selectedPropertyId && { propertyId: selectedPropertyId }),
+        ...(selectedBidId && { bidId: selectedBidId })
+      };
       
+      addComment(commentData);
       setNewComment("");
       
       toast({
@@ -147,13 +150,22 @@ export const MessagesSidebar = () => {
 
   const handleSelectProperty = (propertyId: string) => {
     setSelectedPropertyId(propertyId);
-    setForceShowAllChats(false);
-    markAsRead(propertyId);
+    setSelectedBidId(null);
+    setViewMode('property');
+    markAsRead(propertyId, 'property');
+  };
+
+  const handleSelectBid = (bidId: string) => {
+    setSelectedBidId(bidId);
+    setSelectedPropertyId(null);
+    setViewMode('bid');
+    markAsRead(bidId, 'bid');
   };
 
   const handleBackToList = () => {
     setSelectedPropertyId(null);
-    setForceShowAllChats(true);
+    setSelectedBidId(null);
+    setViewMode('list');
   };
 
   const getRoleColor = (role: string) => {
@@ -182,6 +194,18 @@ export const MessagesSidebar = () => {
     }
   };
 
+  const getCurrentTitle = () => {
+    if (selectedPropertyId) {
+      const property = propertyChats.find(p => p.propertyId === selectedPropertyId);
+      return property?.propertyName || "Property Messages";
+    }
+    if (selectedBidId) {
+      const bid = bidChats.find(b => b.bidId === selectedBidId);
+      return bid?.bidName || "Bid Messages";
+    }
+    return "Messages";
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -190,7 +214,7 @@ export const MessagesSidebar = () => {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center">
-            {showBackButton && (
+            {(selectedPropertyId || selectedBidId) && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -202,7 +226,7 @@ export const MessagesSidebar = () => {
             )}
             <MessageSquare className="w-5 h-5 text-blue-600 mr-2" />
             <h2 className="text-lg font-semibold text-gray-900">
-              {activePropertyId ? "Messages" : "Property Chats"}
+              {getCurrentTitle()}
             </h2>
           </div>
           <Button
@@ -217,47 +241,94 @@ export const MessagesSidebar = () => {
 
         {/* Content */}
         <div className="flex-1 flex flex-col">
-          {!activePropertyId ? (
-            /* Property Chats List */
+          {viewMode === 'list' ? (
+            /* Two-Level List */
             <ScrollArea className="flex-1">
-              <div className="p-4 space-y-2">
-                {propertyChats.map((chat) => (
-                  <div
-                    key={chat.propertyId}
-                    onClick={() => handleSelectProperty(chat.propertyId)}
-                    className="p-3 rounded-lg border hover:bg-gray-50 cursor-pointer transition-colors"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-medium text-gray-900 text-sm">
-                        {chat.propertyName}
-                      </h3>
-                      {chat.unreadCount > 0 && (
-                        <Badge className="bg-blue-600 text-white text-xs px-2 py-1">
-                          {chat.unreadCount}
-                        </Badge>
-                      )}
-                    </div>
-                    {chat.lastMessage && (
-                      <div className="text-xs text-gray-600">
-                        <p className="truncate mb-1">
-                          <span className="font-medium">{chat.lastMessage.author}:</span> {chat.lastMessage.content}
-                        </p>
-                        <p className="text-gray-400">
-                          {chat.lastMessage.timestamp.toLocaleDateString()} at {chat.lastMessage.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </p>
-                      </div>
-                    )}
+              <div className="p-4 space-y-4">
+                {/* Properties Section */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Home className="w-4 h-4 text-gray-600" />
+                    <h3 className="font-medium text-gray-900">Properties</h3>
                   </div>
-                ))}
+                  <div className="space-y-2">
+                    {propertyChats.map((chat) => (
+                      <div
+                        key={chat.propertyId}
+                        onClick={() => handleSelectProperty(chat.propertyId)}
+                        className="p-3 rounded-lg border hover:bg-gray-50 cursor-pointer transition-colors"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-medium text-gray-900 text-sm">
+                            {chat.propertyName}
+                          </h4>
+                          {chat.unreadCount > 0 && (
+                            <Badge className="bg-blue-600 text-white text-xs px-2 py-1">
+                              {chat.unreadCount}
+                            </Badge>
+                          )}
+                        </div>
+                        {chat.lastMessage && (
+                          <div className="text-xs text-gray-600">
+                            <p className="truncate mb-1">
+                              <span className="font-medium">{chat.lastMessage.author}:</span> {chat.lastMessage.content}
+                            </p>
+                            <p className="text-gray-400">
+                              {chat.lastMessage.timestamp.toLocaleDateString()} at {chat.lastMessage.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bids Section */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <FileText className="w-4 h-4 text-gray-600" />
+                    <h3 className="font-medium text-gray-900">Bids</h3>
+                  </div>
+                  <div className="space-y-2">
+                    {bidChats.map((chat) => (
+                      <div
+                        key={chat.bidId}
+                        onClick={() => handleSelectBid(chat.bidId)}
+                        className="p-3 rounded-lg border hover:bg-gray-50 cursor-pointer transition-colors"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-medium text-gray-900 text-sm">
+                            {chat.bidName}
+                          </h4>
+                          {chat.unreadCount > 0 && (
+                            <Badge className="bg-orange-600 text-white text-xs px-2 py-1">
+                              {chat.unreadCount}
+                            </Badge>
+                          )}
+                        </div>
+                        {chat.lastMessage && (
+                          <div className="text-xs text-gray-600">
+                            <p className="truncate mb-1">
+                              <span className="font-medium">{chat.lastMessage.author}:</span> {chat.lastMessage.content}
+                            </p>
+                            <p className="text-gray-400">
+                              {chat.lastMessage.timestamp.toLocaleDateString()} at {chat.lastMessage.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </ScrollArea>
           ) : (
-            /* Property Chat */
+            /* Chat View */
             <>
-              {/* Property Info */}
+              {/* Chat Info */}
               <div className="p-4 border-b bg-gray-50">
                 <h3 className="font-medium text-gray-900">
-                  {activePropertyId === 'sunset-commons' ? 'Sunset Commons Apartments' : 'Oak Street Complex'}
+                  {getCurrentTitle()}
                 </h3>
                 <div className="flex items-center justify-between mt-2">
                   <p className="text-sm text-gray-600">

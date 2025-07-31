@@ -7,7 +7,9 @@ export interface Comment {
   content: string;
   timestamp: Date;
   avatar?: string;
-  propertyId: string;
+  propertyId?: string;
+  bidId?: string;
+  type: 'property' | 'bid';
 }
 
 export interface PropertyChat {
@@ -17,16 +19,29 @@ export interface PropertyChat {
   unreadCount: number;
 }
 
+export interface BidChat {
+  bidId: string;
+  bidName: string;
+  lastMessage?: Comment;
+  unreadCount: number;
+}
+
 interface MessagesContextType {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   selectedPropertyId: string | null;
   setSelectedPropertyId: (propertyId: string | null) => void;
+  selectedBidId: string | null;
+  setSelectedBidId: (bidId: string | null) => void;
+  viewMode: 'list' | 'property' | 'bid';
+  setViewMode: (mode: 'list' | 'property' | 'bid') => void;
   comments: Comment[];
   addComment: (comment: Omit<Comment, 'id' | 'timestamp'>) => void;
   getCommentsForProperty: (propertyId: string) => Comment[];
+  getCommentsForBid: (bidId: string) => Comment[];
   getPropertyChats: () => PropertyChat[];
-  markAsRead: (propertyId: string) => void;
+  getBidChats: () => BidChat[];
+  markAsRead: (id: string, type: 'property' | 'bid') => void;
 }
 
 const MessagesContext = createContext<MessagesContextType | undefined>(undefined);
@@ -46,6 +61,8 @@ interface MessagesProviderProps {
 export const MessagesProvider = ({ children }: MessagesProviderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
+  const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'property' | 'bid'>('list');
   const [comments, setComments] = useState<Comment[]>([
     {
       id: "1",
@@ -53,7 +70,8 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
       role: "Owner",
       content: "Hi team, I wanted to check on the progress of the exterior renovations. The deadline is approaching and I need an update on the current status.",
       timestamp: new Date(2024, 10, 15, 14, 30),
-      propertyId: "sunset-commons"
+      propertyId: "sunset-commons",
+      type: "property"
     },
     {
       id: "2", 
@@ -61,7 +79,8 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
       role: "Manager",
       content: "Hi Sarah, the exterior work is 75% complete. We had some weather delays last week but the contractor assures me we'll be back on track. I'll have a detailed report ready by Friday.",
       timestamp: new Date(2024, 10, 15, 16, 45),
-      propertyId: "sunset-commons"
+      propertyId: "sunset-commons",
+      type: "property"
     },
     {
       id: "3",
@@ -69,7 +88,8 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
       role: "External",
       content: "This is David from ABC Construction. We've completed the east and south facades. The west side should be finished by Wednesday, weather permitting.",
       timestamp: new Date(2024, 10, 16, 9, 15),
-      propertyId: "sunset-commons"
+      propertyId: "sunset-commons",
+      type: "property"
     },
     {
       id: "4",
@@ -77,7 +97,26 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
       role: "Manager",
       content: "Just wanted to update everyone on the Oak Street property. The plumbing work has started and should be completed by next week.",
       timestamp: new Date(2024, 10, 17, 10, 0),
-      propertyId: "oak-street-complex"
+      propertyId: "oak-street-complex",
+      type: "property"
+    },
+    {
+      id: "5",
+      author: "Premier Construction LLC",
+      role: "External",
+      content: "We're starting the kitchen renovation in unit 101 tomorrow. All materials have been delivered and the crew will begin at 8 AM.",
+      timestamp: new Date(2024, 10, 18, 9, 0),
+      bidId: "BID-001",
+      type: "bid"
+    },
+    {
+      id: "6",
+      author: "John Smith",
+      role: "Manager",
+      content: "Great! Please make sure to follow the noise guidelines and notify residents 24 hours in advance.",
+      timestamp: new Date(2024, 10, 18, 10, 15),
+      bidId: "BID-001",
+      type: "bid"
     }
   ]);
   
@@ -93,16 +132,20 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
   };
 
   const getCommentsForProperty = (propertyId: string) => {
-    return comments.filter(comment => comment.propertyId === propertyId);
+    return comments.filter(comment => comment.type === 'property' && comment.propertyId === propertyId);
+  };
+
+  const getCommentsForBid = (bidId: string) => {
+    return comments.filter(comment => comment.type === 'bid' && comment.bidId === bidId);
   };
 
   const getPropertyChats = (): PropertyChat[] => {
     const propertyMap = new Map<string, PropertyChat>();
     
-    comments.forEach(comment => {
-      if (!propertyMap.has(comment.propertyId)) {
-        propertyMap.set(comment.propertyId, {
-          propertyId: comment.propertyId,
+    comments.filter(comment => comment.type === 'property').forEach(comment => {
+      if (!propertyMap.has(comment.propertyId!)) {
+        propertyMap.set(comment.propertyId!, {
+          propertyId: comment.propertyId!,
           propertyName: comment.propertyId === 'sunset-commons' 
             ? 'Sunset Commons Apartments' 
             : 'Oak Street Complex',
@@ -110,7 +153,7 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
           unreadCount: 0
         });
       } else {
-        const existing = propertyMap.get(comment.propertyId)!;
+        const existing = propertyMap.get(comment.propertyId!)!;
         if (comment.timestamp > existing.lastMessage!.timestamp) {
           existing.lastMessage = comment;
         }
@@ -120,7 +163,7 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
     // Calculate unread counts
     propertyMap.forEach((chat, propertyId) => {
       const propertyComments = getCommentsForProperty(propertyId);
-      chat.unreadCount = readStatus[propertyId] ? 0 : propertyComments.length;
+      chat.unreadCount = readStatus[`property-${propertyId}`] ? 0 : propertyComments.length;
     });
 
     return Array.from(propertyMap.values()).sort((a, b) => 
@@ -128,8 +171,42 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
     );
   };
 
-  const markAsRead = (propertyId: string) => {
-    setReadStatus(prev => ({ ...prev, [propertyId]: true }));
+  const getBidChats = (): BidChat[] => {
+    const bidMap = new Map<string, BidChat>();
+    
+    comments.filter(comment => comment.type === 'bid').forEach(comment => {
+      if (!bidMap.has(comment.bidId!)) {
+        bidMap.set(comment.bidId!, {
+          bidId: comment.bidId!,
+          bidName: comment.bidId === 'BID-001' 
+            ? 'Premier Construction - Kitchen Renovation' 
+            : comment.bidId === 'BID-002'
+            ? 'Elite Renovations - HVAC Systems'
+            : `Bid ${comment.bidId}`,
+          lastMessage: comment,
+          unreadCount: 0
+        });
+      } else {
+        const existing = bidMap.get(comment.bidId!)!;
+        if (comment.timestamp > existing.lastMessage!.timestamp) {
+          existing.lastMessage = comment;
+        }
+      }
+    });
+
+    // Calculate unread counts
+    bidMap.forEach((chat, bidId) => {
+      const bidComments = getCommentsForBid(bidId);
+      chat.unreadCount = readStatus[`bid-${bidId}`] ? 0 : bidComments.length;
+    });
+
+    return Array.from(bidMap.values()).sort((a, b) => 
+      (b.lastMessage?.timestamp.getTime() || 0) - (a.lastMessage?.timestamp.getTime() || 0)
+    );
+  };
+
+  const markAsRead = (id: string, type: 'property' | 'bid') => {
+    setReadStatus(prev => ({ ...prev, [`${type}-${id}`]: true }));
   };
 
   return (
@@ -138,10 +215,16 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
       setIsOpen,
       selectedPropertyId,
       setSelectedPropertyId,
+      selectedBidId,
+      setSelectedBidId,
+      viewMode,
+      setViewMode,
       comments,
       addComment,
       getCommentsForProperty,
+      getCommentsForBid,
       getPropertyChats,
+      getBidChats,
       markAsRead
     }}>
       {children}
