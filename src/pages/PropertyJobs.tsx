@@ -8,6 +8,7 @@ import { PropertySidebar } from "@/components/PropertySidebar";
 import { AppHeader } from "@/components/AppHeader";
 import { PropertyComments } from "@/components/PropertyComments";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { GanttChart, GanttJob } from "@/components/GanttChart";
 import { 
   Building, 
   Calendar, 
@@ -307,6 +308,34 @@ export default function PropertyJobs() {
     return { dollarAmount, percentage };
   };
 
+  // Convert job data to Gantt format
+  const convertToGanttJobs = (jobs: BidData[]): GanttJob[] => {
+    const ganttJobs: GanttJob[] = [];
+    
+    jobs.forEach(job => {
+      job.unitsIncluded?.forEach(unit => {
+        unit.jobs.forEach(unitJob => {
+          ganttJobs.push({
+            id: unitJob.id,
+            jobNumber: unitJob.jobNumber,
+            jobName: unitJob.jobName,
+            contractor: unitJob.contractor,
+            jobType: 'Interior' as const, // Default to Interior, could be determined from job categories
+            jobCategory: job.jobCategories?.[0]?.name || 'General',
+            floorPlan: unit.floorPlan,
+            startDate: unitJob.startDate,
+            endDate: unitJob.endDate,
+            status: unitJob.status === 'On Hold' ? 'Overdue' : unitJob.status,
+            unitNumber: unit.unitNumber,
+            totalBudget: unitJob.totalBudget,
+          });
+        });
+      });
+    });
+    
+    return ganttJobs;
+  };
+
   if (jobs.length === 0) {
     return (
       <SidebarProvider>
@@ -541,163 +570,176 @@ export default function PropertyJobs() {
               </p>
             </div>
 
-            <div className="space-y-4">
-              {jobs.map((job) => {
-                const status = getJobStatus(job);
-                const daysToComplete = getDaysToComplete(job.startDate, job.endDate);
-                const totalInvoiced = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalInvoiced, 0) || 0;
-                const totalBid = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalBid, 0) || 0;
-                const totalPaid = totalInvoiced * 0.8; // Mock data: assume 80% of invoiced is paid
+            <Tabs defaultValue="gantt" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="gantt">Gantt Chart</TabsTrigger>
+                <TabsTrigger value="list">Jobs List</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="gantt" className="mt-6">
+                <GanttChart jobs={convertToGanttJobs(jobs)} />
+              </TabsContent>
+              
+              <TabsContent value="list" className="mt-6">
+                <div className="space-y-4">
+                  {jobs.map((job) => {
+                    const status = getJobStatus(job);
+                    const daysToComplete = getDaysToComplete(job.startDate, job.endDate);
+                    const totalInvoiced = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalInvoiced, 0) || 0;
+                    const totalBid = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalBid, 0) || 0;
+                    const totalPaid = totalInvoiced * 0.8; // Mock data: assume 80% of invoiced is paid
 
-                return (
-                  <Collapsible key={job.id}>
-                    <Card className="overflow-hidden">
-                      {/* Первый уровень - основная информация */}
-                      <CardHeader className="pb-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <CardTitle className="text-xl">
-                              {job.property?.name || 'Property Name'}
-                            </CardTitle>
-                            <div className="flex items-center gap-2 mt-1">
-                              <p className="text-sm text-muted-foreground">
-                                Bid #{job.id}
-                              </p>
-                              <span className="text-muted-foreground">•</span>
-                              <p className="text-sm text-muted-foreground">
-                                {job.companyName}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge className={getStatusColor(status)}>
-                              {status === "In Progress" ? "In Progress" : status === "Completed" ? "Completed" : "Not Started"}
-                            </Badge>
-                            <CollapsibleTrigger asChild>
-                              <Button variant="outline" size="sm">
-                                <ChevronDown className="h-4 w-4" />
-                                Expand details
-                              </Button>
-                            </CollapsibleTrigger>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      
-                      <CardContent className="space-y-4">
-                        {/* Основные метрики - обобщённая информация */}
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                          <div className="space-y-1">
-                            <p className="text-xs text-muted-foreground">Start Date</p>
-                            <p className="text-sm font-medium">{formatDate(job.startDate)}</p>
-                          </div>
-                          
-                          <div className="space-y-1">
-                            <p className="text-xs text-muted-foreground">End Date</p>
-                            <p className="text-sm font-medium">{formatDate(job.endDate)}</p>
-                          </div>
-                          
-                          <div className="space-y-1">
-                            <p className="text-xs text-muted-foreground">Units Included</p>
-                            <p className="text-sm font-medium">{job.unitsIncluded?.length || 0} units</p>
-                          </div>
-                          
-                          <div className="space-y-1">
-                            <p className="text-xs text-muted-foreground">Total Bid</p>
-                            <p className="text-sm font-medium text-primary">{formatCurrency(totalBid)}</p>
-                          </div>
-                          
-                          <div className="space-y-1">
-                            <p className="text-xs text-muted-foreground">Budget</p>
-                            <p className="text-sm font-medium">{formatCurrency(job.totalBudget || 0)}</p>
-                          </div>
-                          
-                          <div className="space-y-1">
-                            <p className="text-xs text-muted-foreground">Paid</p>
-                            <p className="text-sm font-medium text-green-600">{formatCurrency(totalPaid)}</p>
-                          </div>
-                        </div>
-                        
-                        {/* Job Categories краткий список */}
-                        <div className="space-y-2">
-                          <p className="text-xs text-muted-foreground">Job Category</p>
-                          <div className="flex flex-wrap gap-1">
-                            {job.jobCategories?.slice(0, 3).map((category, index) => (
-                              <Badge key={index} variant="secondary" className="text-xs">
-                                {category.name}
-                              </Badge>
-                            ))}
-                            {job.jobCategories?.length > 3 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{job.jobCategories.length - 3} more
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                        
-                        {/* Кнопки действий - всегда видны */}
-                        <div className="flex gap-2 pt-4 justify-end">
-                          <Button
-                            variant="default"
-                            onClick={() => setSelectedJob(job)}
-                          >
-                            View Full Details
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={() => navigate(`/property/bid/${job.id}`)}
-                          >
-                            View Original Bid
-                          </Button>
-                        </div>
-                        
-                        {/* Второй уровень - детальная информация */}
-                        <CollapsibleContent className="space-y-6 pt-4 border-t">
-                          {/* Scope of Work */}
-                          {job.notes && (
-                            <div className="space-y-2">
-                              <h3 className="font-semibold flex items-center gap-2">
-                                <FileText className="h-4 w-4" />
-                                Scope of Work
-                              </h3>
-                              <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
-                                {job.notes}
-                              </p>
-                            </div>
-                          )}
-                          
-                          
-                          {/* Контакты */}
-                          <div className="space-y-2">
-                            <h3 className="font-semibold flex items-center gap-2">
-                              <Users className="h-4 w-4" />
-                              Contacts
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                              <div className="bg-muted/50 p-3 rounded-lg">
-                                <p className="text-sm font-medium">Project Manager</p>
-                                <p className="text-sm">{job.generatedBy}</p>
-                                <p className="text-xs text-muted-foreground">{job.email}</p>
-                                <p className="text-xs text-muted-foreground">{job.phone}</p>
-                              </div>
-                              {job.contractors?.map((contractor, index) => (
-                                <div key={index} className="bg-muted/50 p-3 rounded-lg">
-                                  <p className="text-sm font-medium">Contractor</p>
-                                  <p className="text-sm">{contractor.firstName} {contractor.lastName}</p>
-                                  <p className="text-xs text-muted-foreground">{contractor.email}</p>
-                                  <p className="text-xs text-muted-foreground">
-                                    Status: {contractor.hasSubmitted ? 'Submitted' : 'Pending'}
+                    return (
+                      <Collapsible key={job.id}>
+                        <Card className="overflow-hidden">
+                          {/* Первый уровень - основная информация */}
+                          <CardHeader className="pb-4">
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1">
+                                <CardTitle className="text-xl">
+                                  {job.property?.name || 'Property Name'}
+                                </CardTitle>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <p className="text-sm text-muted-foreground">
+                                    Bid #{job.id}
+                                  </p>
+                                  <span className="text-muted-foreground">•</span>
+                                  <p className="text-sm text-muted-foreground">
+                                    {job.companyName}
                                   </p>
                                 </div>
-                              ))}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Badge className={getStatusColor(status)}>
+                                  {status === "In Progress" ? "In Progress" : status === "Completed" ? "Completed" : "Not Started"}
+                                </Badge>
+                                <CollapsibleTrigger asChild>
+                                  <Button variant="outline" size="sm">
+                                    <ChevronDown className="h-4 w-4" />
+                                    Expand details
+                                  </Button>
+                                </CollapsibleTrigger>
+                              </div>
                             </div>
-                          </div>
-                        </CollapsibleContent>
-                      </CardContent>
-                    </Card>
-                  </Collapsible>
-                );
-              })}
-            </div>
+                          </CardHeader>
+                          
+                          <CardContent className="space-y-4">
+                            {/* Основные метрики - обобщённая информация */}
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                              <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Start Date</p>
+                                <p className="text-sm font-medium">{formatDate(job.startDate)}</p>
+                              </div>
+                              
+                              <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">End Date</p>
+                                <p className="text-sm font-medium">{formatDate(job.endDate)}</p>
+                              </div>
+                              
+                              <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Units Included</p>
+                                <p className="text-sm font-medium">{job.unitsIncluded?.length || 0} units</p>
+                              </div>
+                              
+                              <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Total Bid</p>
+                                <p className="text-sm font-medium text-primary">{formatCurrency(totalBid)}</p>
+                              </div>
+                              
+                              <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Budget</p>
+                                <p className="text-sm font-medium">{formatCurrency(job.totalBudget || 0)}</p>
+                              </div>
+                              
+                              <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Paid</p>
+                                <p className="text-sm font-medium text-green-600">{formatCurrency(totalPaid)}</p>
+                              </div>
+                            </div>
+                            
+                            {/* Job Categories краткий список */}
+                            <div className="space-y-2">
+                              <p className="text-xs text-muted-foreground">Job Category</p>
+                              <div className="flex flex-wrap gap-1">
+                                {job.jobCategories?.slice(0, 3).map((category, index) => (
+                                  <Badge key={index} variant="secondary" className="text-xs">
+                                    {category.name}
+                                  </Badge>
+                                ))}
+                                {job.jobCategories?.length > 3 && (
+                                  <Badge variant="outline" className="text-xs">
+                                    +{job.jobCategories.length - 3} more
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                            
+                            {/* Кнопки действий - всегда видны */}
+                            <div className="flex gap-2 pt-4 justify-end">
+                              <Button
+                                variant="default"
+                                onClick={() => setSelectedJob(job)}
+                              >
+                                View Full Details
+                              </Button>
+                              <Button
+                                variant="outline"
+                                onClick={() => navigate(`/property/bid/${job.id}`)}
+                              >
+                                View Original Bid
+                              </Button>
+                            </div>
+                            
+                            {/* Второй уровень - детальная информация */}
+                            <CollapsibleContent className="space-y-6 pt-4 border-t">
+                              {/* Scope of Work */}
+                              {job.notes && (
+                                <div className="space-y-2">
+                                  <h3 className="font-semibold flex items-center gap-2">
+                                    <FileText className="h-4 w-4" />
+                                    Scope of Work
+                                  </h3>
+                                  <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+                                    {job.notes}
+                                  </p>
+                                </div>
+                              )}
+                              
+                              
+                              {/* Контакты */}
+                              <div className="space-y-2">
+                                <h3 className="font-semibold flex items-center gap-2">
+                                  <Users className="h-4 w-4" />
+                                  Contacts
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                  <div className="bg-muted/50 p-3 rounded-lg">
+                                    <p className="text-sm font-medium">Project Manager</p>
+                                    <p className="text-sm">{job.generatedBy}</p>
+                                    <p className="text-xs text-muted-foreground">{job.email}</p>
+                                    <p className="text-xs text-muted-foreground">{job.phone}</p>
+                                  </div>
+                                  {job.contractors?.map((contractor, index) => (
+                                    <div key={index} className="bg-muted/50 p-3 rounded-lg">
+                                      <p className="text-sm font-medium">Contractor</p>
+                                      <p className="text-sm">{contractor.firstName} {contractor.lastName}</p>
+                                      <p className="text-xs text-muted-foreground">{contractor.email}</p>
+                                      <p className="text-xs text-muted-foreground">
+                                        Status: {contractor.hasSubmitted ? 'Submitted' : 'Pending'}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </CollapsibleContent>
+                          </CardContent>
+                        </Card>
+                      </Collapsible>
+                    );
+                  })}
+                </div>
+              </TabsContent>
+            </Tabs>
           </main>
         </div>
       </div>
