@@ -605,21 +605,6 @@ export default function PropertyJobs() {
                             </div>
                           )}
                           
-                          {/* Job Categories полный список */}
-                          <div className="space-y-2">
-                            <h3 className="font-semibold flex items-center gap-2">
-                              <Briefcase className="h-4 w-4" />
-                              Job Categories
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                              {job.jobCategories?.map((category, index) => (
-                                <div key={index} className="bg-muted/50 p-2 rounded">
-                                  <p className="text-sm font-medium">{category.name}</p>
-                                  <p className="text-xs text-muted-foreground">Type: {job.scopeType}</p>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
                           
                           {/* Контакты */}
                           <div className="space-y-2">
