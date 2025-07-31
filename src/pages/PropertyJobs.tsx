@@ -6,6 +6,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { AppHeader } from "@/components/AppHeader";
 import { PropertyComments } from "@/components/PropertyComments";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Building, 
   Calendar, 
@@ -22,7 +23,6 @@ import {
 import { format } from "date-fns";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface BidData {
   id: string;
@@ -338,114 +338,138 @@ export default function PropertyJobs() {
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
-                  {/* Unit Listings */}
-                  <Card>
+                  {/* Unit Listings with Tabs */}
+                  <Card className="w-full">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Home className="h-5 w-5" />
                         Units ({selectedJob.unitsIncluded?.length || 0})
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead></TableHead>
-                            <TableHead>Unit #</TableHead>
-                            <TableHead>Floor Plan</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Total Bid</TableHead>
-                            <TableHead>Total Budget</TableHead>
-                            <TableHead>Total Invoiced</TableHead>
-                            <TableHead>% Complete</TableHead>
-                            <TableHead>Pre-Reno Rent</TableHead>
-                            <TableHead>Post-Reno Rent</TableHead>
-                            <TableHead>Premium ($)</TableHead>
-                            <TableHead>Premium (%)</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {selectedJob.unitsIncluded?.map((unit) => {
-                            const premium = calculateRenovationPremium(unit.preRenovationRent, unit.postRenovationRent);
-                            return (
-                              <>
-                                <TableRow key={unit.id} className="cursor-pointer hover:bg-muted/50">
-                                  <TableCell>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      onClick={() => toggleUnitExpansion(unit.id)}
-                                      className="p-0 h-auto"
-                                    >
-                                      {expandedUnits.has(unit.id) ? (
-                                        <ChevronDown className="h-4 w-4" />
-                                      ) : (
-                                        <ChevronRight className="h-4 w-4" />
-                                      )}
-                                    </Button>
-                                  </TableCell>
-                                  <TableCell className="font-medium">{unit.unitNumber}</TableCell>
-                                  <TableCell>{unit.floorPlan}</TableCell>
-                                  <TableCell>
-                                    <Badge className={getStatusColor(unit.status)}>
-                                      {unit.status}
-                                    </Badge>
-                                  </TableCell>
-                                  <TableCell>{formatCurrency(unit.totalBid)}</TableCell>
-                                  <TableCell>{formatCurrency(unit.totalBudget)}</TableCell>
-                                  <TableCell>{formatCurrency(unit.totalInvoiced)}</TableCell>
-                                  <TableCell>{unit.percentComplete}%</TableCell>
-                                  <TableCell>{formatCurrency(unit.preRenovationRent)}</TableCell>
-                                  <TableCell>{formatCurrency(unit.postRenovationRent)}</TableCell>
-                                  <TableCell className="text-green-600">
-                                    {formatCurrency(premium.dollarAmount)}
-                                  </TableCell>
-                                  <TableCell className="text-green-600">
-                                    {premium.percentage.toFixed(1)}%
-                                  </TableCell>
-                                </TableRow>
-                                
-                                {/* Expanded unit jobs */}
-                                {expandedUnits.has(unit.id) && unit.jobs.map((job) => {
-                                  const overUnder = calculateOverUnder(job.totalBudget, job.totalInvoiced);
-                                  return (
-                                    <TableRow key={job.id} className="bg-muted/30">
-                                      <TableCell></TableCell>
-                                      <TableCell className="pl-8 text-sm text-muted-foreground">
-                                        {job.jobNumber}
-                                      </TableCell>
-                                      <TableCell className="text-sm">{job.jobName}</TableCell>
+                    <CardContent className="p-0">
+                      <Tabs defaultValue="interior" className="w-full">
+                        <div className="px-6 pb-4">
+                          <TabsList className="grid w-full grid-cols-3">
+                            <TabsTrigger value="interior">Interior</TabsTrigger>
+                            <TabsTrigger value="exterior">Exterior</TabsTrigger>
+                            <TabsTrigger value="general">General</TabsTrigger>
+                          </TabsList>
+                        </div>
+                        
+                        <TabsContent value="interior" className="mt-0 w-full overflow-x-auto">
+                          <Table className="w-full">
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead></TableHead>
+                                <TableHead>Unit #</TableHead>
+                                <TableHead>Floor Plan</TableHead>
+                                <TableHead>Status</TableHead>
+                                <TableHead>Total Bid</TableHead>
+                                <TableHead>Total Budget</TableHead>
+                                <TableHead>Total Invoiced</TableHead>
+                                <TableHead>% Complete</TableHead>
+                                <TableHead>Pre-Reno Rent</TableHead>
+                                <TableHead>Post-Reno Rent</TableHead>
+                                <TableHead>Premium ($)</TableHead>
+                                <TableHead>Premium (%)</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {selectedJob.unitsIncluded?.map((unit) => {
+                                const premium = calculateRenovationPremium(unit.preRenovationRent, unit.postRenovationRent);
+                                return (
+                                  <>
+                                    <TableRow key={unit.id} className="cursor-pointer hover:bg-muted/50">
                                       <TableCell>
-                                        <Badge variant="outline" className={getStatusColor(job.status)}>
-                                          {job.status}
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={() => toggleUnitExpansion(unit.id)}
+                                          className="p-0 h-auto"
+                                        >
+                                          {expandedUnits.has(unit.id) ? (
+                                            <ChevronDown className="h-4 w-4" />
+                                          ) : (
+                                            <ChevronRight className="h-4 w-4" />
+                                          )}
+                                        </Button>
+                                      </TableCell>
+                                      <TableCell className="font-medium">{unit.unitNumber}</TableCell>
+                                      <TableCell>{unit.floorPlan}</TableCell>
+                                      <TableCell>
+                                        <Badge className={getStatusColor(unit.status)}>
+                                          {unit.status}
                                         </Badge>
                                       </TableCell>
-                                      <TableCell className="text-sm">{formatCurrency(job.totalBid)}</TableCell>
-                                      <TableCell className="text-sm">{formatCurrency(job.totalBudget)}</TableCell>
-                                      <TableCell className="text-sm">{formatCurrency(job.totalInvoiced)}</TableCell>
-                                      <TableCell className="text-sm">
-                                        {formatDate(job.startDate)} - {formatDate(job.endDate)}
+                                      <TableCell>{formatCurrency(unit.totalBid)}</TableCell>
+                                      <TableCell>{formatCurrency(unit.totalBudget)}</TableCell>
+                                      <TableCell>{formatCurrency(unit.totalInvoiced)}</TableCell>
+                                      <TableCell>{unit.percentComplete}%</TableCell>
+                                      <TableCell>{formatCurrency(unit.preRenovationRent)}</TableCell>
+                                      <TableCell>{formatCurrency(unit.postRenovationRent)}</TableCell>
+                                      <TableCell className="text-green-600">
+                                        {formatCurrency(premium.dollarAmount)}
                                       </TableCell>
-                                      <TableCell className="text-sm">{job.contractor}</TableCell>
-                                      <TableCell className="text-sm">
-                                        <span className={overUnder.dollarAmount >= 0 ? 'text-red-600' : 'text-green-600'}>
-                                          {overUnder.dollarAmount >= 0 ? '+' : ''}{formatCurrency(overUnder.dollarAmount)}
-                                        </span>
+                                      <TableCell className="text-green-600">
+                                        {premium.percentage.toFixed(1)}%
                                       </TableCell>
-                                      <TableCell className="text-sm">
-                                        <span className={overUnder.percentage >= 0 ? 'text-red-600' : 'text-green-600'}>
-                                          {overUnder.percentage >= 0 ? '+' : ''}{overUnder.percentage.toFixed(1)}%
-                                        </span>
-                                      </TableCell>
-                                      <TableCell></TableCell>
                                     </TableRow>
-                                  );
-                                })}
-                              </>
-                            );
-                          })}
-                        </TableBody>
-                      </Table>
+                                    
+                                    {/* Expanded unit jobs */}
+                                    {expandedUnits.has(unit.id) && unit.jobs.map((job) => {
+                                      const overUnder = calculateOverUnder(job.totalBudget, job.totalInvoiced);
+                                      return (
+                                        <TableRow key={job.id} className="bg-muted/30">
+                                          <TableCell></TableCell>
+                                          <TableCell className="pl-8 text-sm text-muted-foreground">
+                                            {job.jobNumber}
+                                          </TableCell>
+                                          <TableCell className="text-sm">{job.jobName}</TableCell>
+                                          <TableCell>
+                                            <Badge variant="outline" className={getStatusColor(job.status)}>
+                                              {job.status}
+                                            </Badge>
+                                          </TableCell>
+                                          <TableCell className="text-sm">{formatCurrency(job.totalBid)}</TableCell>
+                                          <TableCell className="text-sm">{formatCurrency(job.totalBudget)}</TableCell>
+                                          <TableCell className="text-sm">{formatCurrency(job.totalInvoiced)}</TableCell>
+                                          <TableCell className="text-sm">
+                                            {formatDate(job.startDate)} - {formatDate(job.endDate)}
+                                          </TableCell>
+                                          <TableCell className="text-sm">{job.contractor}</TableCell>
+                                          <TableCell className="text-sm">
+                                            <span className={overUnder.dollarAmount >= 0 ? 'text-red-600' : 'text-green-600'}>
+                                              {overUnder.dollarAmount >= 0 ? '+' : ''}{formatCurrency(overUnder.dollarAmount)}
+                                            </span>
+                                          </TableCell>
+                                          <TableCell className="text-sm">
+                                            <span className={overUnder.percentage >= 0 ? 'text-red-600' : 'text-green-600'}>
+                                              {overUnder.percentage >= 0 ? '+' : ''}{overUnder.percentage.toFixed(1)}%
+                                            </span>
+                                          </TableCell>
+                                          <TableCell></TableCell>
+                                        </TableRow>
+                                      );
+                                    })}
+                                  </>
+                                );
+                              })}
+                            </TableBody>
+                          </Table>
+                        </TabsContent>
+                        
+                        <TabsContent value="exterior" className="mt-0 w-full overflow-x-auto">
+                          <div className="p-6 text-center text-muted-foreground">
+                            No exterior units available for this job
+                          </div>
+                        </TabsContent>
+                        
+                        <TabsContent value="general" className="mt-0 w-full overflow-x-auto">
+                          <div className="p-6 text-center text-muted-foreground">
+                            No general units available for this job
+                          </div>
+                        </TabsContent>
+                      </Tabs>
                     </CardContent>
                   </Card>
                 </div>
