@@ -419,41 +419,37 @@ export default function PropertyJobs() {
                                 </TableRow>
                                 
                                 {/* Expanded unit jobs */}
-                                {expandedUnits.has(unit.id) && unit.jobs.map((job) => {
-                                  const overUnder = calculateOverUnder(job.totalBudget, job.totalInvoiced);
-                                  return (
-                                    <TableRow key={job.id} className="bg-muted/30">
-                                      <TableCell></TableCell>
-                                      <TableCell className="pl-8 text-sm text-muted-foreground">
-                                        {job.jobNumber}
-                                      </TableCell>
-                                      <TableCell className="text-sm">{job.jobName}</TableCell>
-                                      <TableCell>
-                                        <Badge variant="outline" className={getStatusColor(job.status)}>
-                                          {job.status}
-                                        </Badge>
-                                      </TableCell>
-                                      <TableCell className="text-sm">{formatCurrency(job.totalBid)}</TableCell>
-                                      <TableCell className="text-sm">{formatCurrency(job.totalBudget)}</TableCell>
-                                      <TableCell className="text-sm">{formatCurrency(job.totalInvoiced)}</TableCell>
-                                      <TableCell className="text-sm">
-                                        {formatDate(job.startDate)} - {formatDate(job.endDate)}
-                                      </TableCell>
-                                      <TableCell className="text-sm">{job.contractor}</TableCell>
-                                      <TableCell className="text-sm">
-                                        <span className={overUnder.dollarAmount >= 0 ? 'text-red-600' : 'text-green-600'}>
-                                          {overUnder.dollarAmount >= 0 ? '+' : ''}{formatCurrency(overUnder.dollarAmount)}
-                                        </span>
-                                      </TableCell>
-                                      <TableCell className="text-sm">
-                                        <span className={overUnder.percentage >= 0 ? 'text-red-600' : 'text-green-600'}>
-                                          {overUnder.percentage >= 0 ? '+' : ''}{overUnder.percentage.toFixed(1)}%
-                                        </span>
-                                      </TableCell>
-                                      <TableCell></TableCell>
-                                    </TableRow>
-                                  );
-                                })}
+                                 {expandedUnits.has(unit.id) && unit.jobs.map((job) => {
+                                   const isPaid = job.totalInvoiced >= job.totalBudget;
+                                   return (
+                                     <TableRow key={job.id} className="bg-muted/30">
+                                       <TableCell></TableCell>
+                                       <TableCell className="pl-8 text-sm text-muted-foreground">
+                                         {job.jobNumber}
+                                       </TableCell>
+                                       <TableCell className="text-sm">{job.jobName}</TableCell>
+                                       <TableCell>
+                                         <Badge variant="outline" className={getStatusColor(job.status)}>
+                                           {job.status}
+                                         </Badge>
+                                       </TableCell>
+                                       <TableCell className="text-sm">{formatCurrency(job.totalBudget)}</TableCell>
+                                       <TableCell className="text-sm">
+                                         <Badge variant={isPaid ? "default" : "secondary"} className={isPaid ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}>
+                                           {isPaid ? "Paid" : "Pending"}
+                                         </Badge>
+                                       </TableCell>
+                                       <TableCell className="text-sm">
+                                         {formatDate(job.startDate)} - {formatDate(job.endDate)}
+                                       </TableCell>
+                                       <TableCell className="text-sm">{job.contractor}</TableCell>
+                                       <TableCell></TableCell>
+                                       <TableCell></TableCell>
+                                       <TableCell></TableCell>
+                                       <TableCell></TableCell>
+                                     </TableRow>
+                                   );
+                                 })}
                               </>
                             );
                           })}
