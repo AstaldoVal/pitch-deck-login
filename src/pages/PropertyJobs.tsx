@@ -591,7 +591,7 @@ export default function PropertyJobs() {
                         </div>
                         
                         {/* Кнопки действий - всегда видны */}
-                        <div className="flex gap-2 pt-4">
+                        <div className="flex gap-2 pt-4 justify-end">
                           <Button
                             variant="default"
                             onClick={() => setSelectedJob(job)}
