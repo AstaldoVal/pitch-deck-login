@@ -570,7 +570,17 @@ export default function PropertyJobs() {
               </p>
             </div>
 
-            <div className="space-y-4">
+            <Tabs defaultValue="gantt" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="gantt">Gantt Chart</TabsTrigger>
+                <TabsTrigger value="list">Jobs List</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="gantt" className="mt-6">
+                <GanttChart jobs={convertToGanttJobs(jobs)} />
+              </TabsContent>
+              
+              <TabsContent value="list" className="mt-6">
                   {jobs.map((job) => {
                     const status = getJobStatus(job);
                     const daysToComplete = getDaysToComplete(job.startDate, job.endDate);
@@ -726,7 +736,8 @@ export default function PropertyJobs() {
                       </Collapsible>
                     );
                   })}
-                 </div>
+              </TabsContent>
+            </Tabs>
           </main>
         </div>
       </div>
