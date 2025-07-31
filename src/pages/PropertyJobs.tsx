@@ -632,27 +632,6 @@ export default function PropertyJobs() {
                             </div>
                           </div>
                           
-                          {/* Комментарии и история изменений */}
-                          <div className="space-y-2">
-                            <h3 className="font-semibold flex items-center gap-2">
-                              <MessageCircle className="h-4 w-4" />
-                              Comments & History
-                            </h3>
-                            <div className="bg-muted/50 p-3 rounded-lg space-y-2">
-                              <div className="text-sm">
-                                <span className="font-medium">Created:</span> {formatDate(job.createdAt)}
-                              </div>
-                              <div className="text-sm">
-                                <span className="font-medium">Status:</span> {job.status}
-                              </div>
-                              <div className="text-sm">
-                                <span className="font-medium">Last updated:</span> {formatDate(job.createdAt)}
-                              </div>
-                              <div className="text-sm">
-                                <span className="font-medium">Duration:</span> {daysToComplete} days
-                              </div>
-                            </div>
-                          </div>
                           
                           {/* Кнопки действий */}
                           <div className="flex gap-2 pt-2">
