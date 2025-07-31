@@ -347,23 +347,23 @@ export default function PropertyJobs() {
                     </div>
                     
                     <TabsContent value="interior" className="mt-0 w-full">
-                      <Table className="w-full">
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead></TableHead>
-                            <TableHead>Unit #</TableHead>
-                            <TableHead>Floor Plan</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Total Bid</TableHead>
-                            <TableHead>Total Budget</TableHead>
-                            <TableHead>Total Invoiced</TableHead>
-                            <TableHead>% Complete</TableHead>
-                            <TableHead>Pre-Reno Rent</TableHead>
-                            <TableHead>Post-Reno Rent</TableHead>
-                            <TableHead>Premium ($)</TableHead>
-                            <TableHead>Premium (%)</TableHead>
-                          </TableRow>
-                        </TableHeader>
+                          <Table className="w-full">
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead className="w-8"></TableHead>
+                                <TableHead className="min-w-[80px]">Unit #</TableHead>
+                                <TableHead className="hidden sm:table-cell min-w-[100px]">Floor Plan</TableHead>
+                                <TableHead className="min-w-[90px]">Status</TableHead>
+                                <TableHead className="hidden md:table-cell min-w-[100px]">Total Bid</TableHead>
+                                <TableHead className="min-w-[100px]">Budget</TableHead>
+                                <TableHead className="hidden lg:table-cell min-w-[100px]">Invoiced</TableHead>
+                                <TableHead className="hidden xl:table-cell min-w-[80px]">% Done</TableHead>
+                                <TableHead className="hidden xl:table-cell min-w-[100px]">Pre-Rent</TableHead>
+                                <TableHead className="hidden xl:table-cell min-w-[100px]">Post-Rent</TableHead>
+                                <TableHead className="hidden 2xl:table-cell min-w-[90px]">Premium $</TableHead>
+                                <TableHead className="hidden 2xl:table-cell min-w-[90px]">Premium %</TableHead>
+                              </TableRow>
+                            </TableHeader>
                         <TableBody>
                           {selectedJob.unitsIncluded?.map((unit) => {
                             const premium = calculateRenovationPremium(unit.preRenovationRent, unit.postRenovationRent);
@@ -384,25 +384,25 @@ export default function PropertyJobs() {
                                       )}
                                     </Button>
                                   </TableCell>
-                                  <TableCell className="font-medium">{unit.unitNumber}</TableCell>
-                                  <TableCell>{unit.floorPlan}</TableCell>
-                                  <TableCell>
-                                    <Badge className={getStatusColor(unit.status)}>
-                                      {unit.status}
-                                    </Badge>
-                                  </TableCell>
-                                  <TableCell>{formatCurrency(unit.totalBid)}</TableCell>
-                                  <TableCell>{formatCurrency(unit.totalBudget)}</TableCell>
-                                  <TableCell>{formatCurrency(unit.totalInvoiced)}</TableCell>
-                                  <TableCell>{unit.percentComplete}%</TableCell>
-                                  <TableCell>{formatCurrency(unit.preRenovationRent)}</TableCell>
-                                  <TableCell>{formatCurrency(unit.postRenovationRent)}</TableCell>
-                                  <TableCell className="text-green-600">
-                                    {formatCurrency(premium.dollarAmount)}
-                                  </TableCell>
-                                  <TableCell className="text-green-600">
-                                    {premium.percentage.toFixed(1)}%
-                                  </TableCell>
+                                   <TableCell className="font-medium">{unit.unitNumber}</TableCell>
+                                   <TableCell className="hidden sm:table-cell">{unit.floorPlan}</TableCell>
+                                   <TableCell>
+                                     <Badge className={getStatusColor(unit.status)}>
+                                       {unit.status}
+                                     </Badge>
+                                   </TableCell>
+                                   <TableCell className="hidden md:table-cell">{formatCurrency(unit.totalBid)}</TableCell>
+                                   <TableCell>{formatCurrency(unit.totalBudget)}</TableCell>
+                                   <TableCell className="hidden lg:table-cell">{formatCurrency(unit.totalInvoiced)}</TableCell>
+                                   <TableCell className="hidden xl:table-cell">{unit.percentComplete}%</TableCell>
+                                   <TableCell className="hidden xl:table-cell">{formatCurrency(unit.preRenovationRent)}</TableCell>
+                                   <TableCell className="hidden xl:table-cell">{formatCurrency(unit.postRenovationRent)}</TableCell>
+                                   <TableCell className="hidden 2xl:table-cell text-green-600">
+                                     {formatCurrency(premium.dollarAmount)}
+                                   </TableCell>
+                                   <TableCell className="hidden 2xl:table-cell text-green-600">
+                                     {premium.percentage.toFixed(1)}%
+                                   </TableCell>
                                 </TableRow>
                                 
                                 {/* Expanded unit jobs */}
