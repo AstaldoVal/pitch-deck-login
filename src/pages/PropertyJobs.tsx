@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -126,6 +127,7 @@ const mockUnits: Unit[] = [
 ];
 
 export default function PropertyJobs() {
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState<BidData[]>([]);
   const [selectedJob, setSelectedJob] = useState<BidData | null>(null);
   const [expandedUnits, setExpandedUnits] = useState<Set<string>>(new Set());
@@ -339,7 +341,7 @@ export default function PropertyJobs() {
                     Generated from Bid #{selectedJob.id} – 
                     <button 
                       className="underline ml-1 hover:text-blue-800"
-                      onClick={() => window.open(`/property/bid/${selectedJob.id}`, '_blank')}
+                      onClick={() => navigate(`/property/bid/${selectedJob.id}`)}
                     >
                       View Bid
                     </button>
