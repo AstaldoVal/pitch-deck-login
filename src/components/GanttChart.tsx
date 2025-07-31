@@ -113,16 +113,31 @@ export function GanttChart({ jobs }: GanttChartProps) {
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Calendar className="w-5 h-5" />
-          Gantt Chart - Project Timeline
-        </CardTitle>
-      </CardHeader>
-
-      <CardContent>
-        <div className="border rounded-lg overflow-hidden bg-background">
+    <div className="w-full space-y-4">
+      {/* Legend */}
+      <div className="flex flex-wrap gap-4 text-sm p-4 bg-muted/30 rounded-lg">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-blue-500 rounded"></div>
+          <span>In Progress</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-green-500 rounded"></div>
+          <span>Completed Early</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-green-600 rounded"></div>
+          <span>Completed</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded"></div>
+          <span>Overdue</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-gray-400 rounded"></div>
+          <span>Not Started</span>
+        </div>
+      </div>
+        <div className="border rounded-lg overflow-hidden bg-background">{/* Timeline chart */}
           {/* Header with timeline */}
           <div className="grid grid-cols-[300px_1fr] border-b bg-muted/50">
             <div className="p-3 border-r font-semibold">
@@ -196,31 +211,6 @@ export function GanttChart({ jobs }: GanttChartProps) {
             )}
           </div>
         </div>
-
-        {/* Legend */}
-        <div className="mt-4 flex flex-wrap gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-blue-500 rounded"></div>
-            <span>In Progress</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-green-500 rounded"></div>
-            <span>Completed Early</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-green-600 rounded"></div>
-            <span>Completed</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-red-500 rounded"></div>
-            <span>Overdue</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-gray-400 rounded"></div>
-            <span>Not Started</span>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

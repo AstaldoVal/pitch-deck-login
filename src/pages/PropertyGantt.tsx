@@ -82,7 +82,7 @@ export default function PropertyGantt() {
           <AppHeader />
           <main className="flex-1 p-6">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold">Project Timeline</h1>
+              <h1 className="text-3xl font-bold">Gantt Chart</h1>
               <p className="text-muted-foreground">
                 View project jobs and timelines in Gantt chart format.
               </p>
