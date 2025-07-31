@@ -122,7 +122,32 @@ const mockUnits: Unit[] = [
     percentComplete: 0,
     preRenovationRent: 1800,
     postRenovationRent: 2200,
-    jobs: []
+    jobs: [
+      {
+        id: "job-3",
+        jobNumber: "J-003",
+        status: "Not Started",
+        jobName: "Full Kitchen Renovation",
+        startDate: new Date('2024-03-01'),
+        endDate: new Date('2024-03-20'),
+        contractor: "Elite Renovations",
+        totalBudget: 12000,
+        totalBid: 12500,
+        totalInvoiced: 0,
+      },
+      {
+        id: "job-4",
+        jobNumber: "J-004",
+        status: "Not Started", 
+        jobName: "Bathroom Upgrade",
+        startDate: new Date('2024-03-15'),
+        endDate: new Date('2024-04-01'),
+        contractor: "Premium Contractors",
+        totalBudget: 8000,
+        totalBid: 8300,
+        totalInvoiced: 0,
+      }
+    ]
   }
 ];
 
