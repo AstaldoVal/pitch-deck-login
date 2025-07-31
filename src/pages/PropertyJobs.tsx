@@ -590,6 +590,22 @@ export default function PropertyJobs() {
                           </div>
                         </div>
                         
+                        {/* Кнопки действий - всегда видны */}
+                        <div className="flex gap-2 pt-4">
+                          <Button
+                            variant="default"
+                            onClick={() => setSelectedJob(job)}
+                          >
+                            View Full Details
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => navigate(`/property/bid/${job.id}`)}
+                          >
+                            View Original Bid
+                          </Button>
+                        </div>
+                        
                         {/* Второй уровень - детальная информация */}
                         <CollapsibleContent className="space-y-6 pt-4 border-t">
                           {/* Scope of Work */}
@@ -630,23 +646,6 @@ export default function PropertyJobs() {
                                 </div>
                               ))}
                             </div>
-                          </div>
-                          
-                          
-                          {/* Кнопки действий */}
-                          <div className="flex gap-2 pt-2">
-                            <Button
-                              variant="default"
-                              onClick={() => setSelectedJob(job)}
-                            >
-                              View Full Details
-                            </Button>
-                            <Button
-                              variant="outline"
-                              onClick={() => navigate(`/property/bid/${job.id}`)}
-                            >
-                              View Original Bid
-                            </Button>
                           </div>
                         </CollapsibleContent>
                       </CardContent>
