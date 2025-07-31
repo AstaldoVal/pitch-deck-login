@@ -325,6 +325,15 @@ export default function PropertyJobs() {
                   <p className="text-muted-foreground mt-1">
                     {selectedJob.property?.name || 'Property Name'} • {selectedJob.companyName}
                   </p>
+                  <p className="text-sm text-blue-600 mt-1">
+                    Generated from Bid #{selectedJob.id} – 
+                    <button 
+                      className="underline ml-1 hover:text-blue-800"
+                      onClick={() => window.open(`/property/bid/${selectedJob.id}`, '_blank')}
+                    >
+                      View Bid
+                    </button>
+                  </p>
                 </div>
               </div>
 
