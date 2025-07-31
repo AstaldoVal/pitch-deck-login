@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -387,8 +387,8 @@ export default function PropertyJobs() {
                           {selectedJob.unitsIncluded?.map((unit) => {
                             const premium = calculateRenovationPremium(unit.preRenovationRent, unit.postRenovationRent);
                             return (
-                              <>
-                                <TableRow key={unit.id} className="cursor-pointer hover:bg-muted/50">
+                              <React.Fragment key={unit.id}>
+                                <TableRow className="cursor-pointer hover:bg-muted/50">
                                   <TableCell>
                                     <Button
                                       variant="ghost"
@@ -418,39 +418,62 @@ export default function PropertyJobs() {
                                    <TableCell className="hidden 2xl:table-cell">{formatCurrency(unit.postRenovationRent)}</TableCell>
                                 </TableRow>
                                 
-                                {/* Expanded unit jobs */}
-                                 {expandedUnits.has(unit.id) && unit.jobs.map((job) => {
-                                   const isPaid = job.totalInvoiced >= job.totalBudget;
-                                   return (
-                                     <TableRow key={job.id} className="bg-muted/30">
-                                       <TableCell></TableCell>
-                                       <TableCell className="pl-8 text-sm text-muted-foreground">
-                                         {job.jobNumber}
-                                       </TableCell>
-                                       <TableCell className="text-sm">{job.jobName}</TableCell>
-                                       <TableCell>
-                                         <Badge variant="outline" className={getStatusColor(job.status)}>
-                                           {job.status}
-                                         </Badge>
-                                       </TableCell>
-                                       <TableCell className="text-sm">{formatCurrency(job.totalBudget)}</TableCell>
-                                       <TableCell className="text-sm">
-                                         <Badge variant={isPaid ? "default" : "secondary"} className={isPaid ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}>
-                                           {isPaid ? "Paid" : "Pending"}
-                                         </Badge>
-                                       </TableCell>
-                                       <TableCell className="text-sm">
-                                         {formatDate(job.startDate)} - {formatDate(job.endDate)}
-                                       </TableCell>
-                                       <TableCell className="text-sm">{job.contractor}</TableCell>
-                                       <TableCell></TableCell>
-                                       <TableCell></TableCell>
-                                       <TableCell></TableCell>
-                                       <TableCell></TableCell>
-                                     </TableRow>
-                                   );
-                                 })}
-                              </>
+                                {/* Expanded unit jobs - отдельный блок */}
+                                {expandedUnits.has(unit.id) && (
+                                  <TableRow>
+                                    <TableCell colSpan={10} className="p-0">
+                                      <div className="bg-muted/20 p-4 border-l-4 border-primary/20">
+                                        <h4 className="font-medium text-sm mb-3 text-muted-foreground">
+                                          Jobs for Unit {unit.unitNumber}
+                                        </h4>
+                                        <div className="space-y-2">
+                                          {unit.jobs.map((job) => {
+                                            const isPaid = job.totalInvoiced >= job.totalBudget;
+                                            return (
+                                              <div key={job.id} className="bg-background rounded-lg p-3 border">
+                                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 text-sm">
+                                                  <div>
+                                                    <p className="text-muted-foreground text-xs">Job #</p>
+                                                    <p className="font-medium">{job.jobNumber}</p>
+                                                  </div>
+                                                  <div>
+                                                    <p className="text-muted-foreground text-xs">Name</p>
+                                                    <p className="font-medium">{job.jobName}</p>
+                                                  </div>
+                                                  <div>
+                                                    <p className="text-muted-foreground text-xs">Status</p>
+                                                    <Badge variant="outline" className={getStatusColor(job.status)}>
+                                                      {job.status}
+                                                    </Badge>
+                                                  </div>
+                                                  <div>
+                                                    <p className="text-muted-foreground text-xs">Budget</p>
+                                                    <p className="font-medium">{formatCurrency(job.totalBudget)}</p>
+                                                  </div>
+                                                  <div>
+                                                    <p className="text-muted-foreground text-xs">Payment</p>
+                                                    <Badge variant={isPaid ? "default" : "secondary"} className={isPaid ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}>
+                                                      {isPaid ? "Paid" : "Pending"}
+                                                    </Badge>
+                                                  </div>
+                                                  <div>
+                                                    <p className="text-muted-foreground text-xs">Contractor</p>
+                                                    <p className="font-medium">{job.contractor}</p>
+                                                  </div>
+                                                  <div className="col-span-2">
+                                                    <p className="text-muted-foreground text-xs">Duration</p>
+                                                    <p>{formatDate(job.startDate)} - {formatDate(job.endDate)}</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+                                    </TableCell>
+                                  </TableRow>
+                                )}
+                              </React.Fragment>
                             );
                           })}
                         </TableBody>
