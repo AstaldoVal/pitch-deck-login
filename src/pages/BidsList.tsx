@@ -146,6 +146,8 @@ export default function BidsList() {
                               size="sm"
                               onClick={(e) => {
                                 e.stopPropagation();
+                                // Store the job ID to open in PropertyJobs
+                                localStorage.setItem('openJobId', bid.id);
                                 navigate('/property/jobs');
                               }}
                               className="flex items-center gap-1 text-xs"

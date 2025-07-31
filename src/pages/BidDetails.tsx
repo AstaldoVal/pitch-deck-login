@@ -133,7 +133,10 @@ export default function BidDetails() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => navigate('/property/jobs')}
+                        onClick={() => {
+                          localStorage.setItem('openJobId', bid.id);
+                          navigate('/property/jobs');
+                        }}
                         className="flex items-center gap-1"
                       >
                         🔗 View Job

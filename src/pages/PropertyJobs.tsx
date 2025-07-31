@@ -140,6 +140,16 @@ export default function PropertyJobs() {
         unitsIncluded: mockUnits, // In real app, this would be filtered by the bid
       }));
     setJobs(acceptedJobs);
+
+    // Check if we need to open a specific job
+    const openJobId = localStorage.getItem('openJobId');
+    if (openJobId && acceptedJobs.length > 0) {
+      const jobToOpen = acceptedJobs.find(job => job.id === openJobId);
+      if (jobToOpen) {
+        setSelectedJob(jobToOpen);
+      }
+      localStorage.removeItem('openJobId'); // Clean up
+    }
   }, []);
 
   const createTestData = () => {
