@@ -9,23 +9,10 @@ import { AppHeader } from "@/components/AppHeader";
 import { PropertyComments } from "@/components/PropertyComments";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GanttChart, GanttJob } from "@/components/GanttChart";
-import { 
-  Building, 
-  Calendar, 
-  Users, 
-  DollarSign, 
-  FileText,
-  ChevronDown,
-  ChevronRight,
-  MessageCircle,
-  BarChart3,
-  Home,
-  Briefcase
-} from "lucide-react";
+import { Building, Calendar, Users, DollarSign, FileText, ChevronDown, ChevronRight, MessageCircle, BarChart3, Home, Briefcase } from "lucide-react";
 import { format } from "date-fns";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
 interface BidData {
   id: string;
   generatedBy: string;
@@ -44,7 +31,6 @@ interface BidData {
   unitsIncluded?: Unit[];
   notes?: string;
 }
-
 interface Unit {
   id: string;
   unitNumber: string;
@@ -58,7 +44,6 @@ interface Unit {
   postRenovationRent: number;
   jobs: UnitJob[];
 }
-
 interface UnitJob {
   id: string;
   jobNumber: string;
@@ -73,100 +58,87 @@ interface UnitJob {
 }
 
 // Mock data for demonstration
-const mockUnits: Unit[] = [
-  {
-    id: "unit-1",
-    unitNumber: "101",
-    floorPlan: "1 BR / 1 BA",
+const mockUnits: Unit[] = [{
+  id: "unit-1",
+  unitNumber: "101",
+  floorPlan: "1 BR / 1 BA",
+  status: "In Progress",
+  totalBid: 15000,
+  totalBudget: 14500,
+  totalInvoiced: 8000,
+  percentComplete: 60,
+  preRenovationRent: 1200,
+  postRenovationRent: 1450,
+  jobs: [{
+    id: "job-1",
+    jobNumber: "J-001",
+    status: "Completed",
+    jobName: "Kitchen Renovation",
+    startDate: new Date('2024-01-15'),
+    endDate: new Date('2024-02-01'),
+    contractor: "ABC Construction",
+    totalBudget: 8000,
+    totalBid: 8200,
+    totalInvoiced: 8000
+  }, {
+    id: "job-2",
+    jobNumber: "J-002",
     status: "In Progress",
-    totalBid: 15000,
-    totalBudget: 14500,
-    totalInvoiced: 8000,
-    percentComplete: 60,
-    preRenovationRent: 1200,
-    postRenovationRent: 1450,
-    jobs: [
-      {
-        id: "job-1",
-        jobNumber: "J-001",
-        status: "Completed",
-        jobName: "Kitchen Renovation",
-        startDate: new Date('2024-01-15'),
-        endDate: new Date('2024-02-01'),
-        contractor: "ABC Construction",
-        totalBudget: 8000,
-        totalBid: 8200,
-        totalInvoiced: 8000,
-      },
-      {
-        id: "job-2",
-        jobNumber: "J-002", 
-        status: "In Progress",
-        jobName: "Bathroom Renovation",
-        startDate: new Date('2024-02-01'),
-        endDate: new Date('2024-02-15'),
-        contractor: "XYZ Contractors",
-        totalBudget: 6500,
-        totalBid: 6800,
-        totalInvoiced: 0,
-      }
-    ]
-  },
-  {
-    id: "unit-2",
-    unitNumber: "102",
-    floorPlan: "2 BR / 2 BA",
+    jobName: "Bathroom Renovation",
+    startDate: new Date('2024-02-01'),
+    endDate: new Date('2024-02-15'),
+    contractor: "XYZ Contractors",
+    totalBudget: 6500,
+    totalBid: 6800,
+    totalInvoiced: 0
+  }]
+}, {
+  id: "unit-2",
+  unitNumber: "102",
+  floorPlan: "2 BR / 2 BA",
+  status: "Not Started",
+  totalBid: 25000,
+  totalBudget: 24000,
+  totalInvoiced: 0,
+  percentComplete: 0,
+  preRenovationRent: 1800,
+  postRenovationRent: 2200,
+  jobs: [{
+    id: "job-3",
+    jobNumber: "J-003",
     status: "Not Started",
-    totalBid: 25000,
-    totalBudget: 24000,
-    totalInvoiced: 0,
-    percentComplete: 0,
-    preRenovationRent: 1800,
-    postRenovationRent: 2200,
-    jobs: [
-      {
-        id: "job-3",
-        jobNumber: "J-003",
-        status: "Not Started",
-        jobName: "Full Kitchen Renovation",
-        startDate: new Date('2024-03-01'),
-        endDate: new Date('2024-03-20'),
-        contractor: "Elite Renovations",
-        totalBudget: 12000,
-        totalBid: 12500,
-        totalInvoiced: 0,
-      },
-      {
-        id: "job-4",
-        jobNumber: "J-004",
-        status: "Not Started", 
-        jobName: "Bathroom Upgrade",
-        startDate: new Date('2024-03-15'),
-        endDate: new Date('2024-04-01'),
-        contractor: "Premium Contractors",
-        totalBudget: 8000,
-        totalBid: 8300,
-        totalInvoiced: 0,
-      }
-    ]
-  }
-];
-
+    jobName: "Full Kitchen Renovation",
+    startDate: new Date('2024-03-01'),
+    endDate: new Date('2024-03-20'),
+    contractor: "Elite Renovations",
+    totalBudget: 12000,
+    totalBid: 12500,
+    totalInvoiced: 0
+  }, {
+    id: "job-4",
+    jobNumber: "J-004",
+    status: "Not Started",
+    jobName: "Bathroom Upgrade",
+    startDate: new Date('2024-03-15'),
+    endDate: new Date('2024-04-01'),
+    contractor: "Premium Contractors",
+    totalBudget: 8000,
+    totalBid: 8300,
+    totalInvoiced: 0
+  }]
+}];
 export default function PropertyJobs() {
   const navigate = useNavigate();
   const [jobs, setJobs] = useState<BidData[]>([]);
   const [selectedJob, setSelectedJob] = useState<BidData | null>(null);
   const [expandedUnits, setExpandedUnits] = useState<Set<string>>(new Set());
-
   useEffect(() => {
     // Load accepted bids as jobs from localStorage
     const savedBids = JSON.parse(localStorage.getItem('propertyBids') || '[]');
-    const acceptedJobs = savedBids
-      .filter((bid: BidData) => bid.status === 'accepted')
-      .map((bid: BidData) => ({
-        ...bid,
-        unitsIncluded: mockUnits, // In real app, this would be filtered by the bid
-      }));
+    const acceptedJobs = savedBids.filter((bid: BidData) => bid.status === 'accepted').map((bid: BidData) => ({
+      ...bid,
+      unitsIncluded: mockUnits // In real app, this would be filtered by the bid
+    }));
     setJobs(acceptedJobs);
 
     // Check if we need to open a specific job
@@ -179,113 +151,111 @@ export default function PropertyJobs() {
       localStorage.removeItem('openJobId'); // Clean up
     }
   }, []);
-
   const createTestData = () => {
-    const testBids: BidData[] = [
-      {
-        id: "BID-001",
-        generatedBy: "John Smith",
-        email: "john@example.com",
-        phone: "+1 (555) 123-4567",
-        companyName: "Premier Construction LLC",
-        property: { name: "Sunset Apartments" },
-        startDate: new Date('2024-01-15'),
-        endDate: new Date('2024-03-30'),
-        scopeType: "Unit-based",
-        jobCategories: [
-          { name: "Kitchen Renovation" },
-          { name: "Bathroom Renovation" },
-          { name: "Flooring" }
-        ],
-        contractors: [
-          { 
-            firstName: "Mike", 
-            lastName: "Johnson", 
-            email: "mike@contractors.com",
-            hasSubmitted: true
-          }
-        ],
-        createdAt: new Date().toISOString(),
-        totalBudget: 40000,
-        status: 'accepted' as const,
-        unitsIncluded: mockUnits,
-        notes: "Complete renovation of units 101-102 including kitchen, bathroom, and flooring updates to modernize the property and increase rental value."
+    const testBids: BidData[] = [{
+      id: "BID-001",
+      generatedBy: "John Smith",
+      email: "john@example.com",
+      phone: "+1 (555) 123-4567",
+      companyName: "Premier Construction LLC",
+      property: {
+        name: "Sunset Apartments"
       },
-      {
-        id: "BID-002", 
-        generatedBy: "Sarah Davis",
-        email: "sarah@example.com",
-        phone: "+1 (555) 987-6543",
-        companyName: "Elite Renovations Inc",
-        property: { name: "Sunset Apartments" },
-        startDate: new Date('2024-02-01'),
-        endDate: new Date('2024-04-15'),
-        scopeType: "Job-type",
-        jobCategories: [
-          { name: "HVAC Systems" },
-          { name: "Electrical Work" }
-        ],
-        contractors: [
-          {
-            firstName: "Tom",
-            lastName: "Wilson", 
-            email: "tom@elite.com",
-            hasSubmitted: true
-          }
-        ],
-        createdAt: new Date().toISOString(),
-        totalBudget: 25000,
-        status: 'accepted' as const,
-        unitsIncluded: mockUnits.slice(0, 1), // Only first unit
-        notes: "HVAC and electrical system upgrades for improved efficiency and code compliance."
-      }
-    ];
+      startDate: new Date('2024-01-15'),
+      endDate: new Date('2024-03-30'),
+      scopeType: "Unit-based",
+      jobCategories: [{
+        name: "Kitchen Renovation"
+      }, {
+        name: "Bathroom Renovation"
+      }, {
+        name: "Flooring"
+      }],
+      contractors: [{
+        firstName: "Mike",
+        lastName: "Johnson",
+        email: "mike@contractors.com",
+        hasSubmitted: true
+      }],
+      createdAt: new Date().toISOString(),
+      totalBudget: 40000,
+      status: 'accepted' as const,
+      unitsIncluded: mockUnits,
+      notes: "Complete renovation of units 101-102 including kitchen, bathroom, and flooring updates to modernize the property and increase rental value."
+    }, {
+      id: "BID-002",
+      generatedBy: "Sarah Davis",
+      email: "sarah@example.com",
+      phone: "+1 (555) 987-6543",
+      companyName: "Elite Renovations Inc",
+      property: {
+        name: "Sunset Apartments"
+      },
+      startDate: new Date('2024-02-01'),
+      endDate: new Date('2024-04-15'),
+      scopeType: "Job-type",
+      jobCategories: [{
+        name: "HVAC Systems"
+      }, {
+        name: "Electrical Work"
+      }],
+      contractors: [{
+        firstName: "Tom",
+        lastName: "Wilson",
+        email: "tom@elite.com",
+        hasSubmitted: true
+      }],
+      createdAt: new Date().toISOString(),
+      totalBudget: 25000,
+      status: 'accepted' as const,
+      unitsIncluded: mockUnits.slice(0, 1),
+      // Only first unit
+      notes: "HVAC and electrical system upgrades for improved efficiency and code compliance."
+    }];
 
     // Save test bids to localStorage
     localStorage.setItem('propertyBids', JSON.stringify(testBids));
-    
+
     // Update jobs state
     setJobs(testBids);
   };
-
   const getDaysToComplete = (startDate: Date, endDate: Date) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
     const diffTime = Math.abs(end.getTime() - start.getTime());
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
-
   const getJobStatus = (job: BidData) => {
     const now = new Date();
     const start = new Date(job.startDate);
     const end = new Date(job.endDate);
-    
     if (now < start) return "Not Started";
     if (now >= start && now <= end) return "In Progress";
     return "Completed";
   };
-
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Not Started": return "bg-yellow-100 text-yellow-800";
-      case "In Progress": return "bg-blue-100 text-blue-800";
-      case "Completed": return "bg-green-100 text-green-800";
-      case "On Hold": return "bg-red-100 text-red-800";
-      default: return "bg-gray-100 text-gray-800";
+      case "Not Started":
+        return "bg-yellow-100 text-yellow-800";
+      case "In Progress":
+        return "bg-blue-100 text-blue-800";
+      case "Completed":
+        return "bg-green-100 text-green-800";
+      case "On Hold":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
-
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
     }).format(amount);
   };
-
   const formatDate = (date: Date | string) => {
     return format(new Date(date), 'MMM dd, yyyy');
   };
-
   const toggleUnitExpansion = (unitId: string) => {
     const newExpanded = new Set(expandedUnits);
     if (newExpanded.has(unitId)) {
@@ -295,23 +265,26 @@ export default function PropertyJobs() {
     }
     setExpandedUnits(newExpanded);
   };
-
   const calculateRenovationPremium = (preRent: number, postRent: number) => {
     const dollarAmount = postRent - preRent;
-    const percentage = ((dollarAmount / preRent) * 100);
-    return { dollarAmount, percentage };
+    const percentage = dollarAmount / preRent * 100;
+    return {
+      dollarAmount,
+      percentage
+    };
   };
-
   const calculateOverUnder = (budget: number, invoiced: number) => {
     const dollarAmount = invoiced - budget;
-    const percentage = budget > 0 ? ((dollarAmount / budget) * 100) : 0;
-    return { dollarAmount, percentage };
+    const percentage = budget > 0 ? dollarAmount / budget * 100 : 0;
+    return {
+      dollarAmount,
+      percentage
+    };
   };
 
   // Convert job data to Gantt format
   const convertToGanttJobs = (jobs: BidData[]): GanttJob[] => {
     const ganttJobs: GanttJob[] = [];
-    
     jobs.forEach(job => {
       job.unitsIncluded?.forEach(unit => {
         unit.jobs.forEach(unitJob => {
@@ -320,25 +293,23 @@ export default function PropertyJobs() {
             jobNumber: unitJob.jobNumber,
             jobName: unitJob.jobName,
             contractor: unitJob.contractor,
-            jobType: 'Interior' as const, // Default to Interior, could be determined from job categories
+            jobType: 'Interior' as const,
+            // Default to Interior, could be determined from job categories
             jobCategory: job.jobCategories?.[0]?.name || 'General',
             floorPlan: unit.floorPlan,
             startDate: unitJob.startDate,
             endDate: unitJob.endDate,
             status: unitJob.status === 'On Hold' ? 'Overdue' : unitJob.status,
             unitNumber: unit.unitNumber,
-            totalBudget: unitJob.totalBudget,
+            totalBudget: unitJob.totalBudget
           });
         });
       });
     });
-    
     return ganttJobs;
   };
-
   if (jobs.length === 0) {
-    return (
-      <SidebarProvider>
+    return <SidebarProvider>
         <div className="min-h-screen flex w-full bg-background">
           <PropertySidebar />
           <div className="flex-1 flex flex-col">
@@ -366,13 +337,10 @@ export default function PropertyJobs() {
             </main>
           </div>
         </div>
-      </SidebarProvider>
-    );
+      </SidebarProvider>;
   }
-
   if (selectedJob) {
-    return (
-      <SidebarProvider>
+    return <SidebarProvider>
         <div className="min-h-screen flex w-full bg-background">
           <PropertySidebar />
           <div className="flex-1 flex flex-col">
@@ -380,11 +348,7 @@ export default function PropertyJobs() {
             <main className="flex-1 p-6 space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setSelectedJob(null)}
-                    className="mb-4"
-                  >
+                  <Button variant="outline" onClick={() => setSelectedJob(null)} className="mb-4">
                     ← Back to Jobs
                   </Button>
                   <h1 className="text-3xl font-bold text-foreground">Job #{selectedJob.id}</h1>
@@ -393,10 +357,7 @@ export default function PropertyJobs() {
                   </p>
                   <p className="text-sm text-blue-600 mt-1">
                     Generated from Bid #{selectedJob.id} – 
-                    <button 
-                      className="underline ml-1 hover:text-blue-800"
-                      onClick={() => navigate(`/property/bid/${selectedJob.id}`)}
-                    >
+                    <button className="underline ml-1 hover:text-blue-800" onClick={() => navigate(`/property/bid/${selectedJob.id}`)}>
                       View Bid
                     </button>
                   </p>
@@ -421,7 +382,9 @@ export default function PropertyJobs() {
                           </TabsList>
                         </div>
                         
-                        <TabsContent value="interior" className="mt-0 w-full overflow-x-auto" style={{scrollbarWidth: 'thin'}}>
+                        <TabsContent value="interior" className="mt-0 w-full overflow-x-auto" style={{
+                    scrollbarWidth: 'thin'
+                  }}>
                           <Table className="w-full">
                             <TableHeader>
                               <TableRow>
@@ -431,30 +394,20 @@ export default function PropertyJobs() {
                                  <TableHead className="min-w-[70px]">Status</TableHead>
                                  <TableHead className="hidden xl:table-cell min-w-[80px]">Bid</TableHead>
                                  <TableHead className="min-w-[80px]">Budget</TableHead>
-                                 <TableHead className="hidden lg:table-cell min-w-[80px]">Paid</TableHead>
+                                 <TableHead className="hidden lg:table-cell min-w-[80px]">PaiChand</TableHead>
                                  <TableHead className="hidden xl:table-cell min-w-[50px]">%</TableHead>
                                  <TableHead className="hidden 2xl:table-cell min-w-[70px]">Pre</TableHead>
                                  <TableHead className="hidden 2xl:table-cell min-w-[70px]">Post</TableHead>
                               </TableRow>
                             </TableHeader>
                         <TableBody>
-                          {selectedJob.unitsIncluded?.map((unit) => {
-                            const premium = calculateRenovationPremium(unit.preRenovationRent, unit.postRenovationRent);
-                            return (
-                              <React.Fragment key={unit.id}>
+                          {selectedJob.unitsIncluded?.map(unit => {
+                          const premium = calculateRenovationPremium(unit.preRenovationRent, unit.postRenovationRent);
+                          return <React.Fragment key={unit.id}>
                                 <TableRow className="cursor-pointer hover:bg-muted/50">
                                   <TableCell>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      onClick={() => toggleUnitExpansion(unit.id)}
-                                      className="p-0 h-auto"
-                                    >
-                                      {expandedUnits.has(unit.id) ? (
-                                        <ChevronDown className="h-4 w-4" />
-                                      ) : (
-                                        <ChevronRight className="h-4 w-4" />
-                                      )}
+                                    <Button variant="ghost" size="sm" onClick={() => toggleUnitExpansion(unit.id)} className="p-0 h-auto">
+                                      {expandedUnits.has(unit.id) ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                                     </Button>
                                   </TableCell>
                                    <TableCell className="font-medium">{unit.unitNumber}</TableCell>
@@ -473,18 +426,16 @@ export default function PropertyJobs() {
                                 </TableRow>
                                 
                                 {/* Expanded unit jobs - отдельный блок */}
-                                {expandedUnits.has(unit.id) && (
-                                  <TableRow>
+                                {expandedUnits.has(unit.id) && <TableRow>
                                     <TableCell colSpan={10} className="p-0">
                                       <div className="bg-muted/20 p-4 border-l-4 border-primary/20">
                                         <h4 className="font-medium text-sm mb-3 text-muted-foreground">
                                           Jobs for Unit {unit.unitNumber}
                                         </h4>
                                         <div className="space-y-2">
-                                          {unit.jobs.map((job) => {
-                                            const isPaid = job.totalInvoiced >= job.totalBudget;
-                                            return (
-                                              <div key={job.id} className="bg-background rounded-lg p-3 border">
+                                          {unit.jobs.map(job => {
+                                      const isPaid = job.totalInvoiced >= job.totalBudget;
+                                      return <div key={job.id} className="bg-background rounded-lg p-3 border">
                                                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 text-sm">
                                                   <div>
                                                     <p className="text-muted-foreground text-xs">Job #</p>
@@ -519,17 +470,14 @@ export default function PropertyJobs() {
                                                     <p>{formatDate(job.startDate)} - {formatDate(job.endDate)}</p>
                                                   </div>
                                                 </div>
-                                              </div>
-                                            );
-                                          })}
+                                              </div>;
+                                    })}
                                         </div>
                                       </div>
                                     </TableCell>
-                                  </TableRow>
-                                )}
-                              </React.Fragment>
-                            );
-                          })}
+                                  </TableRow>}
+                              </React.Fragment>;
+                        })}
                         </TableBody>
                       </Table>
                     </TabsContent>
@@ -552,12 +500,9 @@ export default function PropertyJobs() {
             </main>
           </div>
         </div>
-      </SidebarProvider>
-    );
+      </SidebarProvider>;
   }
-
-  return (
-    <SidebarProvider>
+  return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <PropertySidebar />
         <div className="flex-1 flex flex-col">
@@ -581,15 +526,14 @@ export default function PropertyJobs() {
               </TabsContent>
               
               <TabsContent value="list" className="mt-6">
-                  {jobs.map((job) => {
-                    const status = getJobStatus(job);
-                    const daysToComplete = getDaysToComplete(job.startDate, job.endDate);
-                    const totalInvoiced = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalInvoiced, 0) || 0;
-                    const totalBid = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalBid, 0) || 0;
-                    const totalPaid = totalInvoiced * 0.8; // Mock data: assume 80% of invoiced is paid
+                  {jobs.map(job => {
+                const status = getJobStatus(job);
+                const daysToComplete = getDaysToComplete(job.startDate, job.endDate);
+                const totalInvoiced = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalInvoiced, 0) || 0;
+                const totalBid = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalBid, 0) || 0;
+                const totalPaid = totalInvoiced * 0.8; // Mock data: assume 80% of invoiced is paid
 
-                    return (
-                      <Collapsible key={job.id}>
+                return <Collapsible key={job.id}>
                         <Card className="overflow-hidden">
                           {/* Первый уровень - основная информация */}
                           <CardHeader className="pb-4">
@@ -660,31 +604,21 @@ export default function PropertyJobs() {
                             <div className="space-y-2">
                               <p className="text-xs text-muted-foreground">Job Category</p>
                               <div className="flex flex-wrap gap-1">
-                                {job.jobCategories?.slice(0, 3).map((category, index) => (
-                                  <Badge key={index} variant="secondary" className="text-xs">
+                                {job.jobCategories?.slice(0, 3).map((category, index) => <Badge key={index} variant="secondary" className="text-xs">
                                     {category.name}
-                                  </Badge>
-                                ))}
-                                {job.jobCategories?.length > 3 && (
-                                  <Badge variant="outline" className="text-xs">
+                                  </Badge>)}
+                                {job.jobCategories?.length > 3 && <Badge variant="outline" className="text-xs">
                                     +{job.jobCategories.length - 3} more
-                                  </Badge>
-                                )}
+                                  </Badge>}
                               </div>
                             </div>
                             
                             {/* Кнопки действий - всегда видны */}
                             <div className="flex gap-2 pt-4 justify-end">
-                              <Button
-                                variant="default"
-                                onClick={() => setSelectedJob(job)}
-                              >
+                              <Button variant="default" onClick={() => setSelectedJob(job)}>
                                 View Full Details
                               </Button>
-                              <Button
-                                variant="outline"
-                                onClick={() => navigate(`/property/bid/${job.id}`)}
-                              >
+                              <Button variant="outline" onClick={() => navigate(`/property/bid/${job.id}`)}>
                                 View Original Bid
                               </Button>
                             </div>
@@ -692,8 +626,7 @@ export default function PropertyJobs() {
                             {/* Второй уровень - детальная информация */}
                             <CollapsibleContent className="space-y-6 pt-4 border-t">
                               {/* Scope of Work */}
-                              {job.notes && (
-                                <div className="space-y-2">
+                              {job.notes && <div className="space-y-2">
                                   <h3 className="font-semibold flex items-center gap-2">
                                     <FileText className="h-4 w-4" />
                                     Scope of Work
@@ -701,8 +634,7 @@ export default function PropertyJobs() {
                                   <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
                                     {job.notes}
                                   </p>
-                                </div>
-                              )}
+                                </div>}
                               
                               
                               {/* Контакты */}
@@ -718,29 +650,25 @@ export default function PropertyJobs() {
                                     <p className="text-xs text-muted-foreground">{job.email}</p>
                                     <p className="text-xs text-muted-foreground">{job.phone}</p>
                                   </div>
-                                  {job.contractors?.map((contractor, index) => (
-                                    <div key={index} className="bg-muted/50 p-3 rounded-lg">
+                                  {job.contractors?.map((contractor, index) => <div key={index} className="bg-muted/50 p-3 rounded-lg">
                                       <p className="text-sm font-medium">Contractor</p>
                                       <p className="text-sm">{contractor.firstName} {contractor.lastName}</p>
                                       <p className="text-xs text-muted-foreground">{contractor.email}</p>
                                       <p className="text-xs text-muted-foreground">
                                         Status: {contractor.hasSubmitted ? 'Submitted' : 'Pending'}
                                       </p>
-                                    </div>
-                                  ))}
+                                    </div>)}
                                 </div>
                               </div>
                             </CollapsibleContent>
                           </CardContent>
                         </Card>
-                      </Collapsible>
-                    );
-                  })}
+                      </Collapsible>;
+              })}
               </TabsContent>
             </Tabs>
           </main>
         </div>
       </div>
-    </SidebarProvider>
-  );
+    </SidebarProvider>;
 }
