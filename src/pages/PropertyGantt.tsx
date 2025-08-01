@@ -7,68 +7,167 @@ import { GanttChart, GanttJob } from '@/components/GanttChart';
 interface BidData {
   id: string;
   generatedBy: string;
+  email: string;
+  phone: string;
   companyName: string;
-  units: any[];
-  totalBudget: number;
-  submittedDate: string;
-  startDate: string;
-  endDate: string;
-  status: string;
-  jobs?: any[];
+  property: any;
+  startDate: Date;
+  endDate: Date;
+  scopeType: string;
+  jobCategories: any[];
+  contractors: any[];
+  createdAt: string;
+  totalBudget?: number;
+  status?: 'accepted' | 'pending' | 'rejected';
+  unitsIncluded?: Unit[];
+  notes?: string;
 }
+
+interface Unit {
+  id: string;
+  unitNumber: string;
+  floorPlan: string;
+  status: 'Not Started' | 'In Progress' | 'Completed' | 'On Hold';
+  totalBid: number;
+  totalBudget: number;
+  totalInvoiced: number;
+  percentComplete: number;
+  preRenovationRent: number;
+  postRenovationRent: number;
+  jobs: UnitJob[];
+}
+
+interface UnitJob {
+  id: string;
+  jobNumber: string;
+  status: 'Not Started' | 'In Progress' | 'Completed' | 'On Hold';
+  jobName: string;
+  startDate: Date;
+  endDate: Date;
+  contractor: string;
+  totalBudget: number;
+  totalBid: number;
+  totalInvoiced: number;
+}
+
+// Mock data identical to PropertyJobs
+const mockUnits: Unit[] = [
+  {
+    id: "unit-1",
+    unitNumber: "101",
+    floorPlan: "1 BR / 1 BA",
+    status: "In Progress",
+    totalBid: 15000,
+    totalBudget: 14500,
+    totalInvoiced: 8000,
+    percentComplete: 60,
+    preRenovationRent: 1200,
+    postRenovationRent: 1450,
+    jobs: [
+      {
+        id: "job-1",
+        jobNumber: "J-001",
+        status: "Completed",
+        jobName: "Kitchen Renovation",
+        startDate: new Date('2024-01-15'),
+        endDate: new Date('2024-02-01'),
+        contractor: "ABC Construction",
+        totalBudget: 8000,
+        totalBid: 8200,
+        totalInvoiced: 8000,
+      },
+      {
+        id: "job-2",
+        jobNumber: "J-002", 
+        status: "In Progress",
+        jobName: "Bathroom Renovation",
+        startDate: new Date('2024-02-01'),
+        endDate: new Date('2024-02-15'),
+        contractor: "XYZ Contractors",
+        totalBudget: 6500,
+        totalBid: 6800,
+        totalInvoiced: 0,
+      }
+    ]
+  },
+  {
+    id: "unit-2",
+    unitNumber: "102",
+    floorPlan: "2 BR / 2 BA",
+    status: "Not Started",
+    totalBid: 25000,
+    totalBudget: 24000,
+    totalInvoiced: 0,
+    percentComplete: 0,
+    preRenovationRent: 1800,
+    postRenovationRent: 2200,
+    jobs: [
+      {
+        id: "job-3",
+        jobNumber: "J-003",
+        status: "Not Started",
+        jobName: "Full Kitchen Renovation",
+        startDate: new Date('2024-03-01'),
+        endDate: new Date('2024-03-20'),
+        contractor: "Elite Renovations",
+        totalBudget: 12000,
+        totalBid: 12500,
+        totalInvoiced: 0,
+      },
+      {
+        id: "job-4",
+        jobNumber: "J-004",
+        status: "Not Started", 
+        jobName: "Bathroom Upgrade",
+        startDate: new Date('2024-03-15'),
+        endDate: new Date('2024-04-01'),
+        contractor: "Premium Contractors",
+        totalBudget: 8000,
+        totalBid: 8300,
+        totalInvoiced: 0,
+      }
+    ]
+  }
+];
 
 export default function PropertyGantt() {
   const [jobs, setJobs] = useState<BidData[]>([]);
 
   useEffect(() => {
-    const savedBids = localStorage.getItem('acceptedBids');
-    if (savedBids) {
-      try {
-        const bids = JSON.parse(savedBids);
-        setJobs(bids);
-      } catch (error) {
-        console.error('Error parsing saved bids:', error);
-      }
-    }
+    // Load accepted bids as jobs from localStorage - same logic as PropertyJobs
+    const savedBids = JSON.parse(localStorage.getItem('propertyBids') || '[]');
+    const acceptedJobs = savedBids
+      .filter((bid: BidData) => bid.status === 'accepted')
+      .map((bid: BidData) => ({
+        ...bid,
+        unitsIncluded: mockUnits, // In real app, this would be filtered by the bid
+      }));
+    setJobs(acceptedJobs);
   }, []);
 
-  const convertToGanttJobs = (bids: BidData[]): GanttJob[] => {
+  // Convert job data to Gantt format - same logic as PropertyJobs
+  const convertToGanttJobs = (jobs: BidData[]): GanttJob[] => {
     const ganttJobs: GanttJob[] = [];
     
-    bids.forEach(bid => {
-      if (bid.jobs && bid.jobs.length > 0) {
-        bid.jobs.forEach(job => {
+    jobs.forEach(job => {
+      job.unitsIncluded?.forEach(unit => {
+        unit.jobs.forEach(unitJob => {
           ganttJobs.push({
-            id: `${bid.id}-${job.jobName}`,
-            jobNumber: job.jobNumber || `JOB-${Math.random().toString(36).substr(2, 9)}`,
-            jobName: job.jobName,
-            contractor: bid.companyName,
-            jobType: job.jobType || 'General',
-            jobCategory: job.jobCategory || 'Renovation',
-            floorPlan: job.floorPlan,
-            startDate: new Date(job.startDate || bid.startDate),
-            endDate: new Date(job.endDate || bid.endDate),
-            status: (job.status as 'Not Started' | 'In Progress' | 'Completed' | 'Overdue') || (bid.status as 'Not Started' | 'In Progress' | 'Completed' | 'Overdue') || 'Not Started',
-            unitNumber: job.unitNumber || 'N/A',
-            totalBudget: job.budget || 0,
+            id: unitJob.id,
+            jobNumber: unitJob.jobNumber,
+            jobName: unitJob.jobName,
+            contractor: unitJob.contractor,
+            jobType: 'Interior' as const, // Default to Interior, could be determined from job categories
+            jobCategory: job.jobCategories?.[0]?.name || 'General',
+            floorPlan: unit.floorPlan,
+            startDate: unitJob.startDate,
+            endDate: unitJob.endDate,
+            status: unitJob.status === 'On Hold' ? 'Overdue' : unitJob.status,
+            unitNumber: unit.unitNumber,
+            totalBudget: unitJob.totalBudget,
           });
         });
-      } else {
-        // Fallback for bids without jobs
-        ganttJobs.push({
-          id: bid.id,
-          jobNumber: `BID-${bid.id.slice(0, 8)}`,
-          jobName: `Work for ${bid.companyName}`,
-          contractor: bid.companyName,
-          jobType: 'General',
-          jobCategory: 'Renovation',
-          startDate: new Date(bid.startDate),
-          endDate: new Date(bid.endDate),
-          status: (bid.status as 'Not Started' | 'In Progress' | 'Completed' | 'Overdue') || 'Not Started',
-          unitNumber: 'Multiple',
-          totalBudget: bid.totalBudget,
-        });
-      }
+      });
     });
     
     return ganttJobs;
