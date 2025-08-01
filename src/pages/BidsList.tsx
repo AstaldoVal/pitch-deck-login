@@ -48,30 +48,21 @@ export default function BidsList() {
     const startDate = bid.startDate ? new Date(bid.startDate) : null;
     const endDate = bid.endDate ? new Date(bid.endDate) : null;
     
-    console.log('Checking bid status:', {
-      bidId: bid.id,
-      startDate: startDate,
-      endDate: endDate,
-      isStartValid: startDate && !isNaN(startDate.getTime()),
-      isEndValid: endDate && !isNaN(endDate.getTime())
-    });
-    
+    // Check if bid is a draft (incomplete or invalid dates)
     if (!startDate || !endDate || isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-      console.log('Invalid dates, returning Not started');
-      return "Not started";
+      return "Draft";
     }
     
-    if (now < startDate) return "Not started";
-    if (now >= startDate && now <= endDate) return "Active";
+    if (now < startDate) return "Draft";
+    if (now >= startDate && now <= endDate) return "In Progress";
     return "Completed";
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Not started": return "bg-yellow-100 text-yellow-800";
-      case "Active": return "bg-green-100 text-green-800";
+      case "Draft": return "bg-yellow-100 text-yellow-800";
+      case "In Progress": return "bg-blue-100 text-blue-800";
       case "Completed": return "bg-green-100 text-green-800";
-      case "Unknown": return "bg-red-100 text-red-800";
       default: return "bg-gray-100 text-gray-800";
     }
   };
