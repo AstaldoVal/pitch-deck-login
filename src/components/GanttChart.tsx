@@ -137,13 +137,13 @@ export function GanttChart({ jobs }: GanttChartProps) {
           <span>Not Started</span>
         </div>
       </div>
-        <div className="border rounded-lg overflow-hidden bg-background max-h-[calc(100vh-300px)]">{/* Timeline chart with viewport constraints */}
+        <div className="border rounded-lg overflow-hidden bg-background max-h-[calc(100vh-300px)] max-w-[calc(100vw-320px)]">{/* Timeline chart with viewport constraints */}
           {/* Header with timeline */}
           <div className="grid grid-cols-[300px_1fr] border-b bg-muted/50">
             <div className="p-3 border-r font-semibold">
               Jobs
             </div>
-            <div className="flex border-r overflow-x-auto min-w-max">
+            <div className="flex border-r">
               {timelineRange.days.map((day, index) => (
                 <div
                   key={day.toISOString()}
@@ -158,7 +158,7 @@ export function GanttChart({ jobs }: GanttChartProps) {
           </div>
 
           {/* Jobs with timeline bars */}
-          <div className="max-h-[calc(100vh-400px)] overflow-y-auto overflow-x-auto">
+          <div className="max-h-[calc(100vh-400px)] overflow-y-auto">
             {filteredJobs.length === 0 ? (
               <div className="p-8 text-center text-muted-foreground">
                 No jobs match the selected filters
