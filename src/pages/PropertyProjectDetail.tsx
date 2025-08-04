@@ -328,11 +328,7 @@ export default function PropertyProjectDetail() {
   const [jobPositions, setJobPositions] = useState<Record<string, (UnitJob & { unitId: string; unitNumber: string })[]>>({});
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
+    useSensor(PointerSensor),
     useSensor(KeyboardSensor)
   );
 
