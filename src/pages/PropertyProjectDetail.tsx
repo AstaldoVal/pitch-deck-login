@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { AppHeader } from "@/components/AppHeader";
-import { Building, Calendar, Users, DollarSign, FileText, ChevronDown, ChevronRight, MessageCircle, BarChart3, Home, Briefcase, List, Kanban, GripVertical } from "lucide-react";
+import { Building, Calendar, Users, DollarSign, FileText, ChevronDown, ChevronRight, MessageCircle, BarChart3, Home, Briefcase, List, Kanban } from "lucide-react";
 import { format } from "date-fns";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -22,6 +22,7 @@ import {
   DragStartEvent,
   DragOverEvent,
   DragEndEvent,
+  useDroppable,
 } from "@dnd-kit/core";
 import { 
   SortableContext, 
@@ -210,13 +211,8 @@ function DraggableJobCard({ job, unit, isUnitCollapsed, onToggleCollapse }: Drag
       <div className="space-y-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <GripVertical className="h-4 w-4 text-muted-foreground" />
-              <div>
-                <h4 className="font-medium text-sm">{job.jobName}</h4>
-                <p className="text-xs text-muted-foreground">{job.jobNumber}</p>
-              </div>
-            </div>
+            <h4 className="font-medium text-sm">{job.jobName}</h4>
+            <p className="text-xs text-muted-foreground">{job.jobNumber}</p>
           </div>
           <Badge className={getStatusColor(job.status)} variant="secondary">
             {job.status}
@@ -277,6 +273,10 @@ interface DroppableColumnProps {
 }
 
 function DroppableColumn({ status, jobs, units, collapsedUnits, onToggleCollapse }: DroppableColumnProps) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: status,
+  });
+
   return (
     <div className="flex flex-col h-full">
       <div className="bg-card border rounded-t-lg p-4 border-b-2 border-primary/20">
@@ -288,7 +288,12 @@ function DroppableColumn({ status, jobs, units, collapsedUnits, onToggleCollapse
         </div>
       </div>
       
-      <div className="flex-1 bg-muted/30 border border-t-0 rounded-b-lg p-4 min-h-[400px]">
+      <div 
+        ref={setNodeRef}
+        className={`flex-1 border border-t-0 rounded-b-lg p-4 min-h-[400px] transition-colors ${
+          isOver ? 'bg-primary/5 border-primary/30' : 'bg-muted/30'
+        }`}
+      >
         <SortableContext items={jobs.map(job => job.id)} strategy={verticalListSortingStrategy}>
           <div className="space-y-3">
             {jobs.map(job => {
