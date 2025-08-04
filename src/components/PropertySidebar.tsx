@@ -38,7 +38,7 @@ const getPropertyItems = () => {
     { title: "Units", url: "/property/units", icon: Users },
     { title: "Contractors", url: "/contractors", icon: HardHat },
     { title: "Bids", url: hasBids ? "/property/bids-list" : "/property/bids", icon: Gavel },
-    { title: "Projects", url: "/property/jobs", icon: Briefcase },
+    { title: "Projects", url: "/property/projects", icon: Briefcase },
     { title: "Budget", url: "/property/budget", icon: DollarSign },
     { title: "Gantt Chart", url: "/property/gantt", icon: BarChart3 },
   ];
