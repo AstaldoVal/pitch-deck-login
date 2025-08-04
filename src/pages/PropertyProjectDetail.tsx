@@ -328,7 +328,11 @@ export default function PropertyProjectDetail() {
   const [jobPositions, setJobPositions] = useState<Record<string, (UnitJob & { unitId: string; unitNumber: string })[]>>({});
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(KeyboardSensor)
   );
 
@@ -443,8 +447,10 @@ export default function PropertyProjectDetail() {
   }, [project]);
 
   const handleDragStart = (event: DragStartEvent) => {
+    console.log('Drag started:', event);
     const { active } = event;
     const job = getAllJobs().find(j => j.id === active.id);
+    console.log('Active job:', job);
     setActiveJob(job || null);
   };
 
