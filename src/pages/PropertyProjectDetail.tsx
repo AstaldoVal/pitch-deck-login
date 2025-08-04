@@ -200,15 +200,15 @@ function DraggableJobCard({ job, unit, isUnitCollapsed, onToggleCollapse }: Drag
     <Card 
       ref={setNodeRef} 
       style={style} 
-      className={`p-4 transition-all duration-200 border-2 ${
+      className={`p-4 border-2 ${
         isDragging 
-          ? 'opacity-50 border-primary shadow-lg pointer-events-none' 
-          : 'border-transparent hover:border-border hover:shadow-md cursor-grab active:cursor-grabbing'
-      } bg-background`}
+          ? 'opacity-30 border-primary shadow-lg rotate-3' 
+          : 'border-transparent hover:border-border hover:shadow-md cursor-grab'
+      } bg-background touch-none`}
       {...attributes}
       {...listeners}
     >
-      <div className="space-y-3">
+      <div className="space-y-3 pointer-events-none">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h4 className="font-medium text-sm">{job.jobName}</h4>
@@ -227,7 +227,7 @@ function DraggableJobCard({ job, unit, isUnitCollapsed, onToggleCollapse }: Drag
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-4 w-4 p-0"
+                className="h-4 w-4 p-0 pointer-events-auto"
                 onClick={(e) => {
                   e.stopPropagation();
                   onToggleCollapse(job.unitId);
@@ -290,10 +290,15 @@ function DroppableColumn({ status, jobs, units, collapsedUnits, onToggleCollapse
       
       <div 
         ref={setNodeRef}
-        className={`flex-1 border border-t-0 rounded-b-lg p-4 min-h-[400px] transition-colors ${
-          isOver ? 'bg-primary/5 border-primary/30' : 'bg-muted/30'
+        className={`flex-1 border border-t-0 rounded-b-lg p-4 min-h-[400px] transition-all duration-200 relative ${
+          isOver ? 'bg-primary/10 border-primary border-2 border-dashed' : 'bg-muted/30 border-border'
         }`}
       >
+        {isOver && (
+          <div className="absolute inset-4 border-2 border-dashed border-primary rounded-lg bg-primary/5 flex items-center justify-center z-10">
+            <div className="text-primary font-medium text-sm">Drop here</div>
+          </div>
+        )}
         <SortableContext items={jobs.map(job => job.id)} strategy={verticalListSortingStrategy}>
           <div className="space-y-3">
             {jobs.map(job => {
