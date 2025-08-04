@@ -851,22 +851,18 @@ export default function PropertyBids() {
                     <div className="space-y-6">
                       {jobCategories.map((category) => (
                          <div key={category.id} className="border-l-4 border-l-primary/30 pl-6 py-4 space-y-4">
-                           <div className="flex items-center justify-between">
+                           <div 
+                             className="flex items-center justify-between cursor-pointer hover:bg-accent/30 rounded-lg p-2 -m-2 transition-colors"
+                             onClick={() => toggleCategoryExpansion(category.id)}
+                           >
                              <div className="flex items-center gap-3">
-                               <TooltipProvider>
-                                 <Tooltip>
-                                   <TooltipTrigger asChild>
-                                     <div className="cursor-pointer p-1 hover:bg-accent rounded" onClick={() => toggleCategoryExpansion(category.id)}>
-                                       <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
-                                     </div>
-                                   </TooltipTrigger>
-                                   <TooltipContent>
-                                     <p>{category.isExpanded ? "Collapse" : "Expand to add job details"}</p>
-                                   </TooltipContent>
-                                 </Tooltip>
-                               </TooltipProvider>
-                               <Select value={category.name} onValueChange={(value) => updateJobCategory(category.id, "name", value)}>
-                                 <SelectTrigger className="w-48">
+                               <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
+                               <div onClick={(e) => e.stopPropagation()}>
+                                 <Select 
+                                   value={category.name} 
+                                   onValueChange={(value) => updateJobCategory(category.id, "name", value)}
+                                 >
+                                   <SelectTrigger className="w-48">
                                    <SelectValue />
                                  </SelectTrigger>
                                  <SelectContent>
@@ -882,18 +878,22 @@ export default function PropertyBids() {
                                    <SelectItem value="Doors">Doors</SelectItem>
                                    <SelectItem value="Roofing">Roofing</SelectItem>
                                    <SelectItem value="Landscaping">Landscaping</SelectItem>
-                                 </SelectContent>
-                               </Select>
+                                   </SelectContent>
+                                 </Select>
+                               </div>
                                {!category.isExpanded && (
                                  <div className="text-sm text-muted-foreground italic">
-                                   Click chevron to expand and add job details
+                                   Click to expand and add job details
                                  </div>
                                )}
                              </div>
                              <Button
                                variant="ghost"
                                size="sm"
-                               onClick={() => removeJobCategory(category.id)}
+                               onClick={(e) => {
+                                 e.stopPropagation();
+                                 removeJobCategory(category.id);
+                               }}
                                className="text-muted-foreground hover:text-destructive"
                              >
                                <X className="h-4 w-4" />
