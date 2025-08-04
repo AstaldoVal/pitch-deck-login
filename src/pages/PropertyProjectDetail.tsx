@@ -202,9 +202,9 @@ function DraggableJobCard({ job, unit, isUnitCollapsed, onToggleCollapse }: Drag
       style={style} 
       className={`p-4 transition-all duration-200 border-2 ${
         isDragging 
-          ? 'opacity-50 scale-105 border-primary shadow-lg z-50' 
-          : 'border-transparent hover:border-border hover:shadow-md'
-      } cursor-grab active:cursor-grabbing bg-background`}
+          ? 'opacity-50 border-primary shadow-lg pointer-events-none' 
+          : 'border-transparent hover:border-border hover:shadow-md cursor-grab active:cursor-grabbing'
+      } bg-background`}
       {...attributes}
       {...listeners}
     >
