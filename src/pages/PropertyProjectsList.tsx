@@ -6,10 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { AppHeader } from "@/components/AppHeader";
-import { Building, Calendar, Users, DollarSign, FileText, ChevronDown, ChevronRight, MessageCircle, BarChart3, Home, Briefcase } from "lucide-react";
+import { Building, Calendar, Users, DollarSign, FileText, ChevronDown, ChevronRight, MessageCircle, BarChart3, Home, Briefcase, List, Kanban } from "lucide-react";
 import { format } from "date-fns";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface BidData {
   id: string;
@@ -133,6 +134,8 @@ export default function PropertyProjectsList() {
   const [jobs, setJobs] = useState<BidData[]>([]);
   const [selectedJob, setSelectedJob] = useState<BidData | null>(null);
   const [expandedUnits, setExpandedUnits] = useState<Set<string>>(new Set());
+  const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
+  const [collapsedUnits, setCollapsedUnits] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     // Load accepted bids as jobs from localStorage
@@ -289,6 +292,126 @@ export default function PropertyProjectsList() {
     };
   };
 
+  const getAllJobs = () => {
+    const allJobs: (UnitJob & { unitId: string; unitNumber: string })[] = [];
+    jobs.forEach(project => {
+      project.unitsIncluded?.forEach(unit => {
+        unit.jobs.forEach(job => {
+          allJobs.push({
+            ...job,
+            unitId: unit.id,
+            unitNumber: unit.unitNumber
+          });
+        });
+      });
+    });
+    return allJobs;
+  };
+
+  const getJobsByStatus = () => {
+    const allJobs = getAllJobs();
+    const statuses = ['Not Started', 'In Progress', 'Completed', 'On Hold'];
+    const jobsByStatus: Record<string, (UnitJob & { unitId: string; unitNumber: string })[]> = {};
+    
+    statuses.forEach(status => {
+      jobsByStatus[status] = allJobs.filter(job => job.status === status);
+    });
+    
+    return jobsByStatus;
+  };
+
+  const toggleUnitCollapse = (unitId: string) => {
+    const newCollapsed = new Set(collapsedUnits);
+    if (newCollapsed.has(unitId)) {
+      newCollapsed.delete(unitId);
+    } else {
+      newCollapsed.add(unitId);
+    }
+    setCollapsedUnits(newCollapsed);
+  };
+
+  const KanbanView = () => {
+    const jobsByStatus = getJobsByStatus();
+    const statuses = ['Not Started', 'In Progress', 'Completed', 'On Hold'];
+
+    return (
+      <div className="grid grid-cols-4 gap-6">
+        {statuses.map(status => (
+          <div key={status} className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-lg">{status}</h3>
+              <Badge variant="secondary">{jobsByStatus[status].length}</Badge>
+            </div>
+            
+            <div className="space-y-3 min-h-[200px]">
+              {jobsByStatus[status].map(job => {
+                const unit = jobs.flatMap(j => j.unitsIncluded || []).find(u => u.id === job.unitId);
+                const isUnitCollapsed = collapsedUnits.has(job.unitId);
+                
+                return (
+                  <Card key={job.id} className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h4 className="font-medium text-sm">{job.jobName}</h4>
+                          <p className="text-xs text-muted-foreground">{job.jobNumber}</p>
+                        </div>
+                        <Badge className={getStatusColor(job.status)} variant="secondary">
+                          {job.status}
+                        </Badge>
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-muted-foreground">Unit:</span>
+                          <div className="flex items-center gap-1">
+                            <span className="font-medium">{job.unitNumber}</span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-4 w-4 p-0"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleUnitCollapse(job.unitId);
+                              }}
+                            >
+                              <ChevronDown className={`h-3 w-3 transition-transform ${isUnitCollapsed ? 'rotate-180' : ''}`} />
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        {!isUnitCollapsed && unit && (
+                          <div className="text-xs text-muted-foreground space-y-1">
+                            <div className="flex justify-between">
+                              <span>Floor Plan:</span>
+                              <span>{unit.floorPlan}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Budget:</span>
+                              <span>{formatCurrency(job.totalBudget)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Contractor:</span>
+                              <span className="truncate max-w-[80px]">{job.contractor}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>End Date:</span>
+                              <span>{formatDate(job.endDate)}</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   if (jobs.length === 0) {
     return (
       <SidebarProvider>
@@ -297,25 +420,42 @@ export default function PropertyProjectsList() {
           <div className="flex-1 flex flex-col">
             <AppHeader />
             <main className="flex-1 p-6 space-y-6">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">Projects List</h1>
-                <p className="text-muted-foreground mt-1">
-                  Track and manage active renovation projects
-                </p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-3xl font-bold text-foreground">Projects List</h1>
+                  <p className="text-muted-foreground mt-1">
+                    Track and manage active renovation projects
+                  </p>
+                </div>
+                
+                <ToggleGroup type="single" value={viewMode} onValueChange={(value) => value && setViewMode(value as 'list' | 'kanban')}>
+                  <ToggleGroupItem value="list" aria-label="List view">
+                    <List className="h-4 w-4" />
+                    <span className="ml-2">List</span>
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="kanban" aria-label="Kanban view">
+                    <Kanban className="h-4 w-4" />
+                    <span className="ml-2">Kanban</span>
+                  </ToggleGroupItem>
+                </ToggleGroup>
               </div>
               
-              <Card className="p-12 text-center">
-                <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                  <Briefcase className="h-8 w-8 text-muted-foreground" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">No active projects</h3>
-                <p className="text-muted-foreground mb-4">
-                  Projects will appear here when renovation bids are accepted
-                </p>
-                <Button onClick={createTestData} variant="outline">
-                  Create Test Data (Demo)
-                </Button>
-              </Card>
+              {viewMode === 'kanban' ? (
+                <KanbanView />
+              ) : (
+                <Card className="p-12 text-center">
+                  <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+                    <Briefcase className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">No active projects</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Projects will appear here when renovation bids are accepted
+                  </p>
+                  <Button onClick={createTestData} variant="outline">
+                    Create Test Data (Demo)
+                  </Button>
+                </Card>
+              )}
             </main>
           </div>
         </div>
@@ -475,161 +615,180 @@ export default function PropertyProjectsList() {
         <div className="flex-1 flex flex-col">
           <AppHeader />
           <main className="flex-1 p-6 space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Projects List</h1>
-              <p className="text-muted-foreground mt-1">
-                Track and manage active renovation projects
-              </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Projects List</h1>
+                <p className="text-muted-foreground mt-1">
+                  Track and manage active renovation projects
+                </p>
+              </div>
+              
+              <ToggleGroup type="single" value={viewMode} onValueChange={(value) => value && setViewMode(value as 'list' | 'kanban')}>
+                <ToggleGroupItem value="list" aria-label="List view">
+                  <List className="h-4 w-4" />
+                  <span className="ml-2">List</span>
+                </ToggleGroupItem>
+                <ToggleGroupItem value="kanban" aria-label="Kanban view">
+                  <Kanban className="h-4 w-4" />
+                  <span className="ml-2">Kanban</span>
+                </ToggleGroupItem>
+              </ToggleGroup>
             </div>
 
-            {jobs.map(job => {
-              const status = getJobStatus(job);
-              const daysToComplete = getDaysToComplete(job.startDate, job.endDate);
-              const totalInvoiced = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalInvoiced, 0) || 0;
-              const totalBid = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalBid, 0) || 0;
-              const totalPaid = totalInvoiced * 0.8; // Mock data: assume 80% of invoiced is paid
+            {viewMode === 'kanban' ? (
+              <KanbanView />
+            ) : (
+              <div className="space-y-6">
+                {jobs.map(job => {
+                  const status = getJobStatus(job);
+                  const daysToComplete = getDaysToComplete(job.startDate, job.endDate);
+                  const totalInvoiced = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalInvoiced, 0) || 0;
+                  const totalBid = job.unitsIncluded?.reduce((sum, unit) => sum + unit.totalBid, 0) || 0;
+                  const totalPaid = totalInvoiced * 0.8; // Mock data: assume 80% of invoiced is paid
 
-              return (
-                <Collapsible key={job.id}>
-                  <Card className="overflow-hidden">
-                    {/* Первый уровень - основная информация */}
-                    <CardHeader className="pb-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <CardTitle className="text-xl">
-                            {job.property?.name || 'Property Name'}
-                          </CardTitle>
-                          <div className="flex items-center gap-2 mt-1">
-                            <p className="text-sm text-muted-foreground">
-                              Bid #{job.id}
-                            </p>
-                            <span className="text-muted-foreground">•</span>
-                            <p className="text-sm text-muted-foreground">
-                              {job.companyName}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge className={getStatusColor(status)}>
-                            {status === "In Progress" ? "In Progress" : status === "Completed" ? "Completed" : "Not Started"}
-                          </Badge>
-                          <CollapsibleTrigger asChild>
-                            <Button variant="outline" size="sm">
-                              <ChevronDown className="h-4 w-4" />
-                              Expand details
-                            </Button>
-                          </CollapsibleTrigger>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    
-                    <CardContent className="space-y-4">
-                      {/* Основные метрики - обобщённая информация */}
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                        <div className="space-y-1">
-                          <p className="text-xs text-muted-foreground">Start Date</p>
-                          <p className="text-sm font-medium">{formatDate(job.startDate)}</p>
-                        </div>
-                        
-                        <div className="space-y-1">
-                          <p className="text-xs text-muted-foreground">End Date</p>
-                          <p className="text-sm font-medium">{formatDate(job.endDate)}</p>
-                        </div>
-                        
-                        <div className="space-y-1">
-                          <p className="text-xs text-muted-foreground">Units Included</p>
-                          <p className="text-sm font-medium">{job.unitsIncluded?.length || 0} units</p>
-                        </div>
-                        
-                        <div className="space-y-1">
-                          <p className="text-xs text-muted-foreground">Total Bid</p>
-                          <p className="text-sm font-medium text-primary">{formatCurrency(totalBid)}</p>
-                        </div>
-                        
-                        <div className="space-y-1">
-                          <p className="text-xs text-muted-foreground">Budget</p>
-                          <p className="text-sm font-medium">{formatCurrency(job.totalBudget || 0)}</p>
-                        </div>
-                        
-                        <div className="space-y-1">
-                          <p className="text-xs text-muted-foreground">Paid</p>
-                          <p className="text-sm font-medium text-green-600">{formatCurrency(totalPaid)}</p>
-                        </div>
-                      </div>
-                      
-                      {/* Job Categories краткий список */}
-                      <div className="space-y-2">
-                        <p className="text-xs text-muted-foreground">Job Category</p>
-                        <div className="flex flex-wrap gap-1">
-                          {job.jobCategories?.slice(0, 3).map((category, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs">
-                              {category.name}
-                            </Badge>
-                          ))}
-                          {job.jobCategories?.length > 3 && (
-                            <Badge variant="outline" className="text-xs">
-                              +{job.jobCategories.length - 3} more
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                      
-                      {/* Кнопки действий - всегда видны */}
-                      <div className="flex gap-2 pt-4 justify-end">
-                        <Button variant="default" onClick={() => setSelectedJob(job)}>
-                          View Full Details
-                        </Button>
-                        <Button variant="outline" onClick={() => navigate(`/property/bid/${job.id}`)}>
-                          View Original Bid
-                        </Button>
-                      </div>
-                      
-                      {/* Второй уровень - детальная информация */}
-                      <CollapsibleContent className="space-y-6 pt-4 border-t">
-                        {/* Scope of Work */}
-                        {job.notes && (
-                          <div className="space-y-2">
-                            <h3 className="font-semibold flex items-center gap-2">
-                              <FileText className="h-4 w-4" />
-                              Scope of Work
-                            </h3>
-                            <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
-                              {job.notes}
-                            </p>
-                          </div>
-                        )}
-                        
-                        {/* Контакты */}
-                        <div className="space-y-2">
-                          <h3 className="font-semibold flex items-center gap-2">
-                            <Users className="h-4 w-4" />
-                            Contacts
-                          </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div className="bg-muted/50 p-3 rounded-lg">
-                              <p className="text-sm font-medium">Project Manager</p>
-                              <p className="text-sm">{job.generatedBy}</p>
-                              <p className="text-xs text-muted-foreground">{job.email}</p>
-                              <p className="text-xs text-muted-foreground">{job.phone}</p>
-                            </div>
-                            {job.contractors?.map((contractor, index) => (
-                              <div key={index} className="bg-muted/50 p-3 rounded-lg">
-                                <p className="text-sm font-medium">Contractor</p>
-                                <p className="text-sm">{contractor.firstName} {contractor.lastName}</p>
-                                <p className="text-xs text-muted-foreground">{contractor.email}</p>
-                                <p className="text-xs text-muted-foreground">
-                                  Status: {contractor.hasSubmitted ? 'Submitted' : 'Pending'}
+                  return (
+                    <Collapsible key={job.id}>
+                      <Card className="overflow-hidden">
+                        {/* Первый уровень - основная информация */}
+                        <CardHeader className="pb-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <CardTitle className="text-xl">
+                                {job.property?.name || 'Property Name'}
+                              </CardTitle>
+                              <div className="flex items-center gap-2 mt-1">
+                                <p className="text-sm text-muted-foreground">
+                                  Bid #{job.id}
+                                </p>
+                                <span className="text-muted-foreground">•</span>
+                                <p className="text-sm text-muted-foreground">
+                                  {job.companyName}
                                 </p>
                               </div>
-                            ))}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge className={getStatusColor(status)}>
+                                {status === "In Progress" ? "In Progress" : status === "Completed" ? "Completed" : "Not Started"}
+                              </Badge>
+                              <CollapsibleTrigger asChild>
+                                <Button variant="outline" size="sm">
+                                  <ChevronDown className="h-4 w-4" />
+                                  Expand details
+                                </Button>
+                              </CollapsibleTrigger>
+                            </div>
                           </div>
-                        </div>
-                      </CollapsibleContent>
-                    </CardContent>
-                  </Card>
-                </Collapsible>
-              );
-            })}
+                        </CardHeader>
+                        
+                        <CardContent className="space-y-4">
+                          {/* Основные метрики - обобщённая информация */}
+                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                            <div className="space-y-1">
+                              <p className="text-xs text-muted-foreground">Start Date</p>
+                              <p className="text-sm font-medium">{formatDate(job.startDate)}</p>
+                            </div>
+                            
+                            <div className="space-y-1">
+                              <p className="text-xs text-muted-foreground">End Date</p>
+                              <p className="text-sm font-medium">{formatDate(job.endDate)}</p>
+                            </div>
+                            
+                            <div className="space-y-1">
+                              <p className="text-xs text-muted-foreground">Units Included</p>
+                              <p className="text-sm font-medium">{job.unitsIncluded?.length || 0} units</p>
+                            </div>
+                            
+                            <div className="space-y-1">
+                              <p className="text-xs text-muted-foreground">Total Bid</p>
+                              <p className="text-sm font-medium text-primary">{formatCurrency(totalBid)}</p>
+                            </div>
+                            
+                            <div className="space-y-1">
+                              <p className="text-xs text-muted-foreground">Budget</p>
+                              <p className="text-sm font-medium">{formatCurrency(job.totalBudget || 0)}</p>
+                            </div>
+                            
+                            <div className="space-y-1">
+                              <p className="text-xs text-muted-foreground">Paid</p>
+                              <p className="text-sm font-medium text-green-600">{formatCurrency(totalPaid)}</p>
+                            </div>
+                          </div>
+                          
+                          {/* Job Categories краткий список */}
+                          <div className="space-y-2">
+                            <p className="text-xs text-muted-foreground">Job Category</p>
+                            <div className="flex flex-wrap gap-1">
+                              {job.jobCategories?.slice(0, 3).map((category, index) => (
+                                <Badge key={index} variant="secondary" className="text-xs">
+                                  {category.name}
+                                </Badge>
+                              ))}
+                              {job.jobCategories?.length > 3 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{job.jobCategories.length - 3} more
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                          
+                          {/* Кнопки действий - всегда видны */}
+                          <div className="flex gap-2 pt-4 justify-end">
+                            <Button variant="default" onClick={() => setSelectedJob(job)}>
+                              View Full Details
+                            </Button>
+                            <Button variant="outline" onClick={() => navigate(`/property/bid/${job.id}`)}>
+                              View Original Bid
+                            </Button>
+                          </div>
+                          
+                          {/* Второй уровень - детальная информация */}
+                          <CollapsibleContent className="space-y-6 pt-4 border-t">
+                            {/* Scope of Work */}
+                            {job.notes && (
+                              <div className="space-y-2">
+                                <h3 className="font-semibold flex items-center gap-2">
+                                  <FileText className="h-4 w-4" />
+                                  Scope of Work
+                                </h3>
+                                <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+                                  {job.notes}
+                                </p>
+                              </div>
+                            )}
+                            
+                            {/* Контакты */}
+                            <div className="space-y-2">
+                              <h3 className="font-semibold flex items-center gap-2">
+                                <Users className="h-4 w-4" />
+                                Contacts
+                              </h3>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div className="bg-muted/50 p-3 rounded-lg">
+                                  <p className="text-sm font-medium">Project Manager</p>
+                                  <p className="text-sm">{job.generatedBy}</p>
+                                  <p className="text-xs text-muted-foreground">{job.email}</p>
+                                  <p className="text-xs text-muted-foreground">{job.phone}</p>
+                                </div>
+                                {job.contractors?.map((contractor, index) => (
+                                  <div key={index} className="bg-muted/50 p-3 rounded-lg">
+                                    <p className="text-sm font-medium">Contractor</p>
+                                    <p className="text-sm">{contractor.firstName} {contractor.lastName}</p>
+                                    <p className="text-xs text-muted-foreground">{contractor.email}</p>
+                                    <p className="text-xs text-muted-foreground">
+                                      Status: {contractor.hasSubmitted ? 'Submitted' : 'Pending'}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </CollapsibleContent>
+                        </CardContent>
+                      </Card>
+                    </Collapsible>
+                  );
+                })}
+              </div>
+            )}
           </main>
         </div>
       </div>
