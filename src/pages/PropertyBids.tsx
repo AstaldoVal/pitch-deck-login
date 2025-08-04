@@ -850,12 +850,21 @@ export default function PropertyBids() {
                   {jobCategories.length > 0 && (
                     <div className="space-y-6">
                       {jobCategories.map((category) => (
-                        <div key={category.id} className="border-l-4 border-l-primary/30 pl-6 py-4 space-y-4">
+                         <div key={category.id} className="border-l-4 border-l-primary/30 pl-6 py-4 space-y-4">
                            <div className="flex items-center justify-between">
                              <div className="flex items-center gap-3">
-                               <div className="cursor-pointer" onClick={() => toggleCategoryExpansion(category.id)}>
-                                 <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
-                               </div>
+                               <TooltipProvider>
+                                 <Tooltip>
+                                   <TooltipTrigger asChild>
+                                     <div className="cursor-pointer p-1 hover:bg-accent rounded" onClick={() => toggleCategoryExpansion(category.id)}>
+                                       <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
+                                     </div>
+                                   </TooltipTrigger>
+                                   <TooltipContent>
+                                     <p>{category.isExpanded ? "Collapse" : "Expand to add job details"}</p>
+                                   </TooltipContent>
+                                 </Tooltip>
+                               </TooltipProvider>
                                <Select value={category.name} onValueChange={(value) => updateJobCategory(category.id, "name", value)}>
                                  <SelectTrigger className="w-48">
                                    <SelectValue />
@@ -875,6 +884,11 @@ export default function PropertyBids() {
                                    <SelectItem value="Landscaping">Landscaping</SelectItem>
                                  </SelectContent>
                                </Select>
+                               {!category.isExpanded && (
+                                 <div className="text-sm text-muted-foreground italic">
+                                   Click chevron to expand and add job details
+                                 </div>
+                               )}
                              </div>
                              <Button
                                variant="ghost"
