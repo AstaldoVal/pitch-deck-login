@@ -150,12 +150,9 @@ const mockUnits: Unit[] = [{
 
 interface DraggableJobCardProps {
   job: UnitJob & { unitId: string; unitNumber: string };
-  unit?: Unit;
-  isUnitCollapsed: boolean;
-  onToggleCollapse: (unitId: string) => void;
 }
 
-function DraggableJobCard({ job, unit, isUnitCollapsed, onToggleCollapse }: DraggableJobCardProps) {
+function DraggableJobCard({ job }: DraggableJobCardProps) {
   const {
     attributes,
     listeners,
@@ -173,15 +170,15 @@ function DraggableJobCard({ job, unit, isUnitCollapsed, onToggleCollapse }: Drag
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Not Started":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
       case "In Progress":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-100 text-blue-800 border-blue-200";
       case "Completed":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 border-green-200";
       case "On Hold":
-        return "bg-red-100 text-red-800";
+        return "bg-red-100 text-red-800 border-red-200";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
@@ -200,89 +197,119 @@ function DraggableJobCard({ job, unit, isUnitCollapsed, onToggleCollapse }: Drag
     <Card 
       ref={setNodeRef} 
       style={style} 
-      className={`p-4 border-2 ${
+      className={`p-3 cursor-grab select-none transition-all duration-200 ${
         isDragging 
-          ? 'opacity-30 border-primary shadow-lg rotate-3' 
-          : 'border-transparent hover:border-border hover:shadow-md cursor-grab'
-      } bg-background touch-none`}
+          ? 'opacity-50 scale-105 shadow-lg' 
+          : 'shadow-md hover:shadow-lg border-2 border-border/50 hover:border-border bg-card'
+      }`}
       {...attributes}
       {...listeners}
     >
-      <div className="space-y-3 pointer-events-none">
+      <div className="space-y-2">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h4 className="font-medium text-sm">{job.jobName}</h4>
+            <h4 className="font-medium text-sm leading-tight">{job.jobName}</h4>
             <p className="text-xs text-muted-foreground">{job.jobNumber}</p>
           </div>
-          <Badge className={getStatusColor(job.status)} variant="secondary">
+          <Badge className={`text-xs px-2 py-1 ${getStatusColor(job.status)}`} variant="outline">
             {job.status}
           </Badge>
         </div>
         
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-muted-foreground">Unit:</span>
-            <div className="flex items-center gap-1">
-              <span className="font-medium">{job.unitNumber}</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-4 w-4 p-0 pointer-events-auto"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onToggleCollapse(job.unitId);
-                }}
-              >
-                <ChevronDown className={`h-3 w-3 transition-transform ${isUnitCollapsed ? 'rotate-180' : ''}`} />
-              </Button>
-            </div>
+        <div className="space-y-1 text-xs">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Budget:</span>
+            <span className="font-medium">{formatCurrency(job.totalBudget)}</span>
           </div>
-          
-          {!isUnitCollapsed && unit && (
-            <div className="text-xs text-muted-foreground space-y-1 bg-muted/30 p-2 rounded">
-              <div className="flex justify-between">
-                <span>Floor Plan:</span>
-                <span>{unit.floorPlan}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Budget:</span>
-                <span>{formatCurrency(job.totalBudget)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Contractor:</span>
-                <span className="truncate max-w-[80px]">{job.contractor}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>End Date:</span>
-                <span>{formatDate(job.endDate)}</span>
-              </div>
-            </div>
-          )}
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Contractor:</span>
+            <span className="font-medium truncate max-w-[100px]">{job.contractor}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Due:</span>
+            <span className="font-medium">{formatDate(job.endDate)}</span>
+          </div>
         </div>
       </div>
     </Card>
   );
 }
 
-interface DroppableColumnProps {
-  status: string;
-  jobs: (UnitJob & { unitId: string; unitNumber: string })[];
-  units: Unit[];
-  collapsedUnits: Set<string>;
+interface SwimLaneProps {
+  unit: Unit;
+  statuses: string[];
+  isCollapsed: boolean;
   onToggleCollapse: (unitId: string) => void;
+  getJobsByStatusForUnit: (unitId: string) => Record<string, (UnitJob & { unitId: string; unitNumber: string })[]>;
 }
 
-function DroppableColumn({ status, jobs, units, collapsedUnits, onToggleCollapse }: DroppableColumnProps) {
+function SwimLane({ unit, statuses, isCollapsed, onToggleCollapse, getJobsByStatusForUnit }: SwimLaneProps) {
+  const jobsByStatus = getJobsByStatusForUnit(unit.id);
+
+  return (
+    <div className="border rounded-lg overflow-hidden bg-card">
+      {/* Swim Lane Header */}
+      <div className="bg-muted/50 border-b p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onToggleCollapse(unit.id)}
+              className="h-8 w-8 p-0"
+            >
+              <ChevronRight className={`h-4 w-4 transition-transform ${!isCollapsed ? 'rotate-90' : ''}`} />
+            </Button>
+            <div>
+              <h3 className="font-semibold text-base">Unit {unit.unitNumber}</h3>
+              <p className="text-sm text-muted-foreground">{unit.floorPlan}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="text-xs">
+              {unit.jobs.length} jobs
+            </Badge>
+            <div className="text-sm text-muted-foreground">
+              {unit.percentComplete}% complete
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Jobs Grid */}
+      {!isCollapsed && (
+        <div className="grid grid-cols-4 gap-0 min-h-[200px]">
+          {statuses.map((status) => (
+            <DroppableColumn 
+              key={`${unit.id}-${status}`}
+              status={status}
+              unitId={unit.id}
+              jobs={jobsByStatus[status] || []}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface DroppableColumnProps {
+  status: string;
+  unitId: string;
+  jobs: (UnitJob & { unitId: string; unitNumber: string })[];
+}
+
+function DroppableColumn({ status, unitId, jobs }: DroppableColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
-    id: status,
+    id: `${unitId}-${status}`,
   });
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="bg-card border rounded-t-lg p-4 border-b-2 border-primary/20">
+    <div className="border-r last:border-r-0 border-border/30">
+      <div className="bg-muted/30 p-2 border-b border-border/30">
         <div className="flex items-center justify-between">
-          <h3 className="font-bold text-lg text-foreground">{status}</h3>
-          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
+          <h4 className="font-medium text-sm text-foreground">{status}</h4>
+          <Badge variant="secondary" className="text-xs h-5">
             {jobs.length}
           </Badge>
         </div>
@@ -290,31 +317,23 @@ function DroppableColumn({ status, jobs, units, collapsedUnits, onToggleCollapse
       
       <div 
         ref={setNodeRef}
-        className={`flex-1 border border-t-0 rounded-b-lg p-4 min-h-[400px] transition-all duration-200 relative ${
-          isOver ? 'bg-primary/10 border-primary border-2 border-dashed' : 'bg-muted/30 border-border'
+        className={`p-2 min-h-[150px] transition-all duration-200 ${
+          isOver ? 'bg-primary/10 border-2 border-dashed border-primary' : 'bg-background'
         }`}
       >
         {isOver && (
-          <div className="absolute inset-4 border-2 border-dashed border-primary rounded-lg bg-primary/5 flex items-center justify-center z-10">
-            <div className="text-primary font-medium text-sm">Drop here</div>
+          <div className="border-2 border-dashed border-primary rounded-lg bg-primary/5 h-16 flex items-center justify-center mb-2">
+            <div className="text-primary font-medium text-xs">Drop here</div>
           </div>
         )}
         <SortableContext items={jobs.map(job => job.id)} strategy={verticalListSortingStrategy}>
-          <div className="space-y-3">
-            {jobs.map(job => {
-              const unit = units.find(u => u.id === job.unitId);
-              const isUnitCollapsed = collapsedUnits.has(job.unitId);
-              
-              return (
-                <DraggableJobCard
-                  key={job.id}
-                  job={job}
-                  unit={unit}
-                  isUnitCollapsed={isUnitCollapsed}
-                  onToggleCollapse={onToggleCollapse}
-                />
-              );
-            })}
+          <div className="space-y-2">
+            {jobs.map(job => (
+              <DraggableJobCard
+                key={job.id}
+                job={job}
+              />
+            ))}
           </div>
         </SortableContext>
       </div>
@@ -459,6 +478,26 @@ export default function PropertyProjectDetail() {
     // Handle drag over logic for visual feedback
   };
 
+  const getJobsByStatusForUnit = (unitId: string) => {
+    const unit = project?.unitsIncluded?.find(u => u.id === unitId);
+    if (!unit) return {};
+    
+    const statuses = ['Not Started', 'In Progress', 'Completed', 'On Hold'];
+    const jobsByStatus: Record<string, (UnitJob & { unitId: string; unitNumber: string })[]> = {};
+    
+    statuses.forEach(status => {
+      jobsByStatus[status] = unit.jobs
+        .filter(job => job.status === status)
+        .map(job => ({
+          ...job,
+          unitId: unit.id,
+          unitNumber: unit.unitNumber
+        }));
+    });
+    
+    return jobsByStatus;
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     
@@ -479,16 +518,20 @@ export default function PropertyProjectDetail() {
       return;
     }
 
-    // Determine target status - could be a status column or another job
+    // Parse overId to get unitId and status (format: "unitId-status")
     let targetStatus: string;
-    const statusColumns = ['Not Started', 'In Progress', 'Completed', 'On Hold'];
+    let targetUnitId: string | null = null;
     
-    if (statusColumns.includes(overId)) {
-      targetStatus = overId;
+    if (overId.includes('-')) {
+      const parts = overId.split('-');
+      if (parts.length >= 2) {
+        targetUnitId = parts[0];
+        targetStatus = parts.slice(1).join('-'); // In case status has hyphens
+      } else {
+        targetStatus = activeJob.status;
+      }
     } else {
-      // Find the status of the job we're dropping over
-      const targetJob = allJobs.find(job => job.id === overId);
-      targetStatus = targetJob?.status || activeJob.status;
+      targetStatus = activeJob.status;
     }
 
     // Update job status in mock data and project state
@@ -516,7 +559,6 @@ export default function PropertyProjectDetail() {
   };
 
   const KanbanView = () => {
-    const jobsByStatus = getJobsByStatus();
     const statuses = ['Not Started', 'In Progress', 'Completed', 'On Hold'];
     const units = project?.unitsIncluded || [];
 
@@ -528,15 +570,25 @@ export default function PropertyProjectDetail() {
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className="grid grid-cols-4 gap-6 h-full">
-          {statuses.map(status => (
-            <DroppableColumn
-              key={status}
-              status={status}
-              jobs={jobsByStatus[status]}
-              units={units}
-              collapsedUnits={collapsedUnits}
+        <div className="space-y-4">
+          {/* Status Headers */}
+          <div className="grid grid-cols-4 gap-0 bg-card border rounded-lg p-4">
+            {statuses.map(status => (
+              <div key={status} className="text-center">
+                <h3 className="font-semibold text-lg text-foreground">{status}</h3>
+              </div>
+            ))}
+          </div>
+
+          {/* Swim Lanes for each Unit */}
+          {units.map(unit => (
+            <SwimLane
+              key={unit.id}
+              unit={unit}
+              statuses={statuses}
+              isCollapsed={collapsedUnits.has(unit.id)}
               onToggleCollapse={toggleUnitCollapse}
+              getJobsByStatusForUnit={getJobsByStatusForUnit}
             />
           ))}
         </div>
@@ -545,9 +597,6 @@ export default function PropertyProjectDetail() {
           {activeJob && (
             <DraggableJobCard
               job={activeJob}
-              unit={units.find(u => u.id === activeJob.unitId)}
-              isUnitCollapsed={collapsedUnits.has(activeJob.unitId)}
-              onToggleCollapse={toggleUnitCollapse}
             />
           )}
         </DragOverlay>
