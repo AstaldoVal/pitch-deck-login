@@ -24,7 +24,7 @@ const mockDraws = [
     contractor: "Elite Construction",
     dateSubmitted: "2024-01-15",
     approver: "John Smith",
-    hasLienWaiver: true,
+    lienWaiverStatus: "approved",
     attachments: 3
   },
   {
@@ -39,7 +39,7 @@ const mockDraws = [
     contractor: "ProBuild Solutions",
     dateSubmitted: "2024-01-12",
     approver: "Sarah Johnson",
-    hasLienWaiver: true,
+    lienWaiverStatus: "submitted",
     attachments: 5
   },
   {
@@ -54,7 +54,7 @@ const mockDraws = [
     contractor: "Facade Masters",
     dateSubmitted: "2024-01-10",
     approver: "Mike Davis",
-    hasLienWaiver: false,
+    lienWaiverStatus: "rejected",
     attachments: 2,
     rejectionReason: "Missing lien waiver documentation"
   }
@@ -68,6 +68,21 @@ const getStatusBadge = (status: string) => {
       return <Badge variant="secondary" className="bg-green-100 text-green-800">Approved</Badge>;
     case "rejected":
       return <Badge variant="secondary" className="bg-red-100 text-red-800">Rejected</Badge>;
+    default:
+      return <Badge variant="outline">{status}</Badge>;
+  }
+};
+
+const getLienWaiverBadge = (status: string) => {
+  switch (status) {
+    case "not_provided":
+      return <Badge variant="secondary" className="bg-gray-100 text-gray-800">Not Provided</Badge>;
+    case "submitted":
+      return <Badge variant="secondary" className="bg-blue-100 text-blue-800">Submitted</Badge>;
+    case "approved":
+      return <Badge variant="secondary" className="bg-green-100 text-green-800">Approved</Badge>;
+    case "rejected":
+      return <Badge variant="destructive" className="bg-red-100 text-red-800">Rejected</Badge>;
     default:
       return <Badge variant="outline">{status}</Badge>;
   }
@@ -230,11 +245,7 @@ export default function RenovationDraws() {
                       <TableCell>{getStatusBadge(draw.status)}</TableCell>
                       <TableCell>{new Date(draw.dateSubmitted).toLocaleDateString()}</TableCell>
                       <TableCell>
-                        <Badge variant={draw.hasLienWaiver ? "secondary" : "destructive"} className={
-                          draw.hasLienWaiver ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                        }>
-                          {draw.hasLienWaiver ? "Submitted" : "Missing"}
-                        </Badge>
+                        {getLienWaiverBadge(draw.lienWaiverStatus)}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
