@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PropertySidebar } from "@/components/PropertySidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -86,10 +87,11 @@ export default function RenovationDraws() {
     .reduce((sum, d) => sum + d.currentRequestedAmount, 0);
 
   return (
-    <div className="min-h-screen flex w-full">
-      <PropertySidebar />
-      
-      <main className="flex-1 p-6">
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <PropertySidebar />
+        
+        <main className="flex-1 p-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex justify-between items-center mb-6">
@@ -257,6 +259,7 @@ export default function RenovationDraws() {
           </Card>
         </div>
       </main>
-    </div>
+      </div>
+    </SidebarProvider>
   );
 }
