@@ -575,7 +575,7 @@ export default function PropertyProjectDetail() {
           {/* Status Headers */}
           <div className="grid grid-cols-4 gap-0 bg-card border rounded-lg p-4">
             {statuses.map(status => (
-              <div key={status} className="text-center">
+              <div key={status} className="text-center border-r last:border-r-0 border-border/30">
                 <h3 className="font-semibold text-lg text-foreground">{status}</h3>
               </div>
             ))}
