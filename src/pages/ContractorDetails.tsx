@@ -185,10 +185,6 @@ export default function ContractorDetails() {
                       <MapPin className="w-4 h-4 text-muted-foreground" />
                       <span>{contractor.address}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="w-4 h-4 text-muted-foreground" />
-                      <span>Joined {new Date(contractor.joinedDate).toLocaleDateString()}</span>
-                    </div>
                     
                     {/* Map Screenshot */}
                     <div className="mt-4">
