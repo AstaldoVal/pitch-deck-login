@@ -11,7 +11,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
 
 interface PropertyData {
@@ -50,7 +49,7 @@ const supportItems = [
 ];
 
 export function PropertySidebar() {
-  const { open } = useSidebar();
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
@@ -74,7 +73,7 @@ export function PropertySidebar() {
 
   return (
     <Sidebar
-      className={`${!open ? "w-14" : "w-60"} bg-blue-600 border-r-0`}
+      className={`${isCollapsed ? "w-14" : "w-60"} bg-blue-600 border-r-0`}
       collapsible="icon"
     >
       <SidebarContent className="bg-blue-600 flex flex-col h-full">
@@ -89,7 +88,7 @@ export function PropertySidebar() {
                     className="w-full text-left hover:bg-blue-500/20 text-blue-100 flex items-center gap-2"
                   >
                     <ArrowLeft className="h-5 w-5 text-current" />
-                    {open && <span className="font-medium">Back to Properties</span>}
+                    {!isCollapsed && <span className="font-medium">Back to Properties</span>}
                   </button>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -100,11 +99,11 @@ export function PropertySidebar() {
         {/* Current Property Info */}
         {propertyData && (
           <SidebarGroup>
-            <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+            <SidebarGroupLabel className={`${isCollapsed ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
               Current Property
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              {open && (
+              {!isCollapsed && (
                 <div className="px-3 py-2 text-blue-100">
                   <div className="flex items-center gap-2 mb-1">
                     <Building2 className="h-4 w-4" />
@@ -121,7 +120,7 @@ export function PropertySidebar() {
 
         {/* Property Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+          <SidebarGroupLabel className={`${isCollapsed ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
             Property
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -136,7 +135,7 @@ export function PropertySidebar() {
                       }
                     >
                       <item.icon className="h-5 w-5 text-current" />
-                      {open && <span className="font-medium">{item.title}</span>}
+                      {!isCollapsed && <span className="font-medium">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -150,7 +149,7 @@ export function PropertySidebar() {
 
         {/* Support Section at bottom */}
         <SidebarGroup>
-          <SidebarGroupLabel className={`${!open ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
+          <SidebarGroupLabel className={`${isCollapsed ? "sr-only" : ""} text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2`}>
             Support
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -165,7 +164,7 @@ export function PropertySidebar() {
                       }
                     >
                       <item.icon className="h-5 w-5 text-current" />
-                      {open && <span className="font-medium">{item.title}</span>}
+                      {!isCollapsed && <span className="font-medium">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
