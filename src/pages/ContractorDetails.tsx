@@ -133,27 +133,27 @@ export default function ContractorDetails() {
         <div className="flex-1 flex flex-col">
           {/* Header */}
           <header className="bg-white border-b border-gray-200 px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <SidebarTrigger />
-                <Button
-                  variant="ghost"
-                  onClick={handleBack}
-                  className="flex items-center gap-2"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Back to Contractors
-                </Button>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  {contractor.firstName} {contractor.lastName}
-                </h1>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <SidebarTrigger />
+                  <Button
+                    variant="ghost"
+                    onClick={handleBack}
+                    className="flex items-center gap-2"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Back to Contractors
+                  </Button>
+                  <h1 className="text-2xl font-bold text-gray-900">
+                    {contractor.firstName} {contractor.lastName}
+                  </h1>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  {getStatusBadge(contractor.status)}
+                  {renderRating(contractor.rating)}
+                </div>
               </div>
-              
-              <div className="flex items-center gap-3">
-                {getStatusBadge(contractor.status)}
-                {renderRating(contractor.rating)}
-              </div>
-            </div>
           </header>
 
           {/* Main Content */}
@@ -165,8 +165,20 @@ export default function ContractorDetails() {
                 
                 {/* Profile Card */}
                 <Card>
-                  <CardHeader className="text-center pb-4">
-                    <Avatar className="w-24 h-24 mx-auto mb-4">
+                  <CardHeader className="text-center pb-4 relative">
+                    {/* Action buttons in top right */}
+                    <div className="absolute top-4 right-4 flex gap-2">
+                      <Button size="sm" className="text-xs">
+                        <Mail className="w-3 h-3 mr-1" />
+                        Message
+                      </Button>
+                      <Button variant="outline" size="sm" className="text-xs">
+                        <Phone className="w-3 h-3 mr-1" />
+                        Call
+                      </Button>
+                    </div>
+                    
+                    <Avatar className="w-24 h-24 mx-auto mb-4 mt-8">
                       <AvatarImage src={contractor.avatar} />
                       <AvatarFallback className="text-2xl">
                         {contractor.firstName[0]}{contractor.lastName[0]}
@@ -361,18 +373,6 @@ export default function ContractorDetails() {
                     </div>
                   </CardContent>
                 </Card>
-
-                {/* Action Buttons */}
-                <div className="flex gap-4">
-                  <Button className="flex-1">
-                    <Mail className="w-4 h-4 mr-2" />
-                    Send Message
-                  </Button>
-                  <Button variant="outline" className="flex-1">
-                    <Phone className="w-4 h-4 mr-2" />
-                    Call Contractor
-                  </Button>
-                </div>
               </div>
             </div>
           </main>
