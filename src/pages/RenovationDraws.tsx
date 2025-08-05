@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Eye, Download, Filter } from "lucide-react";
+import { Plus, Filter } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 
@@ -215,7 +215,6 @@ export default function RenovationDraws() {
                     <TableHead>Status</TableHead>
                     <TableHead>Date Submitted</TableHead>
                     <TableHead>Lien Waiver</TableHead>
-                    <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -246,20 +245,6 @@ export default function RenovationDraws() {
                       <TableCell>{new Date(draw.dateSubmitted).toLocaleDateString()}</TableCell>
                       <TableCell>
                         {getLienWaiverBadge(draw.lienWaiverStatus)}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => navigate(`/property/renovation-draws/${draw.id}`)}
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <Download className="w-4 h-4" />
-                          </Button>
-                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
