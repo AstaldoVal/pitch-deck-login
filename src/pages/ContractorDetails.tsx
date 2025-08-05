@@ -165,20 +165,8 @@ export default function ContractorDetails() {
                 
                 {/* Profile Card */}
                 <Card>
-                  <CardHeader className="text-center pb-4 relative">
-                    {/* Action buttons in top right */}
-                    <div className="absolute top-4 right-4 flex gap-2">
-                      <Button size="sm" className="text-xs">
-                        <Mail className="w-3 h-3 mr-1" />
-                        Message
-                      </Button>
-                      <Button variant="outline" size="sm" className="text-xs">
-                        <Phone className="w-3 h-3 mr-1" />
-                        Call
-                      </Button>
-                    </div>
-                    
-                    <Avatar className="w-24 h-24 mx-auto mb-4 mt-8">
+                  <CardHeader className="text-center pb-4">
+                    <Avatar className="w-24 h-24 mx-auto mb-4">
                       <AvatarImage src={contractor.avatar} />
                       <AvatarFallback className="text-2xl">
                         {contractor.firstName[0]}{contractor.lastName[0]}
