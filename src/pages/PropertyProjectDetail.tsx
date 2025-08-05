@@ -249,27 +249,28 @@ function SwimLane({ unit, statuses, isCollapsed, onToggleCollapse, getJobsByStat
   return (
     <div className="border rounded-lg overflow-hidden bg-card">
       {/* Swim Lane Header */}
-      <div className="bg-muted/50 border-b p-4">
+      <div className="bg-muted/50 border-b px-4 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => onToggleCollapse(unit.id)}
-              className="h-8 w-8 p-0"
+              className="h-6 w-6 p-0"
             >
-              <ChevronRight className={`h-4 w-4 transition-transform ${!isCollapsed ? 'rotate-90' : ''}`} />
+              <ChevronRight className={`h-3 w-3 transition-transform ${!isCollapsed ? 'rotate-90' : ''}`} />
             </Button>
-            <div>
-              <h3 className="font-semibold text-base">Unit {unit.unitNumber}</h3>
-              <p className="text-sm text-muted-foreground">{unit.floorPlan}</p>
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold text-sm">Unit {unit.unitNumber}</h3>
+              <span className="text-xs text-muted-foreground">•</span>
+              <span className="text-xs text-muted-foreground">{unit.floorPlan}</span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">
+          <div className="flex items-center gap-3">
+            <Badge variant="outline" className="text-xs h-5">
               {unit.jobs.length} jobs
             </Badge>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-xs text-muted-foreground">
               {unit.percentComplete}% complete
             </div>
           </div>
