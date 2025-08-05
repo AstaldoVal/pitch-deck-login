@@ -21,6 +21,7 @@ import BidsList from "./pages/BidsList";
 import BidDetails from "./pages/BidDetails";
 import Settings from "./pages/Settings";
 import Contacts from "./pages/Contacts";
+import Contractors from "./pages/Contractors";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,8 +50,7 @@ const App = () => (
             <Route path="/property/bid/:bidId" element={<BidDetails />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/contacts" element={<Contacts />} />
-            <Route path="/contractors" element={<Contacts />} />
-            <Route path="/property/contractors" element={<Contacts />} />
+            <Route path="/contractors" element={<Contractors />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

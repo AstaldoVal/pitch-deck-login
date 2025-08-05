@@ -134,8 +134,6 @@ const getInviteIcon = (status: string) => {
 };
 
 export default function Contacts() {
-  const location = useLocation();
-  const isContractorsPage = location.pathname === "/contractors";
   const { toast } = useToast();
   const [userRoles, setUserRoles] = useState<{[key: number]: string}>(
     users.reduce((acc, user) => ({ ...acc, [user.id]: user.role }), {})
@@ -186,7 +184,7 @@ export default function Contacts() {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50">
-        {isContractorsPage ? <PropertySidebar /> : <AppSidebar />}
+        <AppSidebar />
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
