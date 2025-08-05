@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import ContractorMap from "@/components/ContractorMap";
 
 // Mock contractor data (expanded from the contractors list)
 const contractorData = {
@@ -196,13 +195,70 @@ export default function ContractorDetails() {
                       <span>Joined {new Date(contractor.joinedDate).toLocaleDateString()}</span>
                     </div>
                     
-                    {/* Map */}
+                    {/* Map Screenshot */}
                     <div className="mt-4">
                       <h4 className="text-sm font-medium mb-2">Location</h4>
-                      <ContractorMap 
-                        address={contractor.address}
-                        contractorName={`${contractor.firstName} ${contractor.lastName}`}
-                      />
+                      <div className="relative w-full h-48 bg-gray-100 rounded-lg border overflow-hidden">
+                        {/* Map Background */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-green-100 via-blue-50 to-green-200">
+                          {/* Streets overlay */}
+                          <div className="absolute inset-0">
+                            {/* Horizontal streets */}
+                            <div className="absolute w-full h-0.5 bg-gray-300 top-1/4"></div>
+                            <div className="absolute w-full h-0.5 bg-gray-300 top-2/4"></div>
+                            <div className="absolute w-full h-0.5 bg-gray-300 top-3/4"></div>
+                            
+                            {/* Vertical streets */}
+                            <div className="absolute h-full w-0.5 bg-gray-300 left-1/4"></div>
+                            <div className="absolute h-full w-0.5 bg-gray-300 left-2/4"></div>
+                            <div className="absolute h-full w-0.5 bg-gray-300 left-3/4"></div>
+                            
+                            {/* Main road */}
+                            <div className="absolute w-full h-1 bg-gray-400 top-2/4 transform -translate-y-0.5"></div>
+                          </div>
+                          
+                          {/* Buildings */}
+                          <div className="absolute top-6 left-8 w-4 h-4 bg-gray-400 rounded-sm"></div>
+                          <div className="absolute top-6 left-16 w-6 h-6 bg-gray-500 rounded-sm"></div>
+                          <div className="absolute top-16 right-12 w-5 h-5 bg-gray-400 rounded-sm"></div>
+                          <div className="absolute bottom-16 left-12 w-4 h-6 bg-gray-500 rounded-sm"></div>
+                          <div className="absolute bottom-8 right-8 w-6 h-4 bg-gray-400 rounded-sm"></div>
+                          
+                          {/* Park area */}
+                          <div className="absolute top-4 right-4 w-12 h-12 bg-green-300 rounded-full opacity-70"></div>
+                          
+                          {/* Water feature */}
+                          <div className="absolute bottom-4 left-4 w-16 h-6 bg-blue-300 rounded-lg opacity-60"></div>
+                          
+                          {/* PIN Location */}
+                          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full">
+                            {/* Pin shadow */}
+                            <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-4 h-2 bg-black/20 rounded-full blur-sm"></div>
+                            
+                            {/* Pin */}
+                            <div className="relative">
+                              {/* Pin body */}
+                              <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white shadow-lg flex items-center justify-center">
+                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                              </div>
+                              
+                              {/* Pin point */}
+                              <div className="absolute top-5 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-3 border-r-3 border-t-4 border-l-transparent border-r-transparent border-t-red-500"></div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Address label */}
+                        <div className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs">
+                          📍 {contractor.firstName} {contractor.lastName}
+                        </div>
+                        
+                        {/* Zoom controls simulation */}
+                        <div className="absolute top-2 right-2 bg-white rounded shadow-sm border">
+                          <button className="block w-6 h-6 text-xs text-gray-600 hover:bg-gray-50">+</button>
+                          <button className="block w-6 h-6 text-xs text-gray-600 hover:bg-gray-50 border-t">−</button>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
