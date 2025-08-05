@@ -23,6 +23,9 @@ import Settings from "./pages/Settings";
 import Users from "./pages/Users";
 import Contractors from "./pages/Contractors";
 import ContractorDetails from "./pages/ContractorDetails";
+import RenovationDraws from "./pages/RenovationDraws";
+import RenovationDrawNew from "./pages/RenovationDrawNew";
+import RenovationDrawDetails from "./pages/RenovationDrawDetails";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -53,6 +56,9 @@ const App = () => (
             <Route path="/users" element={<Users />} />
             <Route path="/contractors" element={<Contractors />} />
             <Route path="/contractor/:contractorId" element={<ContractorDetails />} />
+            <Route path="/property/renovation-draws" element={<RenovationDraws />} />
+            <Route path="/property/renovation-draws/new" element={<RenovationDrawNew />} />
+            <Route path="/property/renovation-draws/:drawId" element={<RenovationDrawDetails />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
