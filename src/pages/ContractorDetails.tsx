@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import ContractorMap from "@/components/ContractorMap";
 
 // Mock contractor data (expanded from the contractors list)
 const contractorData = {
@@ -194,6 +195,15 @@ export default function ContractorDetails() {
                       <Calendar className="w-4 h-4 text-muted-foreground" />
                       <span>Joined {new Date(contractor.joinedDate).toLocaleDateString()}</span>
                     </div>
+                    
+                    {/* Map */}
+                    <div className="mt-4">
+                      <h4 className="text-sm font-medium mb-2">Location</h4>
+                      <ContractorMap 
+                        address={contractor.address}
+                        contractorName={`${contractor.firstName} ${contractor.lastName}`}
+                      />
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -243,8 +253,8 @@ export default function ContractorDetails() {
                   </CardContent>
                 </Card>
 
-                {/* Services & Certifications */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Services */}
+                <div className="grid grid-cols-1 gap-6">
                   
                   {/* Services */}
                   <Card>
@@ -260,26 +270,6 @@ export default function ContractorDetails() {
                           <Badge key={index} variant="secondary">
                             {service}
                           </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Certifications */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Award className="w-5 h-5" />
-                        Certifications
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        {contractor.certifications.map((cert: string, index: number) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <Award className="w-4 h-4 text-yellow-600" />
-                            <span className="text-sm">{cert}</span>
-                          </div>
                         ))}
                       </div>
                     </CardContent>
