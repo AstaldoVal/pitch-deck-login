@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, Building2, Settings, MessageCircle, FileText, Users } from "lucide-react";
+import { Home, Building2, Settings, MessageCircle, FileText, Users, Receipt } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import {
@@ -16,6 +16,7 @@ import {
 
 const mainItems = [
   { title: "Properties", url: "/properties", icon: Building2 },
+  { title: "Draws", url: "/property/renovation-draws", icon: Receipt },
   { title: "Users", url: "/users", icon: Users },
 ];
 
