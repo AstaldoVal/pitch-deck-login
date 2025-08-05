@@ -217,7 +217,7 @@ export default function RenovationDraws() {
                           </div>
                           <div className="space-y-1">
                             <div className="flex justify-between text-xs text-muted-foreground">
-                              <span>${draw.previouslyRequested.toLocaleString()} paid</span>
+                              <span>${draw.previouslyRequested.toLocaleString()} to pay</span>
                               <span>{Math.round((draw.previouslyRequested / draw.contractedCost) * 100)}%</span>
                             </div>
                             <Progress 
