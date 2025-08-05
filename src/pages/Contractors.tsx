@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { HardHat, Plus, CheckCircle, RotateCcw, Star } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AppSidebar } from "@/components/AppSidebar";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -111,6 +111,7 @@ const renderRating = (rating: number) => {
 
 export default function Contractors() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isPropertyContractors = location.pathname === "/contractors";
   const { toast } = useToast();
   const [contractorSpecialties, setContractorSpecialties] = useState<{[key: number]: string}>(
@@ -127,10 +128,7 @@ export default function Contractors() {
   };
 
   const handleViewDetails = (contractorId: number) => {
-    // TODO: Implement view contractor details functionality
-    console.log("View contractor details:", contractorId);
-    // Navigate to contractor detail page
-    // navigate(`/contractor/${contractorId}`);
+    navigate(`/contractor/${contractorId}`);
   };
 
   return (
