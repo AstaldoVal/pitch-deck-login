@@ -264,7 +264,11 @@ export default function RenovationDraws() {
                 </TableHeader>
                 <TableBody>
                   {filteredDraws.map((draw) => (
-                    <TableRow key={draw.id}>
+                    <TableRow 
+                      key={draw.id} 
+                      className="cursor-pointer hover:bg-muted/70"
+                      onClick={() => navigate(`/property/renovation-draws/${draw.id}`)}
+                    >
                       <TableCell className="font-medium">{draw.id}</TableCell>
                       <TableCell>{draw.unitNumber}</TableCell>
                       <TableCell>{draw.contractor}</TableCell>
