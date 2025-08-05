@@ -148,11 +148,6 @@ export default function ContractorDetails() {
                     {contractor.firstName} {contractor.lastName}
                   </h1>
                 </div>
-                
-                <div className="flex items-center gap-3">
-                  {getStatusBadge(contractor.status)}
-                  {renderRating(contractor.rating)}
-                </div>
               </div>
           </header>
 
