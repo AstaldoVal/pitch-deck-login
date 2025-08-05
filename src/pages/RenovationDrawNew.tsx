@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PropertySidebar } from "@/components/PropertySidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -95,7 +96,8 @@ export default function RenovationDrawNew() {
   };
 
   return (
-    <div className="min-h-screen flex w-full">
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
       <PropertySidebar />
       
       <main className="flex-1 p-6">
@@ -397,6 +399,7 @@ export default function RenovationDrawNew() {
           </form>
         </div>
       </main>
-    </div>
+      </div>
+    </SidebarProvider>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { PropertySidebar } from "@/components/PropertySidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -101,7 +102,8 @@ export default function RenovationDrawDetails() {
   };
 
   return (
-    <div className="min-h-screen flex w-full">
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
       <PropertySidebar />
       
       <main className="flex-1 p-6">
@@ -378,6 +380,7 @@ export default function RenovationDrawDetails() {
           </div>
         </div>
       </main>
-    </div>
+      </div>
+    </SidebarProvider>
   );
 }
