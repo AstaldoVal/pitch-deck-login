@@ -126,13 +126,11 @@ export default function Contractors() {
     setContractorSpecialties(prev => ({ ...prev, [contractorId]: newSpecialty }));
   };
 
-  const handleContactContractor = (contractorId: number, contractorEmail: string) => {
-    // TODO: Implement contact contractor functionality
-    console.log("Contact contractor:", contractorId);
-    toast({
-      title: "Message sent",
-      description: `Message has been sent to ${contractorEmail}`,
-    });
+  const handleViewDetails = (contractorId: number) => {
+    // TODO: Implement view contractor details functionality
+    console.log("View contractor details:", contractorId);
+    // Navigate to contractor detail page
+    // navigate(`/contractor/${contractorId}`);
   };
 
   return (
@@ -217,9 +215,9 @@ export default function Contractors() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleContactContractor(contractor.id, contractor.email)}
+                            onClick={() => handleViewDetails(contractor.id)}
                           >
-                            Contact
+                            View Details
                           </Button>
                         </TableCell>
                       </TableRow>
