@@ -20,7 +20,7 @@ import PropertyBids from "./pages/PropertyBids";
 import BidsList from "./pages/BidsList";
 import BidDetails from "./pages/BidDetails";
 import Settings from "./pages/Settings";
-import Contacts from "./pages/Contacts";
+import Users from "./pages/Users";
 import Contractors from "./pages/Contractors";
 import NotFound from "./pages/NotFound";
 
@@ -49,7 +49,7 @@ const App = () => (
             <Route path="/property/bids-list" element={<BidsList />} />
             <Route path="/property/bid/:bidId" element={<BidDetails />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/contacts" element={<Contacts />} />
+            <Route path="/users" element={<Users />} />
             <Route path="/contractors" element={<Contractors />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

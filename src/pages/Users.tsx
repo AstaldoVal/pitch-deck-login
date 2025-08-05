@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { Users, Plus, CheckCircle, RotateCcw } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { Users as UsersIcon, Plus, CheckCircle, RotateCcw } from "lucide-react";
 import { AppSidebar } from "@/components/AppSidebar";
-import { PropertySidebar } from "@/components/PropertySidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import {
@@ -133,7 +131,7 @@ const getInviteIcon = (status: string) => {
   }
 };
 
-export default function Contacts() {
+export default function Users() {
   const { toast } = useToast();
   const [userRoles, setUserRoles] = useState<{[key: number]: string}>(
     users.reduce((acc, user) => ({ ...acc, [user.id]: user.role }), {})
@@ -192,12 +190,12 @@ export default function Contacts() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold text-gray-900">Contacts List</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Users List</h1>
               </div>
               
               <Button onClick={handleInviteUser} className="bg-blue-600 hover:bg-blue-700">
                 <Plus className="w-4 h-4 mr-2" />
-                Invite Contact
+                Invite User
               </Button>
             </div>
           </header>
