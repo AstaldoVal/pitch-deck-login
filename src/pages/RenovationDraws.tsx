@@ -57,6 +57,51 @@ const mockDraws = [
     lienWaiverStatus: "rejected",
     attachments: 2,
     rejectionReason: "Missing lien waiver documentation"
+  },
+  {
+    id: "RD-004",
+    unitNumber: "Unit 3C",
+    contractedCost: 45000,
+    previouslyRequested: 0,
+    remainingBalance: 45000,
+    currentRequestedPercent: 25,
+    currentRequestedAmount: 11250,
+    status: "pending",
+    contractor: "Metro Renovations",
+    dateSubmitted: "2024-01-18",
+    approver: "Lisa Wong",
+    lienWaiverStatus: "not_provided",
+    attachments: 1
+  },
+  {
+    id: "RD-005",
+    unitNumber: "Unit 4D",
+    contractedCost: 65000,
+    previouslyRequested: 19500,
+    remainingBalance: 45500,
+    currentRequestedPercent: 30,
+    currentRequestedAmount: 19500,
+    status: "pending",
+    contractor: "Quality Builders",
+    dateSubmitted: "2024-01-20",
+    approver: "John Smith",
+    lienWaiverStatus: "submitted",
+    attachments: 4
+  },
+  {
+    id: "RD-006",
+    unitNumber: "Common Areas",
+    contractedCost: 85000,
+    previouslyRequested: 25500,
+    remainingBalance: 59500,
+    currentRequestedPercent: 35,
+    currentRequestedAmount: 29750,
+    status: "approved",
+    contractor: "Premium Interiors",
+    dateSubmitted: "2024-01-08",
+    approver: "Sarah Johnson",
+    lienWaiverStatus: "approved",
+    attachments: 6
   }
 ];
 
