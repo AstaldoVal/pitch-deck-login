@@ -306,7 +306,7 @@ function DroppableColumn({ status, unitId, jobs }: DroppableColumnProps) {
   });
 
   return (
-    <div className="border-r last:border-r-0 border-border/30">
+    <div className="border-r last:border-r-0 border-border">
       <div className="bg-muted/30 p-2 border-b border-border/30">
         <div className="flex items-center justify-between">
           <h4 className="font-medium text-sm text-foreground">{status}</h4>
