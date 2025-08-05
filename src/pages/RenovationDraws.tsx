@@ -196,7 +196,7 @@ export default function RenovationDraws() {
                     <TableHead>Request ID</TableHead>
                     <TableHead>Unit/Building</TableHead>
                     <TableHead>Contractor</TableHead>
-                    <TableHead>Requested Amount & Progress</TableHead>
+                    <TableHead>Requested Amount</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Date Submitted</TableHead>
                     <TableHead>Lien Waiver</TableHead>
