@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Eye, Download, Filter } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Progress } from "@/components/ui/progress";
 
 // Mock data for renovation draws
 const mockDraws = [
@@ -195,8 +196,7 @@ export default function RenovationDraws() {
                     <TableHead>Request ID</TableHead>
                     <TableHead>Unit/Building</TableHead>
                     <TableHead>Contractor</TableHead>
-                    <TableHead>Requested Amount</TableHead>
-                    <TableHead>Progress</TableHead>
+                    <TableHead>Requested Amount & Progress</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Date Submitted</TableHead>
                     <TableHead>Lien Waiver</TableHead>
@@ -210,21 +210,20 @@ export default function RenovationDraws() {
                       <TableCell>{draw.unitNumber}</TableCell>
                       <TableCell>{draw.contractor}</TableCell>
                       <TableCell>
-                        <div className="flex flex-col">
-                          <span className="font-medium">${draw.currentRequestedAmount.toLocaleString()}</span>
-                          <span className="text-sm text-muted-foreground">{draw.currentRequestedPercent}% of contract</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-col">
-                          <span className="text-sm">
-                            ${draw.previouslyRequested.toLocaleString()} / ${draw.contractedCost.toLocaleString()}
-                          </span>
-                          <div className="w-20 bg-gray-200 rounded-full h-2 mt-1">
-                            <div 
-                              className="bg-primary h-2 rounded-full" 
-                              style={{ width: `${(draw.previouslyRequested / draw.contractedCost) * 100}%` }}
-                            ></div>
+                        <div className="flex flex-col space-y-2">
+                          <div className="flex justify-between items-center">
+                            <span className="font-medium">${draw.currentRequestedAmount.toLocaleString()}</span>
+                            <span className="text-sm text-muted-foreground">of ${draw.contractedCost.toLocaleString()}</span>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-xs text-muted-foreground">
+                              <span>${draw.previouslyRequested.toLocaleString()} paid</span>
+                              <span>{Math.round((draw.previouslyRequested / draw.contractedCost) * 100)}%</span>
+                            </div>
+                            <Progress 
+                              value={(draw.previouslyRequested / draw.contractedCost) * 100} 
+                              className="h-2"
+                            />
                           </div>
                         </div>
                       </TableCell>
