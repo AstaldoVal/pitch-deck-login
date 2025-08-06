@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Check, X, Download, FileText, Image, Eye, Calendar, User, DollarSign, Building } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ArrowLeft, Check, X, Download, FileText, Image, Eye, Calendar, User, DollarSign, Building, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
 // Mock data for draw details
@@ -46,6 +47,7 @@ export default function RenovationDrawDetails() {
   const { drawId } = useParams();
   const navigate = useNavigate();
   const [approvalNotes, setApprovalNotes] = useState("");
+  const [lienWaiverStatus, setLienWaiverStatus] = useState("submitted");
   
   const draw = mockDrawData[drawId as keyof typeof mockDrawData];
 
@@ -86,6 +88,26 @@ export default function RenovationDrawDetails() {
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
+  };
+
+  const getLienWaiverBadge = (status: string) => {
+    switch (status) {
+      case "not_provided":
+        return <Badge variant="secondary" className="bg-red-100 text-red-800">Not Provided</Badge>;
+      case "submitted":
+        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Submitted</Badge>;
+      case "approved":
+        return <Badge variant="secondary" className="bg-green-100 text-green-800">Approved</Badge>;
+      case "rejected":
+        return <Badge variant="secondary" className="bg-red-100 text-red-800">Rejected</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+
+  const handleLienWaiverStatusChange = (newStatus: string) => {
+    setLienWaiverStatus(newStatus);
+    toast.success(`Lien waiver status updated to ${newStatus}`);
   };
 
   const getFileIcon = (type: string) => {
@@ -282,20 +304,39 @@ export default function RenovationDrawDetails() {
                   <CardTitle>Lien Waiver</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Status</span>
-                    <Badge variant={draw.hasLienWaiver ? "secondary" : "destructive"} className={
-                      draw.hasLienWaiver ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                    }>
-                      {draw.hasLienWaiver ? "Submitted" : "Missing"}
-                    </Badge>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">Status</span>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline" size="sm" className="gap-2">
+                            {getLienWaiverBadge(lienWaiverStatus)}
+                            <ChevronDown className="w-4 h-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => handleLienWaiverStatusChange("not_provided")}>
+                            Not Provided
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleLienWaiverStatusChange("submitted")}>
+                            Submitted
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleLienWaiverStatusChange("approved")}>
+                            Approved
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleLienWaiverStatusChange("rejected")}>
+                            Rejected
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                    {(lienWaiverStatus === "submitted" || lienWaiverStatus === "approved") && (
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Download className="w-4 h-4 mr-2" />
+                        Download Waiver
+                      </Button>
+                    )}
                   </div>
-                  {draw.hasLienWaiver && (
-                    <Button variant="outline" size="sm" className="w-full mt-3">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Waiver
-                    </Button>
-                  )}
                 </CardContent>
               </Card>
 
