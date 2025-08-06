@@ -215,7 +215,7 @@ export default function RenovationDrawNew() {
                           <div>
                             <Label className="text-sm font-medium text-muted-foreground">Requested By</Label>
                             <p className="text-lg font-semibold">John Smith</p>
-                            <p className="text-sm text-muted-foreground">Project Manager</p>
+                            <p className="text-sm text-muted-foreground">Asset Manager</p>
                           </div>
 
                           <div>
