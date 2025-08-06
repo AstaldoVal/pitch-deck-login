@@ -124,11 +124,11 @@ export default function ChangeOrderDetails() {
             <div className="flex items-center gap-4 mb-6">
               <Button 
                 variant="ghost" 
-                onClick={() => navigate("/property/renovation-draws")}
+                onClick={() => navigate("/property/change-orders")}
                 className="gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
-                Back to Draws
+                Back to Change Orders
               </Button>
               <div className="flex-1">
                 <h1 className="text-3xl font-bold tracking-tight">Change Order {changeOrder.id}</h1>
