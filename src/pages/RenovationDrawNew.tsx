@@ -294,29 +294,6 @@ export default function RenovationDrawNew() {
                         />
                       </div>
 
-                      <div className="border-t pt-6">
-                        <h3 className="text-lg font-semibold mb-4">Financial Summary</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <Card className="p-4">
-                            <div className="text-center">
-                              <p className="text-sm text-muted-foreground">Contract Total</p>
-                              <p className="text-xl font-bold">${parseFloat(formData.contractedCost || "0").toLocaleString()}</p>
-                            </div>
-                          </Card>
-                          <Card className="p-4">
-                            <div className="text-center">
-                              <p className="text-sm text-muted-foreground">Current Request</p>
-                              <p className="text-xl font-bold text-primary">${calculateCurrentAmount().toLocaleString()}</p>
-                            </div>
-                          </Card>
-                          <Card className="p-4">
-                            <div className="text-center">
-                              <p className="text-sm text-muted-foreground">Remaining Balance</p>
-                              <p className="text-xl font-bold">${calculateRemainingBalance().toLocaleString()}</p>
-                            </div>
-                          </Card>
-                        </div>
-                      </div>
                     </CardContent>
                   </Card>
 
