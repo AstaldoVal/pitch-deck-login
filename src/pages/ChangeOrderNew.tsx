@@ -64,7 +64,7 @@ export default function ChangeOrderNew() {
     }
 
     toast.success("Change order submitted successfully");
-    navigate("/property/renovation-draws");
+    navigate("/property/change-orders");
   };
 
   const handleFileUpload = (type: string) => {
@@ -111,11 +111,11 @@ export default function ChangeOrderNew() {
             <div className="flex items-center gap-4 mb-6">
               <Button 
                 variant="ghost" 
-                onClick={() => navigate("/property/renovation-draws")}
+                onClick={() => navigate("/property/change-orders")}
                 className="gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
-                Back to Draws
+                Back to Change Orders
               </Button>
               <div>
                 <h1 className="text-3xl font-bold tracking-tight">New Change Order</h1>
