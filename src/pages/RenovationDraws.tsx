@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -208,6 +208,11 @@ export default function RenovationDraws() {
   };
   
   const [activeTab, setActiveTab] = useState<string>(getInitialTab());
+  
+  // Update tab when route changes
+  useEffect(() => {
+    setActiveTab(getInitialTab());
+  }, [location.pathname]);
 
   const filteredDraws = mockDraws.filter(draw => 
     filterStatus === "all" || draw.status === filterStatus
