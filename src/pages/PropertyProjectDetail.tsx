@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { AppHeader } from "@/components/AppHeader";
-import { Building, Calendar, Users, DollarSign, FileText, ChevronDown, ChevronRight, MessageCircle, BarChart3, Home, Briefcase, List, Kanban } from "lucide-react";
+import { Building, Calendar, Users, DollarSign, FileText, ChevronDown, ChevronRight, MessageCircle, BarChart3, Home, Briefcase, List, Kanban, TrendingUp, Calculator } from "lucide-react";
 import { format } from "date-fns";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -675,20 +675,21 @@ export default function PropertyProjectDetail() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Unit</TableHead>
-                        <TableHead>Floor Plan</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Budget</TableHead>
-                        <TableHead className="text-right">Invoiced</TableHead>
-                        <TableHead className="text-right">% Complete</TableHead>
-                        <TableHead className="text-right">Pre-Rent</TableHead>
-                        <TableHead className="text-right">Post-Rent</TableHead>
-                        <TableHead></TableHead>
-                      </TableRow>
-                    </TableHeader>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-muted/50 border-b-2">
+                          <TableHead className="font-bold text-foreground text-sm">Unit</TableHead>
+                          <TableHead className="font-bold text-foreground text-sm">Floor Plan</TableHead>
+                          <TableHead className="font-bold text-foreground text-sm">Status</TableHead>
+                          <TableHead className="text-right font-bold text-foreground text-sm">Budget</TableHead>
+                          <TableHead className="text-right font-bold text-foreground text-sm">Invoiced</TableHead>
+                          <TableHead className="text-right font-bold text-foreground text-sm">% Complete</TableHead>
+                          <TableHead className="text-right font-bold text-foreground text-sm">Pre-Rent</TableHead>
+                          <TableHead className="text-right font-bold text-foreground text-sm">Post-Rent</TableHead>
+                          <TableHead className="font-bold text-foreground text-sm"></TableHead>
+                        </TableRow>
+                      </TableHeader>
                     <TableBody>
                       {project.unitsIncluded?.map(unit => {
                         const { dollarAmount, percentage } = calculateRenovationPremium(unit.preRenovationRent, unit.postRenovationRent);
@@ -716,40 +717,56 @@ export default function PropertyProjectDetail() {
                             <TableRow>
                               <TableCell colSpan={9} className="p-0">
                                 <Collapsible className="w-full" open={expandedUnits.has(unit.id)}>
-                                  <CollapsibleContent className="pl-8 pb-4">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                      <div>
-                                        <h4 className="text-sm font-semibold">Renovation Impact</h4>
-                                        <p className="text-muted-foreground text-sm">
-                                          Rent Increase: {formatCurrency(dollarAmount)} ({percentage.toFixed(0)}%)
-                                        </p>
-                                      </div>
-                                      <div>
-                                        <h4 className="text-sm font-semibold">Budget vs. Actual</h4>
-                                        {(() => {
-                                          const { dollarAmount: overUnderAmount, percentage: overUnderPercentage } = calculateOverUnder(unit.totalBudget, unit.totalInvoiced);
-                                          const isOverBudget = overUnderAmount > 0;
-                                          const textColorClass = isOverBudget ? "text-red-500" : "text-green-500";
-                                          return (
-                                            <p className={`text-sm text-muted-foreground ${textColorClass}`}>
-                                              {isOverBudget ? "Over Budget" : "Under Budget"}: {formatCurrency(overUnderAmount)} ({overUnderPercentage.toFixed(0)}%)
-                                            </p>
-                                          );
-                                        })()}
-                                      </div>
-                                    </div>
-                                    <h4 className="text-sm font-semibold mt-4">Jobs</h4>
-                                    <Table>
-                                      <TableHeader>
-                                        <TableRow>
-                                          <TableHead>Job #</TableHead>
-                                          <TableHead>Job Name</TableHead>
-                                          <TableHead>Status</TableHead>
-                                          <TableHead>Contractor</TableHead>
-                                          <TableHead className="text-right">Budget</TableHead>
-                                          <TableHead className="text-right">Invoiced</TableHead>
-                                        </TableRow>
-                                      </TableHeader>
+                                   <CollapsibleContent className="border-t bg-muted/20 p-6 m-4 rounded-lg">
+                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                       <Card className="border-l-4 border-l-primary shadow-sm">
+                                         <CardContent className="p-4">
+                                           <div className="flex items-center gap-2 mb-2">
+                                             <TrendingUp className="h-4 w-4 text-primary" />
+                                             <h4 className="text-sm font-semibold text-foreground">Renovation Impact</h4>
+                                           </div>
+                                           <p className="text-muted-foreground text-sm">
+                                             Rent Increase: <span className="font-medium text-green-600">{formatCurrency(dollarAmount)} ({percentage.toFixed(0)}%)</span>
+                                           </p>
+                                         </CardContent>
+                                       </Card>
+                                       <Card className="border-l-4 border-l-secondary shadow-sm">
+                                         <CardContent className="p-4">
+                                           <div className="flex items-center gap-2 mb-2">
+                                             <Calculator className="h-4 w-4 text-secondary" />
+                                             <h4 className="text-sm font-semibold text-foreground">Budget vs. Actual</h4>
+                                           </div>
+                                           {(() => {
+                                             const { dollarAmount: overUnderAmount, percentage: overUnderPercentage } = calculateOverUnder(unit.totalBudget, unit.totalInvoiced);
+                                             const isOverBudget = overUnderAmount > 0;
+                                             const textColorClass = isOverBudget ? "text-red-600" : "text-green-600";
+                                             return (
+                                               <p className={`text-sm ${textColorClass} font-medium`}>
+                                                 {isOverBudget ? "Over Budget" : "Under Budget"}: {formatCurrency(overUnderAmount)} ({overUnderPercentage.toFixed(0)}%)
+                                               </p>
+                                             );
+                                           })()}
+                                         </CardContent>
+                                       </Card>
+                                     </div>
+                                     <div className="border-t pt-6">
+                                       <div className="flex items-center gap-2 mb-4">
+                                         <Briefcase className="h-4 w-4 text-muted-foreground" />
+                                         <h4 className="text-base font-semibold text-foreground">Jobs</h4>
+                                       </div>
+                                     <Card className="shadow-sm">
+                                       <CardContent className="p-0">
+                                         <Table>
+                                           <TableHeader>
+                                             <TableRow className="bg-muted/30">
+                                               <TableHead className="font-semibold text-foreground">Job #</TableHead>
+                                               <TableHead className="font-semibold text-foreground">Job Name</TableHead>
+                                               <TableHead className="font-semibold text-foreground">Status</TableHead>
+                                               <TableHead className="font-semibold text-foreground">Contractor</TableHead>
+                                               <TableHead className="text-right font-semibold text-foreground">Budget</TableHead>
+                                               <TableHead className="text-right font-semibold text-foreground">Invoiced</TableHead>
+                                             </TableRow>
+                                           </TableHeader>
                                       <TableBody>
                                         {unit.jobs.map(job => (
                                           <TableRow key={job.id}>
@@ -765,17 +782,21 @@ export default function PropertyProjectDetail() {
                                             <TableCell className="text-right">{formatCurrency(job.totalInvoiced)}</TableCell>
                                           </TableRow>
                                         ))}
-                                      </TableBody>
-                                    </Table>
-                                  </CollapsibleContent>
+                                         </TableBody>
+                                       </Table>
+                                       </CardContent>
+                                     </Card>
+                                     </div>
+                                   </CollapsibleContent>
                                 </Collapsible>
                               </TableCell>
                             </TableRow>
                           </React.Fragment>
                         );
                       })}
-                    </TableBody>
-                  </Table>
+                     </TableBody>
+                   </Table>
+                  </div>
                 </CardContent>
               </Card>
             )}
