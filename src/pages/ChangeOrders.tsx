@@ -176,7 +176,7 @@ export default function ChangeOrders() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="space-y-1">
-                      <p className="text-sm font-medium text-muted-foreground">Total Cost Impact</p>
+                      <p className="text-sm font-medium text-muted-foreground">Total Cost<br />Impact</p>
                       <p className="text-2xl font-bold">+$2,150</p>
                     </div>
                     <div className="flex-shrink-0">
