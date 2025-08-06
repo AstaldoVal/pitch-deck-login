@@ -135,7 +135,7 @@ export default function ChangeOrderNew() {
                     <CardContent className="space-y-4">
                       {/* Project Selection */}
                       <div>
-                        <Label htmlFor="project">Project *</Label>
+                        <Label htmlFor="project">Project <span className="text-destructive">*</span></Label>
                         <Select 
                           value={formData.project} 
                           onValueChange={(value) => {
@@ -161,7 +161,7 @@ export default function ChangeOrderNew() {
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor="unitNumber">Unit/Building Number *</Label>
+                          <Label htmlFor="unitNumber">Unit/Building Number <span className="text-destructive">*</span></Label>
                           <Select 
                             value={formData.unitNumber} 
                             onValueChange={(value) => setFormData(prev => ({ ...prev, unitNumber: value }))}
@@ -228,7 +228,7 @@ export default function ChangeOrderNew() {
                           </div>
 
                           <div>
-                            <Label htmlFor="reason">Reason for Change *</Label>
+                            <Label htmlFor="reason">Reason for Change <span className="text-destructive">*</span></Label>
                             <Select 
                               value={formData.reason} 
                               onValueChange={(value) => setFormData(prev => ({ ...prev, reason: value }))}
@@ -263,7 +263,7 @@ export default function ChangeOrderNew() {
                       </div>
 
                       <div>
-                        <Label htmlFor="description">Description of Change *</Label>
+                        <Label htmlFor="description">Description of Change <span className="text-destructive">*</span></Label>
                         <Textarea
                           id="description"
                           placeholder="Provide a detailed description of the proposed change..."
