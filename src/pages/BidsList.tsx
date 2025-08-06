@@ -137,13 +137,13 @@ export default function BidsList() {
                               size="sm"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                // Store the job ID to open in PropertyJobs
-                                localStorage.setItem('openJobId', bid.id);
-                                navigate('/property/jobs');
+                                // Store the project ID to open in PropertyProjects
+                                localStorage.setItem('openProjectId', bid.id);
+                                navigate('/property/projects');
                               }}
                               className="flex items-center gap-1 text-xs"
                             >
-                              🔗 View Job
+                              🔗 View Project
                             </Button>
                           )}
                         </div>
