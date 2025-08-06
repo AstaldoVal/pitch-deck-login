@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Upload, X, FileText, Image } from "lucide-react";
 import { toast } from "sonner";
 
@@ -21,7 +23,8 @@ export default function RenovationDrawNew() {
     currentRequestedPercent: "",
     notes: "",
     contractor: "",
-    hasLienWaiver: false
+    hasLienWaiver: false,
+    description: ""
   });
   const [attachments, setAttachments] = useState<Array<{id: number, name: string, type: string, size: string}>>([]);
 
@@ -101,7 +104,7 @@ export default function RenovationDrawNew() {
       <PropertySidebar />
       
       <main className="flex-1 p-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center gap-4 mb-6">
             <Button 
@@ -118,10 +121,17 @@ export default function RenovationDrawNew() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Main Form */}
-              <div className="lg:col-span-2 space-y-6">
+          <Tabs defaultValue="form" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="form">Request Form</TabsTrigger>
+              <TabsTrigger value="draw">Draw Details</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="form">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Main Form */}
+                  <div className="lg:col-span-2 space-y-6">
                 {/* Basic Information */}
                 <Card>
                   <CardHeader>
@@ -394,9 +404,97 @@ export default function RenovationDrawNew() {
                     )}
                   </CardContent>
                 </Card>
-              </div>
-            </div>
-          </form>
+                  </div>
+                </div>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="draw">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Draw Details</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Draw #</Label>
+                        <p className="text-lg font-semibold">RD-NEW</p>
+                        <p className="text-sm text-muted-foreground">Will be assigned upon approval</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Current Status</Label>
+                        <div className="mt-1">
+                          <Badge variant="secondary" className="bg-gray-100 text-gray-800">
+                            Draft
+                          </Badge>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Draw Amount</Label>
+                        <p className="text-lg font-semibold">
+                          ${calculateCurrentAmount().toLocaleString()}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {formData.currentRequestedPercent}% of ${parseFloat(formData.contractedCost || "0").toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Date Requested</Label>
+                        <p className="text-lg font-semibold">{new Date().toLocaleDateString()}</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-sm font-medium text-muted-foreground">Requested By</Label>
+                        <p className="text-lg font-semibold">John Smith</p>
+                        <p className="text-sm text-muted-foreground">Project Manager</p>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="description">Draw Description</Label>
+                        <Textarea
+                          id="description"
+                          placeholder="Provide a brief description of this draw request..."
+                          value={formData.description}
+                          onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                          rows={3}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-t pt-6">
+                    <h3 className="text-lg font-semibold mb-4">Financial Summary</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <Card className="p-4">
+                        <div className="text-center">
+                          <p className="text-sm text-muted-foreground">Contract Total</p>
+                          <p className="text-xl font-bold">${parseFloat(formData.contractedCost || "0").toLocaleString()}</p>
+                        </div>
+                      </Card>
+                      <Card className="p-4">
+                        <div className="text-center">
+                          <p className="text-sm text-muted-foreground">Current Request</p>
+                          <p className="text-xl font-bold text-primary">${calculateCurrentAmount().toLocaleString()}</p>
+                        </div>
+                      </Card>
+                      <Card className="p-4">
+                        <div className="text-center">
+                          <p className="text-sm text-muted-foreground">Remaining Balance</p>
+                          <p className="text-xl font-bold">${calculateRemainingBalance().toLocaleString()}</p>
+                        </div>
+                      </Card>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
       </div>
