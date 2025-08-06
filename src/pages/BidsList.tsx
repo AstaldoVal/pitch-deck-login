@@ -137,9 +137,7 @@ export default function BidsList() {
                               size="sm"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                // Store the project ID to open in PropertyProjects
-                                localStorage.setItem('openProjectId', bid.id);
-                                navigate('/property/projects');
+                                navigate(`/property/project/${bid.id}`);
                               }}
                               className="flex items-center gap-1 text-xs"
                             >
