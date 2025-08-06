@@ -342,38 +342,6 @@ export default function ChangeOrderDetails() {
 
               {/* Sidebar */}
               <div className="space-y-6">
-                {/* Quick Actions */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Quick Actions</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {changeOrder.status === "pending" && (
-                      <>
-                        <Button 
-                          onClick={handleApprove} 
-                          className="w-full gap-2"
-                        >
-                          <CheckCircle className="w-4 h-4" />
-                          Approve Change Order
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          onClick={handleReject}
-                          className="w-full gap-2"
-                        >
-                          <XCircle className="w-4 h-4" />
-                          Reject Change Order
-                        </Button>
-                      </>
-                    )}
-                    <Button variant="outline" className="w-full gap-2">
-                      <Download className="w-4 h-4" />
-                      Export PDF
-                    </Button>
-                  </CardContent>
-                </Card>
-
                 {/* Summary */}
                 <Card>
                   <CardHeader>
