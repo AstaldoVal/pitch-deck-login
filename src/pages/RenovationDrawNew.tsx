@@ -16,6 +16,7 @@ import { toast } from "sonner";
 export default function RenovationDrawNew() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    project: "",
     unitNumber: "",
     contractedCost: "",
     previouslyRequested: "",
@@ -27,11 +28,32 @@ export default function RenovationDrawNew() {
   });
   const [attachments, setAttachments] = useState<Array<{id: number, name: string, type: string, size: string}>>([]);
 
+  // Helper functions for project-based data
+  const getContractorForProject = (projectId: string): string => {
+    const projectContractors: Record<string, string> = {
+      "project-1": "Elite Construction",
+      "project-2": "ProBuild Solutions", 
+      "project-3": "Facade Masters",
+      "project-4": "Luxury Interiors"
+    };
+    return projectContractors[projectId] || "";
+  };
+
+  const getUnitsForProject = (projectId: string): string[] => {
+    const projectUnits: Record<string, string[]> = {
+      "project-1": ["Unit 1A", "Unit 1B", "Unit 2A"],
+      "project-2": ["Unit 2B", "Unit 3A", "Unit 3B"],
+      "project-3": ["Building Exterior", "Common Areas"],
+      "project-4": ["Common Areas", "Lobby", "Mailroom"]
+    };
+    return projectUnits[projectId] || [];
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic validation
-    if (!formData.unitNumber || !formData.contractedCost || !formData.currentRequestedPercent) {
+    if (!formData.project || !formData.unitNumber || !formData.contractedCost || !formData.currentRequestedPercent) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -129,44 +151,60 @@ export default function RenovationDrawNew() {
                     <CardHeader>
                       <CardTitle>Basic Information</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                     <CardContent className="space-y-4">
+                      {/* Project Selection */}
+                      <div>
+                        <Label htmlFor="project">Project *</Label>
+                        <Select 
+                          value={formData.project} 
+                          onValueChange={(value) => {
+                            setFormData(prev => ({ 
+                              ...prev, 
+                              project: value, 
+                              unitNumber: "", // Reset unit when project changes
+                              contractor: getContractorForProject(value) // Auto-fill contractor
+                            }));
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select project" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="project-1">Kitchen Renovation - Phase 1</SelectItem>
+                            <SelectItem value="project-2">Bathroom Upgrades - Building A</SelectItem>
+                            <SelectItem value="project-3">Exterior Facade Restoration</SelectItem>
+                            <SelectItem value="project-4">Common Area Modernization</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="unitNumber">Unit/Building Number *</Label>
                           <Select 
                             value={formData.unitNumber} 
                             onValueChange={(value) => setFormData(prev => ({ ...prev, unitNumber: value }))}
+                            disabled={!formData.project}
                           >
                             <SelectTrigger>
-                              <SelectValue placeholder="Select unit or building" />
+                              <SelectValue placeholder={formData.project ? "Select unit or building" : "Select project first"} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="Unit 1A">Unit 1A</SelectItem>
-                              <SelectItem value="Unit 1B">Unit 1B</SelectItem>
-                              <SelectItem value="Unit 2A">Unit 2A</SelectItem>
-                              <SelectItem value="Unit 2B">Unit 2B</SelectItem>
-                              <SelectItem value="Building Exterior">Building Exterior</SelectItem>
-                              <SelectItem value="Common Areas">Common Areas</SelectItem>
+                              {getUnitsForProject(formData.project).map((unit) => (
+                                <SelectItem key={unit} value={unit}>{unit}</SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         </div>
 
                         <div>
-                          <Label htmlFor="contractor">Contractor *</Label>
-                          <Select 
-                            value={formData.contractor} 
-                            onValueChange={(value) => setFormData(prev => ({ ...prev, contractor: value }))}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select contractor" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Elite Construction">Elite Construction</SelectItem>
-                              <SelectItem value="ProBuild Solutions">ProBuild Solutions</SelectItem>
-                              <SelectItem value="Facade Masters">Facade Masters</SelectItem>
-                              <SelectItem value="Luxury Interiors">Luxury Interiors</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Label htmlFor="contractor">Contractor</Label>
+                          <Input
+                            value={formData.contractor}
+                            disabled
+                            className="bg-muted"
+                            placeholder="Auto-filled from project"
+                          />
                         </div>
                       </div>
                     </CardContent>
