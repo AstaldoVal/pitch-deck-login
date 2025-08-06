@@ -175,7 +175,8 @@ export default function RenovationDraws() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">Pending Requests</p>
+                    <p className="text-sm font-medium text-muted-foreground">Pending</p>
+                    <p className="text-sm font-medium text-muted-foreground">Requests</p>
                     <p className="text-2xl font-bold">{totalPending}</p>
                   </div>
                   <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
@@ -189,7 +190,8 @@ export default function RenovationDraws() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">Approved This Month</p>
+                    <p className="text-sm font-medium text-muted-foreground">Approved This</p>
+                    <p className="text-sm font-medium text-muted-foreground">Month</p>
                     <p className="text-2xl font-bold">{totalApproved}</p>
                   </div>
                   <Badge variant="secondary" className="bg-green-100 text-green-800">
@@ -203,7 +205,8 @@ export default function RenovationDraws() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">Total Disbursed</p>
+                    <p className="text-sm font-medium text-muted-foreground">Total</p>
+                    <p className="text-sm font-medium text-muted-foreground">Disbursed</p>
                     <p className="text-2xl font-bold">$92,250</p>
                   </div>
                   <Badge variant="outline">YTD</Badge>
@@ -215,7 +218,8 @@ export default function RenovationDraws() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">Remaining Budget</p>
+                    <p className="text-sm font-medium text-muted-foreground">Remaining</p>
+                    <p className="text-sm font-medium text-muted-foreground">Budget</p>
                     <p className="text-2xl font-bold">$132,500</p>
                   </div>
                   <Badge variant="secondary" className="bg-blue-100 text-blue-800">
