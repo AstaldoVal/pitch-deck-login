@@ -180,7 +180,7 @@ export default function ChangeOrders() {
                       <p className="text-2xl font-bold">+$2,150</p>
                     </div>
                     <div className="flex-shrink-0">
-                      <Badge variant="outline">YTD</Badge>
+                      <Badge variant="secondary" className="bg-gray-100 text-gray-800">YTD</Badge>
                     </div>
                   </div>
                 </CardContent>
