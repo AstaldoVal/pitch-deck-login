@@ -405,7 +405,7 @@ export default function RenovationDrawNew() {
                 </div>
 
                 {/* Sidebar */}
-                <div className="space-y-6">
+                <div className="space-y-6 sticky top-6">
                   {/* Summary */}
                   <Card>
                     <CardHeader>
