@@ -216,8 +216,8 @@ export default function ChangeOrderNew() {
 
                           <div>
                             <Label className="text-sm font-medium text-muted-foreground">Requested By</Label>
-                            <p className="text-lg font-semibold">John Smith</p>
-                            <p className="text-sm text-muted-foreground">Asset Manager</p>
+                            <p className="text-lg font-semibold">{formData.contractor || "Select project first"}</p>
+                            <p className="text-sm text-muted-foreground">Contractor</p>
                           </div>
                         </div>
 
