@@ -125,55 +125,63 @@ export default function ChangeOrders() {
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm font-medium text-muted-foreground">Pending Review</p>
                       <p className="text-2xl font-bold">{totalPending}</p>
                     </div>
-                    <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                      Pending
-                    </Badge>
+                    <div className="flex-shrink-0">
+                      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+                        Pending
+                      </Badge>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm font-medium text-muted-foreground">Under Review</p>
                       <p className="text-2xl font-bold">{totalUnderReview}</p>
                     </div>
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                      In Progress
-                    </Badge>
+                    <div className="flex-shrink-0">
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        In Progress
+                      </Badge>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm font-medium text-muted-foreground">Approved This Month</p>
                       <p className="text-2xl font-bold">{totalApproved}</p>
                     </div>
-                    <Badge variant="secondary" className="bg-green-100 text-green-800">
-                      Approved
-                    </Badge>
+                    <div className="flex-shrink-0">
+                      <Badge variant="secondary" className="bg-green-100 text-green-800">
+                        Approved
+                      </Badge>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm font-medium text-muted-foreground">Total Cost Impact</p>
                       <p className="text-2xl font-bold">+$2,150</p>
                     </div>
-                    <Badge variant="outline">YTD</Badge>
+                    <div className="flex-shrink-0">
+                      <Badge variant="outline">YTD</Badge>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
