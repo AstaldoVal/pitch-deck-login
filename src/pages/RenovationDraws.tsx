@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
@@ -196,8 +196,18 @@ const getLienWaiverBadge = (status: string) => {
 
 export default function RenovationDraws() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [filterStatus, setFilterStatus] = useState<string>("all");
-  const [activeTab, setActiveTab] = useState<string>("draws");
+  
+  // Set initial tab based on current route
+  const getInitialTab = () => {
+    if (location.pathname.includes("/change-orders")) {
+      return "change-orders";
+    }
+    return "draws";
+  };
+  
+  const [activeTab, setActiveTab] = useState<string>(getInitialTab());
 
   const filteredDraws = mockDraws.filter(draw => 
     filterStatus === "all" || draw.status === filterStatus
