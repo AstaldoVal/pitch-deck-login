@@ -878,72 +878,54 @@ export default function PropertyProjectDetail() {
            </Card>
          </div>
 
-         {/* Active Change Orders */}
-         <Card>
-           <CardHeader>
-             <CardTitle className="flex items-center gap-2">
-               <FileText className="h-5 w-5" />
-               Active Change Orders
-             </CardTitle>
-           </CardHeader>
-           <CardContent>
-             <div className="space-y-4">
-               <div className="border rounded-lg p-4">
-                 <div className="flex justify-between items-start mb-2">
-                   <div>
-                     <button
-                       onClick={() => navigate('/property/change-order/CO-001')}
-                       className="font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left"
-                     >
-                       CO-001: Kitchen Upgrade
-                     </button>
-                     <p className="text-sm text-muted-foreground">Upgrade from standard to premium finishes</p>
-                   </div>
-                   <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
-                     +$5,200
-                   </Badge>
-                 </div>
-                 <div className="text-xs text-muted-foreground grid grid-cols-2 gap-4">
-                   <div>
-                     <p>Impact: +3 days, +$5,200</p>
-                     <p>Status: Approved, In Progress</p>
-                   </div>
-                   <div>
-                     <p>Requested: Jan 20, 2024</p>
-                     <p>Approved: Jan 22, 2024</p>
-                   </div>
-                 </div>
-               </div>
+          {/* Active Change Orders */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <FileText className="h-4 w-4" />
+                Active Change Orders
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="border rounded-md p-3">
+                <div className="flex justify-between items-center mb-1">
+                  <button
+                    onClick={() => navigate('/property/change-order/CO-001')}
+                    className="font-medium text-blue-600 hover:text-blue-800 hover:underline text-sm"
+                  >
+                    CO-001: Kitchen Upgrade
+                  </button>
+                  <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 text-xs">
+                    +$5,200
+                  </Badge>
+                </div>
+                <p className="text-xs text-muted-foreground mb-2">Upgrade from standard to premium finishes</p>
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Impact: +3 days • Status: Approved</span>
+                  <span>Jan 20 → Jan 22, 2024</span>
+                </div>
+              </div>
 
-               <div className="border rounded-lg p-4">
-                 <div className="flex justify-between items-start mb-2">
-                   <div>
-                     <button
-                       onClick={() => navigate('/property/change-order/CO-002')}
-                       className="font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left"
-                     >
-                       CO-002: Flooring Upgrade
-                     </button>
-                     <p className="text-sm text-muted-foreground">Switch from vinyl to hardwood flooring</p>
-                   </div>
-                   <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
-                     +$2,800
-                   </Badge>
-                 </div>
-                 <div className="text-xs text-muted-foreground grid grid-cols-2 gap-4">
-                   <div>
-                     <p>Impact: +1 day, +$2,800</p>
-                     <p>Status: Approved, Pending Start</p>
-                   </div>
-                   <div>
-                     <p>Requested: Jan 25, 2024</p>
-                     <p>Approved: Jan 26, 2024</p>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </CardContent>
-         </Card>
+              <div className="border rounded-md p-3">
+                <div className="flex justify-between items-center mb-1">
+                  <button
+                    onClick={() => navigate('/property/change-order/CO-002')}
+                    className="font-medium text-blue-600 hover:text-blue-800 hover:underline text-sm"
+                  >
+                    CO-002: Flooring Upgrade
+                  </button>
+                  <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 text-xs">
+                    +$2,800
+                  </Badge>
+                </div>
+                <p className="text-xs text-muted-foreground mb-2">Switch from vinyl to hardwood flooring</p>
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Impact: +1 day • Status: Approved</span>
+                  <span>Jan 25 → Jan 26, 2024</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
          {/* Project Timeline Impact */}
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
