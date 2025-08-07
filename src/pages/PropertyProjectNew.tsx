@@ -172,7 +172,7 @@ export default function PropertyProjectNew() {
         <div className="flex-1 flex flex-col">
           <AppHeader />
           <main className="flex-1 p-6">
-            <div className="max-w-4xl mx-auto space-y-6">
+            <div className="space-y-6">
               {/* Header */}
               <div className="flex items-center gap-4">
                 <Button 
