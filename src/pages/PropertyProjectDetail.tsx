@@ -891,7 +891,12 @@ export default function PropertyProjectDetail() {
                <div className="border rounded-lg p-4">
                  <div className="flex justify-between items-start mb-2">
                    <div>
-                     <h4 className="font-semibold">CO-001: Kitchen Upgrade</h4>
+                     <button
+                       onClick={() => navigate('/property/change-order/CO-001')}
+                       className="font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left"
+                     >
+                       CO-001: Kitchen Upgrade
+                     </button>
                      <p className="text-sm text-muted-foreground">Upgrade from standard to premium finishes</p>
                    </div>
                    <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
@@ -913,7 +918,12 @@ export default function PropertyProjectDetail() {
                <div className="border rounded-lg p-4">
                  <div className="flex justify-between items-start mb-2">
                    <div>
-                     <h4 className="font-semibold">CO-002: Flooring Upgrade</h4>
+                     <button
+                       onClick={() => navigate('/property/change-order/CO-002')}
+                       className="font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left"
+                     >
+                       CO-002: Flooring Upgrade
+                     </button>
                      <p className="text-sm text-muted-foreground">Switch from vinyl to hardwood flooring</p>
                    </div>
                    <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
