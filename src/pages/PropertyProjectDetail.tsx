@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { AppHeader } from "@/components/AppHeader";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building, Calendar, Users, DollarSign, FileText, ChevronDown, ChevronRight, MessageCircle, BarChart3, Home, Briefcase, List, Kanban, TrendingUp, Calculator, Clock, TrendingDown } from "lucide-react";
 import { format } from "date-fns";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -663,75 +664,14 @@ export default function PropertyProjectDetail() {
               </ToggleGroup>
             </div>
 
-            {/* Show Project Impact only if there are active change orders */}
-            {(() => {
-              // Mock check for active change orders - in real app this would come from data
-              const hasActiveChangeOrders = true; // This would be dynamic based on actual data
+            <Tabs defaultValue="units" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="units">Units</TabsTrigger>
+                <TabsTrigger value="impact">Project Impact Analysis</TabsTrigger>
+              </TabsList>
               
-              if (!hasActiveChangeOrders) return null;
-              
-              return (
-                <Card className="border-l-4 border-l-orange-500 bg-orange-50/50 mb-6">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-orange-800">
-                      <BarChart3 className="h-5 w-5" />
-                      Project Impact Analysis
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    {/* Impact Metrics Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="flex items-center gap-3 p-4 bg-white rounded-lg border">
-                        <div className="p-2 rounded-lg bg-red-100">
-                          <DollarSign className="h-4 w-4 text-red-600" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-medium text-muted-foreground">Cost Impact</p>
-                          <p className="text-sm font-semibold text-destructive">+$8,000</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-3 p-4 bg-white rounded-lg border">
-                        <div className="p-2 rounded-lg bg-orange-100">
-                          <Clock className="h-4 w-4 text-orange-600" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-medium text-muted-foreground">Schedule Impact</p>
-                          <p className="text-sm font-semibold text-orange-600">+4 days</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-3 p-4 bg-white rounded-lg border">
-                        <div className="p-2 rounded-lg bg-amber-100">
-                          <TrendingDown className="h-4 w-4 text-amber-600" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-medium text-muted-foreground">Quality Impact</p>
-                          <p className="text-sm font-semibold text-amber-600">Medium Risk</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Change Orders Summary */}
-                    <div className="bg-white rounded-lg border p-4">
-                      <h4 className="font-semibold mb-3 text-sm">Active Change Orders (2)</h4>
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center text-sm">
-                          <span>CO-001: Kitchen Upgrade</span>
-                          <span className="text-destructive font-medium">+$5,200</span>
-                        </div>
-                        <div className="flex justify-between items-center text-sm">
-                          <span>CO-002: Flooring Upgrade</span>
-                          <span className="text-destructive font-medium">+$2,800</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })()}
-
-            {viewMode === 'kanban' ? (
+              <TabsContent value="units" className="space-y-6">
+                {viewMode === 'kanban' ? (
               <KanbanView />
             ) : (
               /* ListView - Unit Listings with Tabs - Full Width */
@@ -854,23 +794,231 @@ export default function PropertyProjectDetail() {
                                        </Table>
                                        </CardContent>
                                      </Card>
-                                     </div>
-                                   </CollapsibleContent>
-                                </Collapsible>
-                              </TableCell>
-                            </TableRow>
-                          </React.Fragment>
-                        );
-                      })}
-                     </TableBody>
-                   </Table>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </main>
-        </div>
-      </div>
-    </SidebarProvider>
-  );
+                              </div>
+                            </CollapsibleContent>
+                           </Collapsible>
+                          </TableCell>
+                         </TableRow>
+                       </React.Fragment>
+                     );
+                   })}
+                 </TableBody>
+               </Table>
+             </div>
+           </CardContent>
+         </Card>
+       )}
+     </TabsContent>
+
+     <TabsContent value="impact" className="space-y-6">
+       <div className="space-y-6">
+         {/* Impact Metrics Cards */}
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+           <Card className="border-l-4 border-l-red-500">
+             <CardHeader className="pb-3">
+               <CardTitle className="flex items-center gap-2 text-sm">
+                 <div className="p-2 rounded-lg bg-red-100">
+                   <DollarSign className="h-4 w-4 text-red-600" />
+                 </div>
+                 Cost Impact
+               </CardTitle>
+             </CardHeader>
+             <CardContent>
+               <div className="space-y-2">
+                 <p className="text-2xl font-bold text-red-600">+$8,000</p>
+                 <p className="text-sm text-muted-foreground">12% over original budget</p>
+                 <div className="text-xs text-muted-foreground">
+                   <p>Original Budget: $65,000</p>
+                   <p>Current Projection: $73,000</p>
+                 </div>
+               </div>
+             </CardContent>
+           </Card>
+
+           <Card className="border-l-4 border-l-orange-500">
+             <CardHeader className="pb-3">
+               <CardTitle className="flex items-center gap-2 text-sm">
+                 <div className="p-2 rounded-lg bg-orange-100">
+                   <Clock className="h-4 w-4 text-orange-600" />
+                 </div>
+                 Schedule Impact
+               </CardTitle>
+             </CardHeader>
+             <CardContent>
+               <div className="space-y-2">
+                 <p className="text-2xl font-bold text-orange-600">+4 days</p>
+                 <p className="text-sm text-muted-foreground">8% delay from original timeline</p>
+                 <div className="text-xs text-muted-foreground">
+                   <p>Original End: Feb 15, 2024</p>
+                   <p>New Projection: Feb 19, 2024</p>
+                 </div>
+               </div>
+             </CardContent>
+           </Card>
+
+           <Card className="border-l-4 border-l-amber-500">
+             <CardHeader className="pb-3">
+               <CardTitle className="flex items-center gap-2 text-sm">
+                 <div className="p-2 rounded-lg bg-amber-100">
+                   <TrendingDown className="h-4 w-4 text-amber-600" />
+                 </div>
+                 Quality Impact
+               </CardTitle>
+             </CardHeader>
+             <CardContent>
+               <div className="space-y-2">
+                 <p className="text-2xl font-bold text-amber-600">Medium Risk</p>
+                 <p className="text-sm text-muted-foreground">Scope changes affecting quality</p>
+                 <div className="text-xs text-muted-foreground">
+                   <p>Material substitutions: 2</p>
+                   <p>Process modifications: 1</p>
+                 </div>
+               </div>
+             </CardContent>
+           </Card>
+         </div>
+
+         {/* Active Change Orders */}
+         <Card>
+           <CardHeader>
+             <CardTitle className="flex items-center gap-2">
+               <FileText className="h-5 w-5" />
+               Active Change Orders
+             </CardTitle>
+           </CardHeader>
+           <CardContent>
+             <div className="space-y-4">
+               <div className="border rounded-lg p-4">
+                 <div className="flex justify-between items-start mb-2">
+                   <div>
+                     <h4 className="font-semibold">CO-001: Kitchen Upgrade</h4>
+                     <p className="text-sm text-muted-foreground">Upgrade from standard to premium finishes</p>
+                   </div>
+                   <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
+                     +$5,200
+                   </Badge>
+                 </div>
+                 <div className="text-xs text-muted-foreground grid grid-cols-2 gap-4">
+                   <div>
+                     <p>Impact: +3 days, +$5,200</p>
+                     <p>Status: Approved, In Progress</p>
+                   </div>
+                   <div>
+                     <p>Requested: Jan 20, 2024</p>
+                     <p>Approved: Jan 22, 2024</p>
+                   </div>
+                 </div>
+               </div>
+
+               <div className="border rounded-lg p-4">
+                 <div className="flex justify-between items-start mb-2">
+                   <div>
+                     <h4 className="font-semibold">CO-002: Flooring Upgrade</h4>
+                     <p className="text-sm text-muted-foreground">Switch from vinyl to hardwood flooring</p>
+                   </div>
+                   <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
+                     +$2,800
+                   </Badge>
+                 </div>
+                 <div className="text-xs text-muted-foreground grid grid-cols-2 gap-4">
+                   <div>
+                     <p>Impact: +1 day, +$2,800</p>
+                     <p>Status: Approved, Pending Start</p>
+                   </div>
+                   <div>
+                     <p>Requested: Jan 25, 2024</p>
+                     <p>Approved: Jan 26, 2024</p>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </CardContent>
+         </Card>
+
+         {/* Project Timeline Impact */}
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+           <Card>
+             <CardHeader>
+               <CardTitle className="flex items-center gap-2">
+                 <Calendar className="h-5 w-5" />
+                 Timeline Impact Analysis
+               </CardTitle>
+             </CardHeader>
+             <CardContent>
+               <div className="space-y-4">
+                 <div className="border-l-4 border-l-blue-500 pl-4">
+                   <h4 className="font-semibold text-sm">Critical Path Changes</h4>
+                   <p className="text-sm text-muted-foreground">Kitchen renovation extended due to CO-001</p>
+                   <p className="text-xs text-blue-600">+3 days to overall timeline</p>
+                 </div>
+                 <div className="border-l-4 border-l-green-500 pl-4">
+                   <h4 className="font-semibold text-sm">Resource Optimization</h4>
+                   <p className="text-sm text-muted-foreground">Bathroom work can proceed in parallel</p>
+                   <p className="text-xs text-green-600">No additional delay</p>
+                 </div>
+                 <div className="border-l-4 border-l-orange-500 pl-4">
+                   <h4 className="font-semibold text-sm">Dependency Impact</h4>
+                   <p className="text-sm text-muted-foreground">Flooring work dependent on kitchen completion</p>
+                   <p className="text-xs text-orange-600">+1 day buffer required</p>
+                 </div>
+               </div>
+             </CardContent>
+           </Card>
+
+           <Card>
+             <CardHeader>
+               <CardTitle className="flex items-center gap-2">
+                 <Calculator className="h-5 w-5" />
+                 Contract Value Analysis
+               </CardTitle>
+             </CardHeader>
+             <CardContent>
+               <div className="space-y-4">
+                 <div className="grid grid-cols-2 gap-4 text-sm">
+                   <div>
+                     <p className="text-muted-foreground">Original Contract</p>
+                     <p className="font-semibold text-lg">$65,000</p>
+                   </div>
+                   <div>
+                     <p className="text-muted-foreground">Change Orders</p>
+                     <p className="font-semibold text-lg text-red-600">+$8,000</p>
+                   </div>
+                   <div>
+                     <p className="text-muted-foreground">Revised Total</p>
+                     <p className="font-semibold text-lg">$73,000</p>
+                   </div>
+                   <div>
+                     <p className="text-muted-foreground">% Increase</p>
+                     <p className="font-semibold text-lg text-red-600">+12.3%</p>
+                   </div>
+                 </div>
+                 <div className="pt-4 border-t">
+                   <h4 className="font-semibold text-sm mb-2">Budget Breakdown</h4>
+                   <div className="space-y-2 text-xs">
+                     <div className="flex justify-between">
+                       <span>Labor Costs</span>
+                       <span>$45,000 (+$3,200)</span>
+                     </div>
+                     <div className="flex justify-between">
+                       <span>Materials</span>
+                       <span>$23,000 (+$4,800)</span>
+                     </div>
+                     <div className="flex justify-between">
+                       <span>Equipment</span>
+                       <span>$5,000 (+$0)</span>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </CardContent>
+           </Card>
+         </div>
+       </div>
+     </TabsContent>
+   </Tabs>
+ </main>
+</div>
+</div>
+</SidebarProvider>
+);
 }
