@@ -14,6 +14,7 @@ import Property from "./pages/Property";
 import PropertyEmpty from "./pages/PropertyEmpty";
 import PropertyUnits from "./pages/PropertyUnits";
 import PropertyProjectsList from "./pages/PropertyProjectsList";
+import PropertyProjectNew from "./pages/PropertyProjectNew";
 import PropertyProjectDetail from "./pages/PropertyProjectDetail";
 import PropertyGantt from "./pages/PropertyGantt";
 import PropertyBids from "./pages/PropertyBids";
@@ -50,6 +51,7 @@ const App = () => (
             <Route path="/propertyEmpty" element={<PropertyEmpty />} />
             <Route path="/property/units" element={<PropertyUnits />} />
             <Route path="/property/projects" element={<PropertyProjectsList />} />
+            <Route path="/property/project/new" element={<PropertyProjectNew />} />
             <Route path="/property/project/:projectId" element={<PropertyProjectDetail />} />
             <Route path="/property/gantt" element={<PropertyGantt />} />
             <Route path="/property/bids" element={<PropertyBids />} />

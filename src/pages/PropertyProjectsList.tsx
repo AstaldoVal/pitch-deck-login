@@ -324,11 +324,17 @@ export default function PropertyProjectsList() {
         <div className="flex-1 flex flex-col">
           <AppHeader />
           <main className="flex-1 p-6 space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Projects List</h1>
-              <p className="text-muted-foreground mt-1">
-                Track and manage active renovation projects
-              </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Projects List</h1>
+                <p className="text-muted-foreground mt-1">
+                  Track and manage active renovation projects
+                </p>
+              </div>
+              <Button onClick={() => navigate('/property/project/new')} className="gap-2">
+                <Building className="w-4 h-4" />
+                Add Project
+              </Button>
             </div>
 
             <div className="space-y-6">
