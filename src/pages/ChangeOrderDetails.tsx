@@ -506,7 +506,7 @@ export default function ChangeOrderDetails() {
               </div>
 
               {/* Sidebar */}
-              <div className="space-y-6 fixed top-6 right-6 w-80 z-10 max-h-screen overflow-y-auto">
+              <div className="space-y-6 sticky top-6 self-start">
                 {/* Summary */}
                 <Card>
                   <CardHeader>
