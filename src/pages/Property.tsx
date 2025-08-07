@@ -409,17 +409,68 @@ const Property = () => {
                     {/* Units Section */}
                     <Card className="p-6">
                       <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-xl font-semibold text-gray-900">Units</h2>
-                        <Button onClick={handleAddUnits} size="sm">
+                        <h2 className="text-xl font-semibold text-gray-900">Approvals</h2>
+                        <Button size="sm" variant="outline">
                           <Plus className="w-4 h-4 mr-2" />
-                          Add Unit
+                          Request Approval
                         </Button>
                       </div>
                       
-                      <div className="text-center py-12 text-gray-500">
-                        <Building2 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                        <p className="text-lg font-medium mb-2">No units added</p>
-                        <p className="text-sm">Add your first unit or upload a Rent Roll</p>
+                      <div className="space-y-4">
+                        {/* Pending Approvals */}
+                        <div className="border-l-4 border-yellow-400 bg-yellow-50 p-4 rounded-r-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center">
+                              <Clock className="w-5 h-5 text-yellow-600 mr-2" />
+                              <span className="font-medium text-yellow-800">Budget Increase - Unit 101A</span>
+                            </div>
+                            <Badge variant="secondary" className="bg-yellow-100 text-yellow-700">Pending</Badge>
+                          </div>
+                          <p className="text-sm text-yellow-700 mb-2">Additional $2,500 for flooring upgrade</p>
+                          <p className="text-xs text-yellow-600">Submitted 2 days ago • Awaiting Asset Manager</p>
+                        </div>
+
+                        {/* Approved Items */}
+                        <div className="border-l-4 border-green-400 bg-green-50 p-4 rounded-r-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center">
+                              <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
+                              <span className="font-medium text-green-800">Contractor Selection - Phase 1</span>
+                            </div>
+                            <Badge variant="secondary" className="bg-green-100 text-green-700">Approved</Badge>
+                          </div>
+                          <p className="text-sm text-green-700 mb-2">ABC Construction approved for $145,000</p>
+                          <p className="text-xs text-green-600">Approved yesterday • Asset Manager</p>
+                        </div>
+
+                        {/* Needs Revision */}
+                        <div className="border-l-4 border-red-400 bg-red-50 p-4 rounded-r-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center">
+                              <AlertCircle className="w-5 h-5 text-red-600 mr-2" />
+                              <span className="font-medium text-red-800">Design Plans - Common Areas</span>
+                            </div>
+                            <Badge variant="secondary" className="bg-red-100 text-red-700">Revision Needed</Badge>
+                          </div>
+                          <p className="text-sm text-red-700 mb-2">Fire safety compliance requirements not met</p>
+                          <p className="text-xs text-red-600">Returned 3 days ago • Requires architect review</p>
+                        </div>
+
+                        {/* Summary Stats */}
+                        <div className="grid grid-cols-3 gap-4 pt-4 border-t">
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-yellow-600">3</p>
+                            <p className="text-xs text-gray-600">Pending</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-green-600">12</p>
+                            <p className="text-xs text-gray-600">Approved</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-red-600">2</p>
+                            <p className="text-xs text-gray-600">Revisions</p>
+                          </div>
+                        </div>
                       </div>
                     </Card>
 
