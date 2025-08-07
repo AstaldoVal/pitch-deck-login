@@ -328,10 +328,31 @@ export default function ContractorDetails() {
                           </p>
                         </div>
                       </div>
-                      <div className="p-4 bg-green-50 rounded-lg border">
+                      <div className={`p-4 rounded-lg border ${
+                        contractor.bidVsInvoice.totalInvoiceAmount > contractor.bidVsInvoice.totalBidAmount 
+                          ? 'bg-red-50' 
+                          : 'bg-green-50'
+                      }`}>
                         <div className="text-center">
-                          <p className="text-sm font-medium text-green-600 mb-1">Total Invoice Amount</p>
-                          <p className="text-xl font-bold text-green-800">
+                          <div className="flex items-center justify-center gap-2 mb-1">
+                            <p className={`text-sm font-medium ${
+                              contractor.bidVsInvoice.totalInvoiceAmount > contractor.bidVsInvoice.totalBidAmount 
+                                ? 'text-red-600' 
+                                : 'text-green-600'
+                            }`}>
+                              Total Invoice Amount
+                            </p>
+                            {contractor.bidVsInvoice.totalInvoiceAmount > contractor.bidVsInvoice.totalBidAmount ? (
+                              <TrendingUp className="w-4 h-4 text-red-600" />
+                            ) : (
+                              <TrendingDown className="w-4 h-4 text-green-600" />
+                            )}
+                          </div>
+                          <p className={`text-xl font-bold ${
+                            contractor.bidVsInvoice.totalInvoiceAmount > contractor.bidVsInvoice.totalBidAmount 
+                              ? 'text-red-800' 
+                              : 'text-green-800'
+                          }`}>
                             ${contractor.bidVsInvoice.totalInvoiceAmount.toLocaleString()}
                           </p>
                         </div>
