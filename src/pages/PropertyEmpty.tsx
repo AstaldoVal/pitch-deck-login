@@ -127,7 +127,17 @@ const PropertyEmpty = () => {
           <AppHeader />
           <div className="flex-1">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              {/* Property Header and Account Setup Progress */}
+              {/* Account Setup Progress */}
+              <div className="mb-8">
+                <AccountSetupProgress 
+                  hasRentRoll={propertyData.hasRentRoll}
+                  rentRollFile={propertyData.rentRollFile}
+                  uploadTime={new Date()}
+                  onRentRollUploaded={handleRentRollUploaded}
+                />
+              </div>
+
+              {/* Property Header */}
               <div className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Property Header */}
                 <div>
@@ -263,18 +273,6 @@ const PropertyEmpty = () => {
                   </Card>
                 </div>
               </div>
-
-              {/* Account Setup Progress */}
-              <div className="mb-8">
-                <AccountSetupProgress 
-                  hasRentRoll={propertyData.hasRentRoll}
-                  rentRollFile={propertyData.rentRollFile}
-                  uploadTime={new Date()}
-                  onRentRollUploaded={handleRentRollUploaded}
-                />
-              </div>
-
-
 
               {/* Progress Summary */}
               <Card className="p-6 mb-8">
