@@ -140,7 +140,17 @@ const Property = () => {
           <AppHeader />
           <div className="flex-1">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              {/* Property Header and Account Setup Progress */}
+              {/* Account Setup Progress - Top of Page */}
+              <div className="mb-8">
+                <AccountSetupProgress 
+                  hasRentRoll={propertyData.hasRentRoll}
+                  rentRollFile={propertyData.rentRollFile}
+                  uploadTime={new Date()}
+                  onRentRollUploaded={handleRentRollUploaded}
+                />
+              </div>
+
+              {/* Property Header and Renovation Summary */}
               <div className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Property Header */}
                 <div>
@@ -262,15 +272,6 @@ const Property = () => {
                 </div>
               </div>
 
-              {/* Account Setup Progress */}
-              <div className="mb-8">
-                <AccountSetupProgress 
-                  hasRentRoll={propertyData.hasRentRoll}
-                  rentRollFile={propertyData.rentRollFile}
-                  uploadTime={new Date()}
-                  onRentRollUploaded={handleRentRollUploaded}
-                />
-              </div>
 
               {/* Overview Content */}
               <div className="space-y-8">
