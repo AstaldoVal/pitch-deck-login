@@ -276,15 +276,31 @@ export default function ContractorDetails() {
                   </CardContent>
                 </Card>
 
-                {/* Stats Card */}
+                {/* Stats & Services Card */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Stats</CardTitle>
+                    <CardTitle className="text-lg">Overview</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-muted-foreground">Projects Completed</span>
                       <span className="font-semibold">{contractor.projectsCompleted}</span>
+                    </div>
+                    
+                    <Separator />
+                    
+                    <div>
+                      <h4 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
+                        <Wrench className="w-4 h-4" />
+                        Services
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {contractor.services.map((service: string, index: number) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {service}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -293,58 +309,6 @@ export default function ContractorDetails() {
               {/* Right Column - Details */}
               <div className="lg:col-span-2 space-y-6">
                 
-
-                {/* Services */}
-                <div className="grid grid-cols-1 gap-6">
-                  
-                  {/* Services */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Wrench className="w-5 h-5" />
-                        Services
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2">
-                        {contractor.services.map((service: string, index: number) => (
-                          <Badge key={index} variant="secondary">
-                            {service}
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Recent Projects */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Building className="w-5 h-5" />
-                      Recent Projects
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {contractor.recentProjects.map((project: any) => (
-                        <div key={project.id} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div>
-                            <h4 className="font-medium text-sm">{project.name}</h4>
-                            <p className="text-xs text-muted-foreground">
-                              {new Date(project.date).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <Badge 
-                            variant={project.status === "Completed" ? "default" : "secondary"}
-                            className={project.status === "Completed" ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"}
-                          >
-                            {project.status}
-                          </Badge>
-                        </div>
-                      ))}
-                </div>
-
                 {/* Bids vs Invoice Cost Comparison */}
                 <Card>
                   <CardHeader>
@@ -436,6 +400,34 @@ export default function ContractorDetails() {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Recent Projects */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Building className="w-5 h-5" />
+                      Recent Projects
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {contractor.recentProjects.map((project: any) => (
+                        <div key={project.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div>
+                            <h4 className="font-medium text-sm">{project.name}</h4>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(project.date).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <Badge 
+                            variant={project.status === "Completed" ? "default" : "secondary"}
+                            className={project.status === "Completed" ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"}
+                          >
+                            {project.status}
+                          </Badge>
+                        </div>
+                      ))}
+                    </div>
                   </CardContent>
                 </Card>
               </div>
