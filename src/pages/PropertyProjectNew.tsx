@@ -211,11 +211,21 @@ export default function PropertyProjectNew() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="propertyName">Property</Label>
-                        <Input
-                          id="propertyName"
+                        <Select
                           value={formData.propertyName}
-                          onChange={(e) => handleInputChange('propertyName', e.target.value)}
-                        />
+                          onValueChange={(value) => handleInputChange('propertyName', value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a property" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Sunset Apartments">Sunset Apartments</SelectItem>
+                            <SelectItem value="Oceanview Condos">Oceanview Condos</SelectItem>
+                            <SelectItem value="Downtown Lofts">Downtown Lofts</SelectItem>
+                            <SelectItem value="Garden Grove Complex">Garden Grove Complex</SelectItem>
+                            <SelectItem value="Riverside Towers">Riverside Towers</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
 
