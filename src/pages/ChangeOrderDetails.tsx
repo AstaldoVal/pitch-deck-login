@@ -506,7 +506,7 @@ export default function ChangeOrderDetails() {
               </div>
 
               {/* Sidebar */}
-              <div className="space-y-6 sticky top-6">
+              <div className="space-y-6 sticky top-0 z-10">
                 {/* Summary */}
                 <Card>
                   <CardHeader>
