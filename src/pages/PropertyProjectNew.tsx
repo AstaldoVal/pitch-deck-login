@@ -365,10 +365,10 @@ export default function PropertyProjectNew() {
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="projectManager">Project Manager</Label>
+                        <Label htmlFor="projectManager">Asset Manager</Label>
                         <Input
                           id="projectManager"
-                          placeholder="Enter project manager name"
+                          placeholder="Enter asset manager name"
                           value={formData.projectManager}
                           onChange={(e) => handleInputChange('projectManager', e.target.value)}
                         />
