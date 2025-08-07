@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, Phone, Mail, MapPin, Calendar, Award, Building, Wrench } from "lucide-react";
+import { ArrowLeft, Star, Phone, Mail, MapPin, Calendar, Award, Building, Wrench, TrendingUp, TrendingDown, DollarSign } from "lucide-react";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,18 @@ const contractorData = {
       { id: 1, name: "Apartment Complex Renovation", date: "2024-01-15", status: "Completed" },
       { id: 2, name: "Office Building Repair", date: "2024-02-20", status: "In Progress" },
       { id: 3, name: "Residential Bathroom Upgrade", date: "2024-03-10", status: "Completed" }
-    ]
+    ],
+    bidVsInvoice: {
+      totalBidAmount: 485000,
+      totalInvoiceAmount: 512000,
+      projects: [
+        { name: "Apartment Complex Renovation", bidAmount: 125000, invoiceAmount: 128500, variance: 2.8 },
+        { name: "Office Building Repair", bidAmount: 185000, invoiceAmount: 195000, variance: 5.4 },
+        { name: "Residential Bathroom Upgrade", bidAmount: 45000, invoiceAmount: 44200, variance: -1.8 },
+        { name: "Shopping Center Plumbing", bidAmount: 85000, invoiceAmount: 89300, variance: 5.1 },
+        { name: "Hotel Renovation Phase 1", bidAmount: 45000, invoiceAmount: 55000, variance: 22.2 }
+      ]
+    }
   },
   2: {
     id: 2,
@@ -57,7 +68,18 @@ const contractorData = {
       { id: 1, name: "Shopping Center Lighting", date: "2024-01-05", status: "Completed" },
       { id: 2, name: "Residential Solar Installation", date: "2024-02-15", status: "Completed" },
       { id: 3, name: "Office Electrical Upgrade", date: "2024-03-25", status: "In Progress" }
-    ]
+    ],
+    bidVsInvoice: {
+      totalBidAmount: 675000,
+      totalInvoiceAmount: 663500,
+      projects: [
+        { name: "Shopping Center Lighting", bidAmount: 225000, invoiceAmount: 218000, variance: -3.1 },
+        { name: "Residential Solar Installation", bidAmount: 155000, invoiceAmount: 152000, variance: -1.9 },
+        { name: "Office Electrical Upgrade", bidAmount: 185000, invoiceAmount: 185000, variance: 0 },
+        { name: "Factory Electrical Work", bidAmount: 65000, invoiceAmount: 63500, variance: -2.3 },
+        { name: "Apartment Wiring", bidAmount: 45000, invoiceAmount: 45000, variance: 0 }
+      ]
+    }
   }
   // Add more contractors as needed
 };
@@ -321,7 +343,99 @@ export default function ContractorDetails() {
                           </Badge>
                         </div>
                       ))}
+                </div>
+
+                {/* Bids vs Invoice Cost Comparison */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <DollarSign className="w-5 h-5" />
+                      Bids vs Invoice Cost Analysis
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {/* Summary Stats */}
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div className="p-4 bg-blue-50 rounded-lg border">
+                        <div className="text-center">
+                          <p className="text-sm font-medium text-blue-600 mb-1">Total Bid Amount</p>
+                          <p className="text-xl font-bold text-blue-800">
+                            ${contractor.bidVsInvoice.totalBidAmount.toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="p-4 bg-green-50 rounded-lg border">
+                        <div className="text-center">
+                          <p className="text-sm font-medium text-green-600 mb-1">Total Invoice Amount</p>
+                          <p className="text-xl font-bold text-green-800">
+                            ${contractor.bidVsInvoice.totalInvoiceAmount.toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
                     </div>
+
+                    {/* Overall Variance */}
+                    <div className="p-4 bg-gray-50 rounded-lg border mb-6">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-gray-700">Overall Performance</span>
+                        <div className="flex items-center gap-2">
+                          {(() => {
+                            const variance = ((contractor.bidVsInvoice.totalInvoiceAmount - contractor.bidVsInvoice.totalBidAmount) / contractor.bidVsInvoice.totalBidAmount) * 100;
+                            const isPositive = variance > 0;
+                            return (
+                              <>
+                                {isPositive ? (
+                                  <TrendingUp className="w-4 h-4 text-red-600" />
+                                ) : (
+                                  <TrendingDown className="w-4 h-4 text-green-600" />
+                                )}
+                                <span className={`font-semibold ${isPositive ? 'text-red-600' : 'text-green-600'}`}>
+                                  {isPositive ? '+' : ''}{variance.toFixed(1)}%
+                                </span>
+                              </>
+                            );
+                          })()}
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-600 mt-1">
+                        {contractor.bidVsInvoice.totalInvoiceAmount > contractor.bidVsInvoice.totalBidAmount 
+                          ? 'Invoices exceed bids' 
+                          : 'Invoices below bids'}
+                      </p>
+                    </div>
+
+                    {/* Project-by-project breakdown */}
+                    <div className="space-y-3">
+                      <h4 className="text-sm font-medium text-gray-700 mb-3">Project Breakdown</h4>
+                      {contractor.bidVsInvoice.projects.map((project: any, index: number) => (
+                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex-1">
+                            <h5 className="font-medium text-sm">{project.name}</h5>
+                            <div className="flex items-center gap-4 text-xs text-gray-600 mt-1">
+                              <span>Bid: ${project.bidAmount.toLocaleString()}</span>
+                              <span>Invoice: ${project.invoiceAmount.toLocaleString()}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {project.variance > 0 ? (
+                              <TrendingUp className="w-4 h-4 text-red-500" />
+                            ) : project.variance < 0 ? (
+                              <TrendingDown className="w-4 h-4 text-green-500" />
+                            ) : (
+                              <div className="w-4 h-4 bg-gray-300 rounded-full" />
+                            )}
+                            <span className={`text-sm font-medium ${
+                              project.variance > 0 ? 'text-red-600' : 
+                              project.variance < 0 ? 'text-green-600' : 'text-gray-600'
+                            }`}>
+                              {project.variance > 0 ? '+' : ''}{project.variance}%
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
                   </CardContent>
                 </Card>
               </div>
