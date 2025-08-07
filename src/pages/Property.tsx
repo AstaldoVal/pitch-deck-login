@@ -403,20 +403,6 @@ const Property = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Units Section */}
                     <Card className="p-6">
-                      {/* Change Orders Statistics */}
-                      <div className="grid grid-cols-2 gap-4 mb-6">
-                        <div className="text-center p-3 bg-yellow-50 rounded-lg border">
-                          <Clock className="w-5 h-5 text-yellow-600 mx-auto mb-2" />
-                          <p className="text-sm font-medium text-yellow-600">Pending Review</p>
-                          <p className="text-xl font-bold text-yellow-800">1</p>
-                        </div>
-                        <div className="text-center p-3 bg-green-50 rounded-lg border">
-                          <CheckCircle className="w-5 h-5 text-green-600 mx-auto mb-2" />
-                          <p className="text-sm font-medium text-green-600">Approved</p>
-                          <p className="text-xl font-bold text-green-800">2</p>
-                        </div>
-                      </div>
-
                       <div className="flex items-center justify-between mb-6">
                         <h2 className="text-xl font-semibold text-gray-900">Change Orders</h2>
                         <Button size="sm" variant="outline" onClick={() => navigate('/property/change-orders/new')}>
