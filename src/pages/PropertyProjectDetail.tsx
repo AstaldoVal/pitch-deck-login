@@ -890,7 +890,7 @@ export default function PropertyProjectDetail() {
               <div className="border rounded-md p-3">
                 <div className="flex justify-between items-center mb-1">
                   <button
-                    onClick={() => navigate('/property/change-order/CO-001')}
+                    onClick={() => navigate('/property/change-orders/CO-001')}
                     className="font-medium text-blue-600 hover:text-blue-800 hover:underline text-sm"
                   >
                     CO-001: Kitchen Upgrade
@@ -909,7 +909,7 @@ export default function PropertyProjectDetail() {
               <div className="border rounded-md p-3">
                 <div className="flex justify-between items-center mb-1">
                   <button
-                    onClick={() => navigate('/property/change-order/CO-002')}
+                    onClick={() => navigate('/property/change-orders/CO-002')}
                     className="font-medium text-blue-600 hover:text-blue-800 hover:underline text-sm"
                   >
                     CO-002: Flooring Upgrade
