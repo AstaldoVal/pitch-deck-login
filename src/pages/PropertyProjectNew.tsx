@@ -385,12 +385,22 @@ export default function PropertyProjectNew() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="contractor">Primary Contractor</Label>
-                        <Input
-                          id="contractor"
-                          placeholder="Enter contractor name"
+                        <Select
                           value={formData.contractor}
-                          onChange={(e) => handleInputChange('contractor', e.target.value)}
-                        />
+                          onValueChange={(value) => handleInputChange('contractor', value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select contractor" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ABC Construction">ABC Construction</SelectItem>
+                            <SelectItem value="Elite Builders">Elite Builders</SelectItem>
+                            <SelectItem value="Premier Renovations">Premier Renovations</SelectItem>
+                            <SelectItem value="Quality Contractors Inc">Quality Contractors Inc</SelectItem>
+                            <SelectItem value="Swift Construction">Swift Construction</SelectItem>
+                            <SelectItem value="Modern Build Solutions">Modern Build Solutions</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
 
