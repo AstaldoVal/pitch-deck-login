@@ -512,10 +512,10 @@ export default function PropertyProjectNew() {
                             }
                           }}
                           className={cn(
-                            "p-3 text-sm text-left border rounded-lg transition-all hover:bg-muted",
+                            "p-3 text-sm text-left border rounded-lg transition-all",
                             formData.jobCategories.includes(category)
-                              ? "bg-primary text-primary-foreground border-primary"
-                              : "bg-background border-border hover:border-primary/50"
+                              ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
+                              : "bg-background border-border hover:bg-muted/50 hover:border-primary/50"
                           )}
                         >
                           {category}
