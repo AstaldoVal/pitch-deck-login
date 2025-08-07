@@ -83,11 +83,30 @@ export default function PropertyProjectNew() {
   const [newJobCategory, setNewJobCategory] = useState("");
   const [newUnit, setNewUnit] = useState("");
 
+  const contractorContacts = {
+    "ABC Construction": { email: "contact@abcconstruction.com", phone: "(555) 123-4567" },
+    "Elite Builders": { email: "info@elitebuilders.com", phone: "(555) 234-5678" },
+    "Premier Renovations": { email: "office@premierreno.com", phone: "(555) 345-6789" },
+    "Quality Contractors Inc": { email: "hello@qualitycontractors.com", phone: "(555) 456-7890" },
+    "Swift Construction": { email: "contact@swiftconstruction.com", phone: "(555) 567-8901" },
+    "Modern Build Solutions": { email: "info@modernbuild.com", phone: "(555) 678-9012" }
+  };
+
   const handleInputChange = (field: keyof ProjectFormData, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    if (field === 'contractor' && value) {
+      const contractorInfo = contractorContacts[value as keyof typeof contractorContacts];
+      setFormData(prev => ({
+        ...prev,
+        [field]: value,
+        contactEmail: contractorInfo?.email || '',
+        contactPhone: contractorInfo?.phone || ''
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value
+      }));
+    }
   };
 
   const addJobCategory = (category: string) => {
@@ -410,18 +429,20 @@ export default function PropertyProjectNew() {
                         <Input
                           id="contactEmail"
                           type="email"
-                          placeholder="Enter contact email"
+                          placeholder="Auto-filled from contractor"
                           value={formData.contactEmail}
-                          onChange={(e) => handleInputChange('contactEmail', e.target.value)}
+                          readOnly
+                          className="bg-muted"
                         />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="contactPhone">Contact Phone</Label>
                         <Input
                           id="contactPhone"
-                          placeholder="Enter contact phone"
+                          placeholder="Auto-filled from contractor"
                           value={formData.contactPhone}
-                          onChange={(e) => handleInputChange('contactPhone', e.target.value)}
+                          readOnly
+                          className="bg-muted"
                         />
                       </div>
                     </div>
