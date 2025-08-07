@@ -145,7 +145,6 @@ export default function Contractors() {
                       <TableHead>Email</TableHead>
                       <TableHead>Specialty</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Rating</TableHead>
                       <TableHead>Projects</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
@@ -174,9 +173,6 @@ export default function Contractors() {
                         </TableCell>
                         <TableCell>
                           {getStatusBadge(contractor.status)}
-                        </TableCell>
-                        <TableCell>
-                          {renderRating(contractor.rating)}
                         </TableCell>
                         <TableCell>
                           <span className="text-sm text-gray-600">
