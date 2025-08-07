@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { 
   Building2, 
@@ -21,7 +22,11 @@ import {
   Calendar,
   CheckCircle,
   Clock,
-  Target
+  Target,
+  TrendingUp,
+  TrendingDown,
+  BarChart3,
+  Layers
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PropertySidebar } from "@/components/PropertySidebar";
@@ -267,179 +272,360 @@ const Property = () => {
                 />
               </div>
 
+              {/* Tabs for Main Content */}
+              <Tabs defaultValue="overview" className="space-y-6">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="project-impact">Project Impact</TabsTrigger>
+                </TabsList>
 
-              {/* Progress Summary */}
-              <Card className="p-6 mb-8">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900">Progress Summary</h2>
-                  <Target className="w-6 h-6 text-blue-600" />
-                </div>
+                <TabsContent value="overview" className="space-y-8">
+                  {/* Progress Summary */}
+                  <Card className="p-6">
+                    <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-xl font-semibold text-gray-900">Progress Summary</h2>
+                      <Target className="w-6 h-6 text-blue-600" />
+                    </div>
 
-                {/* Progress and Key Metrics */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                   {/* Visual Progress Indicator */}
-                   <div className="flex flex-col items-center">
-                     <div className="relative w-48 h-48 mb-4">
-                       <ResponsiveContainer width="100%" height="100%">
-                         <PieChart>
-                           <Pie
-                             data={[
-                               { name: 'Completed', value: 16 },
-                               { name: 'Remaining', value: 84 }
-                             ]}
-                             cx="50%"
-                             cy="50%"
-                             innerRadius={60}
-                             outerRadius={90}
-                             startAngle={90}
-                             endAngle={-270}
-                             dataKey="value"
-                           >
-                             <Cell fill="#3b82f6" />
-                             <Cell fill="#e5e7eb" />
-                           </Pie>
-                         </PieChart>
-                       </ResponsiveContainer>
-                       <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    {/* Progress and Key Metrics */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                       {/* Visual Progress Indicator */}
+                       <div className="flex flex-col items-center">
+                         <div className="relative w-48 h-48 mb-4">
+                           <ResponsiveContainer width="100%" height="100%">
+                             <PieChart>
+                               <Pie
+                                 data={[
+                                   { name: 'Completed', value: 16 },
+                                   { name: 'Remaining', value: 84 }
+                                 ]}
+                                 cx="50%"
+                                 cy="50%"
+                                 innerRadius={60}
+                                 outerRadius={90}
+                                 startAngle={90}
+                                 endAngle={-270}
+                                 dataKey="value"
+                               >
+                                 <Cell fill="#3b82f6" />
+                                 <Cell fill="#e5e7eb" />
+                               </Pie>
+                             </PieChart>
+                           </ResponsiveContainer>
+                           <div className="absolute inset-0 flex flex-col items-center justify-center">
+                             <div className="text-center">
+                               <div className="text-3xl font-bold text-blue-600">16%</div>
+                               <div className="text-xs text-gray-500">Complete</div>
+                             </div>
+                           </div>
+                         </div>
                          <div className="text-center">
-                           <div className="text-3xl font-bold text-blue-600">16%</div>
-                           <div className="text-xs text-gray-500">Complete</div>
+                           <div className="text-sm font-medium text-gray-600 mb-1">Balance to Complete</div>
+                           <div className="text-xl font-bold text-gray-900">$772,439</div>
                          </div>
                        </div>
-                     </div>
-                     <div className="text-center">
-                       <div className="text-sm font-medium text-gray-600 mb-1">Balance to Complete</div>
-                       <div className="text-xl font-bold text-gray-900">$772,439</div>
-                     </div>
-                   </div>
 
-                  {/* Key Metrics Grid */}
-                  <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Total Bid */}
-                  <div className="bg-green-50 rounded-lg p-4">
-                    <div className="flex items-center text-green-700 mb-2">
-                      <DollarSign className="w-5 h-5 mr-2" />
-                      <span className="text-sm font-medium">Total Bid</span>
-                    </div>
-                    <p className="text-2xl font-bold text-green-900">$1,522,439</p>
-                  </div>
-
-                  {/* Total Invoice */}
-                  <div className="bg-blue-50 rounded-lg p-4">
-                    <div className="flex items-center text-blue-700 mb-2">
-                      <FileText className="w-5 h-5 mr-2" />
-                      <span className="text-sm font-medium">Total Invoice</span>
-                    </div>
-                    <p className="text-2xl font-bold text-blue-900">$750,000</p>
-                  </div>
-
-                  {/* Total Budget */}
-                  <div className="bg-purple-50 rounded-lg p-4">
-                    <div className="flex items-center text-purple-700 mb-2">
-                      <Target className="w-5 h-5 mr-2" />
-                      <span className="text-sm font-medium">Total Budget</span>
-                    </div>
-                    <p className="text-2xl font-bold text-purple-900">$1,650,000</p>
-                  </div>
-
-                  {/* Timeline */}
-                   <div className="bg-orange-50 rounded-lg p-4">
-                     <div className="flex items-center text-orange-700 mb-2">
-                       <Calendar className="w-5 h-5 mr-2" />
-                       <span className="text-sm font-medium">Target Date</span>
-                     </div>
-                     <p className="text-lg font-bold text-orange-900">March 20, 2026</p>
-                     <p className="text-sm text-orange-600 font-medium mt-1">250 days left</p>
-                   </div>
-                 </div>
-               </div>
-
-                {/* Jobs Due Timeline */}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Jobs Due</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
-                      <p className="text-sm font-medium text-gray-600">Next 7 days</p>
-                      <p className="text-xl font-bold text-red-600">3</p>
-                      <p className="text-xs text-red-600">2 outstanding</p>
-                    </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
-                      <p className="text-sm font-medium text-gray-600">Next 2 weeks</p>
-                      <p className="text-xl font-bold text-orange-600">7</p>
-                      <p className="text-xs text-orange-600">1 outstanding</p>
-                    </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
-                      <p className="text-sm font-medium text-gray-600">Next 30 days</p>
-                      <p className="text-xl font-bold text-yellow-600">12</p>
-                      <p className="text-xs text-gray-500">On track</p>
-                    </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
-                      <p className="text-sm font-medium text-gray-600">Next 60 days</p>
-                      <p className="text-xl font-bold text-blue-600">25</p>
-                      <p className="text-xs text-gray-500">On track</p>
-                    </div>
-                    <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
-                      <p className="text-sm font-medium text-gray-600">Next 90 days</p>
-                      <p className="text-xl font-bold text-green-600">38</p>
-                      <p className="text-xs text-gray-500">On track</p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-
-              {/* Main Content */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                {/* Units Section */}
-                <Card className="p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-semibold text-gray-900">Units</h2>
-                    <Button onClick={handleAddUnits} size="sm">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Unit
-                    </Button>
-                  </div>
-                  
-                  <div className="text-center py-12 text-gray-500">
-                    <Building2 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                    <p className="text-lg font-medium mb-2">No units added</p>
-                    <p className="text-sm">Add your first unit or upload a Rent Roll</p>
-                  </div>
-                </Card>
-
-                {/* Recent Activity */}
-                <Card className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">Renovation Activity</h2>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">
-                          Property "{propertyData.name}" created
-                        </p>
-                        <p className="text-xs text-gray-500">Just now</p>
+                      {/* Key Metrics Grid */}
+                      <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Total Bid */}
+                      <div className="bg-green-50 rounded-lg p-4">
+                        <div className="flex items-center text-green-700 mb-2">
+                          <DollarSign className="w-5 h-5 mr-2" />
+                          <span className="text-sm font-medium">Total Bid</span>
+                        </div>
+                        <p className="text-2xl font-bold text-green-900">$1,522,439</p>
                       </div>
-                    </div>
 
-                    {propertyData.hasRentRoll && (
-                      <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-                        <FileText className="w-4 h-4 text-blue-600" />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-900">
-                            Rent Roll "{propertyData.rentRollFile}" uploaded
-                          </p>
-                          <p className="text-xs text-gray-500">Processing...</p>
+                      {/* Total Invoice */}
+                      <div className="bg-blue-50 rounded-lg p-4">
+                        <div className="flex items-center text-blue-700 mb-2">
+                          <FileText className="w-5 h-5 mr-2" />
+                          <span className="text-sm font-medium">Total Invoice</span>
+                        </div>
+                        <p className="text-2xl font-bold text-blue-900">$750,000</p>
+                      </div>
+
+                      {/* Total Budget */}
+                      <div className="bg-purple-50 rounded-lg p-4">
+                        <div className="flex items-center text-purple-700 mb-2">
+                          <Target className="w-5 h-5 mr-2" />
+                          <span className="text-sm font-medium">Total Budget</span>
+                        </div>
+                        <p className="text-2xl font-bold text-purple-900">$1,650,000</p>
+                      </div>
+
+                      {/* Timeline */}
+                       <div className="bg-orange-50 rounded-lg p-4">
+                         <div className="flex items-center text-orange-700 mb-2">
+                           <Calendar className="w-5 h-5 mr-2" />
+                           <span className="text-sm font-medium">Target Date</span>
+                         </div>
+                         <p className="text-lg font-bold text-orange-900">March 20, 2026</p>
+                         <p className="text-sm text-orange-600 font-medium mt-1">250 days left</p>
+                       </div>
+                     </div>
+                   </div>
+
+                    {/* Jobs Due Timeline */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Jobs Due</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
+                          <p className="text-sm font-medium text-gray-600">Next 7 days</p>
+                          <p className="text-xl font-bold text-red-600">3</p>
+                          <p className="text-xs text-red-600">2 outstanding</p>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
+                          <p className="text-sm font-medium text-gray-600">Next 2 weeks</p>
+                          <p className="text-xl font-bold text-orange-600">7</p>
+                          <p className="text-xs text-orange-600">1 outstanding</p>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
+                          <p className="text-sm font-medium text-gray-600">Next 30 days</p>
+                          <p className="text-xl font-bold text-yellow-600">12</p>
+                          <p className="text-xs text-gray-500">On track</p>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
+                          <p className="text-sm font-medium text-gray-600">Next 60 days</p>
+                          <p className="text-xl font-bold text-blue-600">25</p>
+                          <p className="text-xs text-gray-500">On track</p>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <Clock className="w-5 h-5 text-gray-600 mx-auto mb-2" />
+                          <p className="text-sm font-medium text-gray-600">Next 90 days</p>
+                          <p className="text-xl font-bold text-green-600">38</p>
+                          <p className="text-xs text-gray-500">On track</p>
                         </div>
                       </div>
-                    )}
+                    </div>
+                  </Card>
+
+                  {/* Main Content */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Units Section */}
+                    <Card className="p-6">
+                      <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-xl font-semibold text-gray-900">Units</h2>
+                        <Button onClick={handleAddUnits} size="sm">
+                          <Plus className="w-4 h-4 mr-2" />
+                          Add Unit
+                        </Button>
+                      </div>
+                      
+                      <div className="text-center py-12 text-gray-500">
+                        <Building2 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                        <p className="text-lg font-medium mb-2">No units added</p>
+                        <p className="text-sm">Add your first unit or upload a Rent Roll</p>
+                      </div>
+                    </Card>
+
+                    {/* Recent Activity */}
+                    <Card className="p-6">
+                      <h2 className="text-xl font-semibold text-gray-900 mb-6">Renovation Activity</h2>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-900">
+                              Property "{propertyData.name}" created
+                            </p>
+                            <p className="text-xs text-gray-500">Just now</p>
+                          </div>
+                        </div>
+
+                        {propertyData.hasRentRoll && (
+                          <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                            <FileText className="w-4 h-4 text-blue-600" />
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-gray-900">
+                                Rent Roll "{propertyData.rentRollFile}" uploaded
+                              </p>
+                              <p className="text-xs text-gray-500">Processing...</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </Card>
                   </div>
-                </Card>
-              </div>
+                </TabsContent>
+
+                <TabsContent value="project-impact" className="space-y-6">
+                  {/* Impact Analysis */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Cost Impact */}
+                    <Card className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-2">
+                          <DollarSign className="w-5 h-5 text-green-600" />
+                          <h3 className="font-semibold text-gray-900">Cost Impact</h3>
+                        </div>
+                        <Badge variant="secondary" className="bg-green-100 text-green-800">
+                          +$12,500
+                        </Badge>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600">Original Budget</span>
+                          <span className="font-medium">$1,650,000</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600">Change Orders</span>
+                          <span className="font-medium text-green-600">+$12,500</span>
+                        </div>
+                        <div className="flex justify-between items-center pt-2 border-t">
+                          <span className="text-sm font-medium text-gray-900">New Total</span>
+                          <span className="font-bold">$1,662,500</span>
+                        </div>
+                      </div>
+                    </Card>
+
+                    {/* Schedule Impact */}
+                    <Card className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-2">
+                          <Clock className="w-5 h-5 text-orange-600" />
+                          <h3 className="font-semibold text-gray-900">Schedule Impact</h3>
+                        </div>
+                        <Badge variant="secondary" className="bg-orange-100 text-orange-800">
+                          +7 days
+                        </Badge>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600">Original Completion</span>
+                          <span className="font-medium">March 20, 2026</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600">Change Orders</span>
+                          <span className="font-medium text-orange-600">+7 days</span>
+                        </div>
+                        <div className="flex justify-between items-center pt-2 border-t">
+                          <span className="text-sm font-medium text-gray-900">New Completion</span>
+                          <span className="font-bold">March 27, 2026</span>
+                        </div>
+                      </div>
+                    </Card>
+
+                    {/* Quality Impact */}
+                    <Card className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-2">
+                          <BarChart3 className="w-5 h-5 text-blue-600" />
+                          <h3 className="font-semibold text-gray-900">Quality Impact</h3>
+                        </div>
+                        <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                          Enhanced
+                        </Badge>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600">Material Upgrades</span>
+                          <span className="font-medium text-green-600">2 items</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600">Added Features</span>
+                          <span className="font-medium text-blue-600">1 feature</span>
+                        </div>
+                        <div className="flex justify-between items-center pt-2 border-t">
+                          <span className="text-sm font-medium text-gray-900">Overall Rating</span>
+                          <span className="font-bold text-green-600">Improved</span>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+
+                  {/* Active Change Orders */}
+                  <Card className="p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-6">Active Change Orders</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <TrendingUp className="w-5 h-5 text-green-600" />
+                          <div>
+                            <p className="font-medium text-gray-900">CO-001: Premium Flooring Upgrade</p>
+                            <p className="text-sm text-gray-600">Units 101-105 • Approved</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-green-600">+$8,500</p>
+                          <p className="text-sm text-gray-500">+3 days</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <Layers className="w-5 h-5 text-blue-600" />
+                          <div>
+                            <p className="font-medium text-gray-900">CO-002: Additional Lighting</p>
+                            <p className="text-sm text-gray-600">Common Areas • In Progress</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-blue-600">+$4,000</p>
+                          <p className="text-sm text-gray-500">+4 days</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* Timeline Impact Analysis */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <Card className="p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-6">Timeline Impact</h3>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Phase 1 Completion</span>
+                          <div className="text-right">
+                            <p className="font-medium">Dec 15, 2024</p>
+                            <p className="text-xs text-green-600">On schedule</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Phase 2 Completion</span>
+                          <div className="text-right">
+                            <p className="font-medium">Jan 30, 2025</p>
+                            <p className="text-xs text-orange-600">+2 days delay</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Phase 3 Completion</span>
+                          <div className="text-right">
+                            <p className="font-medium">March 27, 2026</p>
+                            <p className="text-xs text-orange-600">+7 days delay</p>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+
+                    <Card className="p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-6">Contract Value Analysis</h3>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Original Contract Value</span>
+                          <span className="font-medium">$1,522,439</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Approved Change Orders</span>
+                          <span className="font-medium text-green-600">+$12,500</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Pending Change Orders</span>
+                          <span className="font-medium text-orange-600">$5,250</span>
+                        </div>
+                        <div className="flex items-center justify-between pt-2 border-t">
+                          <span className="text-sm font-medium text-gray-900">Total Contract Value</span>
+                          <span className="font-bold">$1,540,189</span>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                </TabsContent>
+              </Tabs>
 
               {/* Comments section moved to global sidebar */}
             </div>
