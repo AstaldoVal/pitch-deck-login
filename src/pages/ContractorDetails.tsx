@@ -264,23 +264,6 @@ export default function ContractorDetails() {
                       <span className="text-sm text-muted-foreground">Projects Completed</span>
                       <span className="font-semibold">{contractor.projectsCompleted}</span>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Rating</span>
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="font-semibold">{contractor.rating}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Hourly Rate</span>
-                      <span className="font-semibold">{contractor.hourlyRate}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Availability</span>
-                      <Badge variant="outline" className="bg-green-50 text-green-700">
-                        {contractor.availability}
-                      </Badge>
-                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -288,17 +271,6 @@ export default function ContractorDetails() {
               {/* Right Column - Details */}
               <div className="lg:col-span-2 space-y-6">
                 
-                {/* Bio Card */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">About</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {contractor.bio}
-                    </p>
-                  </CardContent>
-                </Card>
 
                 {/* Services */}
                 <div className="grid grid-cols-1 gap-6">
