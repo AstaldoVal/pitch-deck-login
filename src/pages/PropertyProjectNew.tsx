@@ -373,12 +373,12 @@ export default function PropertyProjectNew() {
                   </CardContent>
                 </Card>
 
-                {/* Team & Contacts */}
+                {/* Team */}
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Users className="w-5 h-5" />
-                      Team & Contacts
+                      Team
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -403,7 +403,7 @@ export default function PropertyProjectNew() {
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="contractor">Primary Contractor</Label>
+                        <Label htmlFor="contractor">Contractor</Label>
                         <Select
                           value={formData.contractor}
                           onValueChange={(value) => handleInputChange('contractor', value)}
@@ -423,29 +423,22 @@ export default function PropertyProjectNew() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="contactEmail">Contact Email</Label>
-                        <Input
-                          id="contactEmail"
-                          type="email"
-                          placeholder="Auto-filled from contractor"
-                          value={formData.contactEmail}
-                          readOnly
-                          className="bg-muted"
-                        />
+                    {/* Contractor Contact Information */}
+                    {formData.contractor && (
+                      <div className="mt-6 p-4 bg-muted rounded-lg">
+                        <h4 className="font-medium mb-3">Contractor Contact Information</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Email:</span>
+                            <div className="font-medium">{formData.contactEmail}</div>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Phone:</span>
+                            <div className="font-medium">{formData.contactPhone}</div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="contactPhone">Contact Phone</Label>
-                        <Input
-                          id="contactPhone"
-                          placeholder="Auto-filled from contractor"
-                          value={formData.contactPhone}
-                          readOnly
-                          className="bg-muted"
-                        />
-                      </div>
-                    </div>
+                    )}
                   </CardContent>
                 </Card>
 
