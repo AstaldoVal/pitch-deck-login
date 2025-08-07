@@ -366,12 +366,22 @@ export default function PropertyProjectNew() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="projectManager">Asset Manager</Label>
-                        <Input
-                          id="projectManager"
-                          placeholder="Enter asset manager name"
+                        <Select
                           value={formData.projectManager}
-                          onChange={(e) => handleInputChange('projectManager', e.target.value)}
-                        />
+                          onValueChange={(value) => handleInputChange('projectManager', value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select asset manager" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="John Smith">John Smith</SelectItem>
+                            <SelectItem value="Sarah Johnson">Sarah Johnson</SelectItem>
+                            <SelectItem value="Mike Davis">Mike Davis</SelectItem>
+                            <SelectItem value="Emily Wilson">Emily Wilson</SelectItem>
+                            <SelectItem value="David Brown">David Brown</SelectItem>
+                            <SelectItem value="Lisa Rodriguez">Lisa Rodriguez</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="contractor">Primary Contractor</Label>
