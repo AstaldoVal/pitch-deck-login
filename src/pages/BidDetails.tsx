@@ -3,10 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { AppHeader } from "@/components/AppHeader";
-import { ArrowLeft, Calendar, Users, Briefcase, User, Mail } from "lucide-react";
+import { ArrowLeft, Calendar, Users, Briefcase, User, Mail, TrendingUp, TrendingDown, Clock } from "lucide-react";
 import { format } from "date-fns";
 
 interface BidData {
@@ -199,9 +200,16 @@ export default function BidDetails() {
             </div>
 
             {/* Main Content */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Left Column */}
-              <div className="space-y-6">
+            <Tabs defaultValue="overview" className="space-y-6">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="projects">Project Impact</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="overview" className="space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Left Column */}
+                  <div className="space-y-6">
                 {/* Contractors */}
                 <Card>
                   <CardHeader>
@@ -254,79 +262,221 @@ export default function BidDetails() {
                           <p className="text-foreground">{bid.email}</p>
                         </div>
                       </div>
+                       <div className="flex items-center gap-3">
+                         <User className="h-5 w-5 text-muted-foreground" />
+                         <div>
+                           <p className="text-sm font-medium text-muted-foreground">Phone</p>
+                           <p className="text-foreground">{bid.phone}</p>
+                         </div>
+                       </div>
+                     </div>
+                   </CardContent>
+                 </Card>
+               </div>
+
+               {/* Right Column */}
+               <div className="space-y-6">
+                 {/* Job Categories */}
+                 <Card>
+                   <CardHeader>
+                     <CardTitle className="flex items-center gap-2 text-xl">
+                       <Briefcase className="h-6 w-6" />
+                       Job Categories
+                     </CardTitle>
+                   </CardHeader>
+                   <CardContent>
+                     {bid.jobCategories.length > 0 ? (
+                       <div className="space-y-4">
+                         {bid.jobCategories.map((category, index) => (
+                           <div key={index} className="p-4 border rounded-lg bg-card/50">
+                             <h4 className="font-semibold text-foreground mb-2">{category.name}</h4>
+                             {category.description && (
+                               <p className="text-muted-foreground mb-3 text-sm">{category.description}</p>
+                             )}
+                             <div className="flex flex-wrap gap-2">
+                               <Badge variant="outline">#{index + 1}</Badge>
+                               {category.priority && (
+                                 <Badge variant="secondary">Priority: {category.priority}</Badge>
+                               )}
+                             </div>
+                           </div>
+                         ))}
+                       </div>
+                     ) : (
+                       <div className="text-center py-12">
+                         <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                         <p className="text-muted-foreground">No job categories defined for this bid</p>
+                       </div>
+                     )}
+                   </CardContent>
+                 </Card>
+
+                 {/* Project Details */}
+                 <Card>
+                   <CardHeader>
+                     <CardTitle className="text-xl">Project Details</CardTitle>
+                   </CardHeader>
+                   <CardContent>
+                     <div className="space-y-4">
+                       <div>
+                         <p className="text-sm font-medium text-muted-foreground mb-1">Scope Type</p>
+                         <Badge variant="outline" className="text-sm">{bid.scopeType}</Badge>
+                       </div>
+                       <div>
+                         <p className="text-sm font-medium text-muted-foreground mb-1">Start Date</p>
+                         <p className="text-foreground">{formatBidDate(bid.startDate)}</p>
+                       </div>
+                       <div>
+                         <p className="text-sm font-medium text-muted-foreground mb-1">End Date</p>
+                         <p className="text-foreground">{formatBidDate(bid.endDate)}</p>
+                       </div>
+                     </div>
+                   </CardContent>
+                 </Card>
+               </div>
+             </div>
+           </TabsContent>
+
+              <TabsContent value="projects" className="space-y-6">
+                {/* Project Impact Analysis */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <Card className="border-2">
+                    <CardContent className="p-6">
                       <div className="flex items-center gap-3">
-                        <User className="h-5 w-5 text-muted-foreground" />
+                        <div className="p-2 rounded-lg bg-destructive/10">
+                          <TrendingUp className="h-5 w-5 text-destructive" />
+                        </div>
                         <div>
-                          <p className="text-sm font-medium text-muted-foreground">Phone</p>
-                          <p className="text-foreground">{bid.phone}</p>
+                          <p className="text-sm font-medium text-muted-foreground">Cost Impact</p>
+                          <p className="text-lg font-semibold text-destructive">
+                            +$12,500
+                          </p>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border-2">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-orange-100">
+                          <Clock className="h-5 w-5 text-orange-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Schedule Impact</p>
+                          <p className="text-lg font-semibold text-orange-600">
+                            +7 days
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border-2">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-amber-100">
+                          <TrendingDown className="h-5 w-5 text-amber-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Quality Impact</p>
+                          <p className="text-lg font-semibold text-amber-600">
+                            Medium Risk
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
 
-              {/* Right Column */}
-              <div className="space-y-6">
-                {/* Job Categories */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-xl">
-                      <Briefcase className="h-6 w-6" />
-                      Job Categories
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {bid.jobCategories.length > 0 ? (
+                {/* Change Orders Impact */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Active Change Orders</CardTitle>
+                    </CardHeader>
+                    <CardContent>
                       <div className="space-y-4">
-                        {bid.jobCategories.map((category, index) => (
-                          <div key={index} className="p-4 border rounded-lg bg-card/50">
-                            <h4 className="font-semibold text-foreground mb-2">{category.name}</h4>
-                            {category.description && (
-                              <p className="text-muted-foreground mb-3 text-sm">{category.description}</p>
-                            )}
-                            <div className="flex flex-wrap gap-2">
-                              <Badge variant="outline">#{index + 1}</Badge>
-                              {category.priority && (
-                                <Badge variant="secondary">Priority: {category.priority}</Badge>
-                              )}
-                            </div>
+                        <div className="flex items-center justify-between p-4 border rounded-lg">
+                          <div>
+                            <h4 className="font-semibold">CO-001: Kitchen Upgrade</h4>
+                            <p className="text-sm text-muted-foreground">Requested by John Smith</p>
                           </div>
-                        ))}
+                          <div className="text-right">
+                            <p className="font-semibold text-destructive">+$8,500</p>
+                            <p className="text-sm text-muted-foreground">+5 days</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between p-4 border rounded-lg">
+                          <div>
+                            <h4 className="font-semibold">CO-002: Flooring Change</h4>
+                            <p className="text-sm text-muted-foreground">Requested by Sarah Johnson</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-semibold text-destructive">+$4,000</p>
+                            <p className="text-sm text-muted-foreground">+2 days</p>
+                          </div>
+                        </div>
                       </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                        <p className="text-muted-foreground">No job categories defined for this bid</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
 
-                {/* Project Details */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Project Timeline Impact</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-center py-2 border-b">
+                          <span className="text-sm font-medium">Original Start Date:</span>
+                          <span className="text-sm">{formatBidDate(bid.startDate)}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b">
+                          <span className="text-sm font-medium">Revised Start Date:</span>
+                          <span className="text-sm text-orange-600">
+                            {bid.startDate ? format(new Date(new Date(bid.startDate).getTime() + 3 * 24 * 60 * 60 * 1000), 'MMM dd, yyyy') : 'Not set'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b">
+                          <span className="text-sm font-medium">Original End Date:</span>
+                          <span className="text-sm">{formatBidDate(bid.endDate)}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2">
+                          <span className="text-sm font-medium">Revised End Date:</span>
+                          <span className="text-sm text-orange-600">
+                            {bid.endDate ? format(new Date(new Date(bid.endDate).getTime() + 7 * 24 * 60 * 60 * 1000), 'MMM dd, yyyy') : 'Not set'}
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Contract Value Changes */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-xl">Project Details</CardTitle>
+                    <CardTitle>Contract Value Analysis</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
-                      <div>
-                        <p className="text-sm font-medium text-muted-foreground mb-1">Scope Type</p>
-                        <Badge variant="outline" className="text-sm">{bid.scopeType}</Badge>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="text-center p-4 border rounded-lg">
+                        <p className="text-sm font-medium text-muted-foreground mb-2">Original Contract</p>
+                        <p className="text-2xl font-bold text-foreground">$145,000</p>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-muted-foreground mb-1">Start Date</p>
-                        <p className="text-foreground">{formatBidDate(bid.startDate)}</p>
+                      <div className="text-center p-4 border rounded-lg">
+                        <p className="text-sm font-medium text-muted-foreground mb-2">Change Orders</p>
+                        <p className="text-2xl font-bold text-destructive">+$12,500</p>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-muted-foreground mb-1">End Date</p>
-                        <p className="text-foreground">{formatBidDate(bid.endDate)}</p>
+                      <div className="text-center p-4 border rounded-lg bg-muted/50">
+                        <p className="text-sm font-medium text-muted-foreground mb-2">Revised Contract</p>
+                        <p className="text-2xl font-bold text-foreground">$157,500</p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-            </div>
+              </TabsContent>
+            </Tabs>
           </main>
         </div>
       </div>
