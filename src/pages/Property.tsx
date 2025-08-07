@@ -403,68 +403,74 @@ const Property = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Units Section */}
                     <Card className="p-6">
+                      {/* Change Orders Statistics */}
+                      <div className="grid grid-cols-2 gap-4 mb-6">
+                        <div className="text-center p-3 bg-yellow-50 rounded-lg border">
+                          <Clock className="w-5 h-5 text-yellow-600 mx-auto mb-2" />
+                          <p className="text-sm font-medium text-yellow-600">Pending Review</p>
+                          <p className="text-xl font-bold text-yellow-800">1</p>
+                        </div>
+                        <div className="text-center p-3 bg-green-50 rounded-lg border">
+                          <CheckCircle className="w-5 h-5 text-green-600 mx-auto mb-2" />
+                          <p className="text-sm font-medium text-green-600">Approved</p>
+                          <p className="text-xl font-bold text-green-800">2</p>
+                        </div>
+                      </div>
+
                       <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-xl font-semibold text-gray-900">Approvals</h2>
-                        <Button size="sm" variant="outline">
+                        <h2 className="text-xl font-semibold text-gray-900">Change Orders</h2>
+                        <Button size="sm" variant="outline" onClick={() => navigate('/property/change-orders/new')}>
                           <Plus className="w-4 h-4 mr-2" />
-                          Request Approval
+                          New Change Order
                         </Button>
                       </div>
                       
                       <div className="space-y-4">
-                        {/* Pending Approvals */}
-                        <div className="border-l-4 border-yellow-400 bg-yellow-50 p-4 rounded-r-lg">
+                        {/* Pending Change Order */}
+                        <div 
+                          className="border-l-4 border-yellow-400 bg-yellow-50 p-4 rounded-r-lg cursor-pointer hover:bg-yellow-100 transition-colors"
+                          onClick={() => navigate('/property/change-orders/CO-001')}
+                        >
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center">
                               <Clock className="w-5 h-5 text-yellow-600 mr-2" />
-                              <span className="font-medium text-yellow-800">Budget Increase - Unit 101A</span>
+                              <span className="font-medium text-yellow-800">CO-001: Kitchen Upgrade - Unit 1A</span>
                             </div>
                             <Badge variant="secondary" className="bg-yellow-100 text-yellow-700">Pending</Badge>
                           </div>
-                          <p className="text-sm text-yellow-700 mb-2">Additional $2,500 for flooring upgrade</p>
-                          <p className="text-xs text-yellow-600">Submitted 2 days ago • Awaiting Asset Manager</p>
+                          <p className="text-sm text-yellow-700 mb-2">Upgrade kitchen countertops from laminate to quartz • +$2,500</p>
+                          <p className="text-xs text-yellow-600">Submitted Jan 20, 2024 • Elite Construction</p>
                         </div>
 
-                        {/* Approved Items */}
-                        <div className="border-l-4 border-green-400 bg-green-50 p-4 rounded-r-lg">
+                        {/* Approved Change Orders */}
+                        <div 
+                          className="border-l-4 border-green-400 bg-green-50 p-4 rounded-r-lg cursor-pointer hover:bg-green-100 transition-colors"
+                          onClick={() => navigate('/property/change-orders/CO-002')}
+                        >
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center">
                               <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
-                              <span className="font-medium text-green-800">Contractor Selection - Phase 1</span>
+                              <span className="font-medium text-green-800">CO-002: Electrical Outlets - Unit 2B</span>
                             </div>
                             <Badge variant="secondary" className="bg-green-100 text-green-700">Approved</Badge>
                           </div>
-                          <p className="text-sm text-green-700 mb-2">ABC Construction approved for $145,000</p>
-                          <p className="text-xs text-green-600">Approved yesterday • Asset Manager</p>
+                          <p className="text-sm text-green-700 mb-2">Additional electrical outlets in living room • +$850</p>
+                          <p className="text-xs text-green-600">Approved Jan 18, 2024 • ProBuild Solutions</p>
                         </div>
 
-                        {/* Needs Revision */}
-                        <div className="border-l-4 border-red-400 bg-red-50 p-4 rounded-r-lg">
+                        <div 
+                          className="border-l-4 border-green-400 bg-green-50 p-4 rounded-r-lg cursor-pointer hover:bg-green-100 transition-colors"
+                          onClick={() => navigate('/property/change-orders/CO-003')}
+                        >
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center">
-                              <AlertCircle className="w-5 h-5 text-red-600 mr-2" />
-                              <span className="font-medium text-red-800">Design Plans - Common Areas</span>
+                              <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
+                              <span className="font-medium text-green-800">CO-003: Structural Repairs</span>
                             </div>
-                            <Badge variant="secondary" className="bg-red-100 text-red-700">Revision Needed</Badge>
+                            <Badge variant="secondary" className="bg-green-100 text-green-700">Approved</Badge>
                           </div>
-                          <p className="text-sm text-red-700 mb-2">Fire safety compliance requirements not met</p>
-                          <p className="text-xs text-red-600">Returned 3 days ago • Requires architect review</p>
-                        </div>
-
-                        {/* Summary Stats */}
-                        <div className="grid grid-cols-3 gap-4 pt-4 border-t">
-                          <div className="text-center">
-                            <p className="text-2xl font-bold text-yellow-600">3</p>
-                            <p className="text-xs text-gray-600">Pending</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-2xl font-bold text-green-600">12</p>
-                            <p className="text-xs text-gray-600">Approved</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-2xl font-bold text-red-600">2</p>
-                            <p className="text-xs text-gray-600">Revisions</p>
-                          </div>
+                          <p className="text-sm text-green-700 mb-2">Building exterior structural repairs • -$1,200 (savings)</p>
+                          <p className="text-xs text-green-600">Approved Jan 15, 2024 • Facade Masters</p>
                         </div>
                       </div>
                     </Card>
