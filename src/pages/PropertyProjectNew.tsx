@@ -305,6 +305,56 @@ export default function PropertyProjectNew() {
                         />
                       </div>
                     </div>
+
+                    {/* Units Selection for Unit-based projects */}
+                    {formData.scopeType === "Unit-based" && (
+                      <div className="space-y-4 mt-6 p-4 bg-muted/50 rounded-lg">
+                        <div className="space-y-2">
+                          <Label className="text-base font-medium">Units to Include</Label>
+                          <p className="text-sm text-muted-foreground">Select which units will be part of this project</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <Select
+                            value={newUnit}
+                            onValueChange={setNewUnit}
+                          >
+                            <SelectTrigger className="flex-1">
+                              <SelectValue placeholder="Select unit to add" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {unitOptions.filter(unit => !formData.units.includes(unit)).map((unit) => (
+                                <SelectItem key={unit} value={unit}>
+                                  {unit}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <Button
+                            type="button"
+                            onClick={() => addUnit(newUnit)}
+                            disabled={!newUnit}
+                            size="sm"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </Button>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {formData.units.map((unit) => (
+                            <Badge key={unit} variant="secondary" className="gap-1">
+                              {unit}
+                              <button
+                                type="button"
+                                onClick={() => removeUnit(unit)}
+                                className="ml-1 hover:bg-red-100 rounded-full"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
 
@@ -446,99 +496,49 @@ export default function PropertyProjectNew() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Job Categories</CardTitle>
+                    <p className="text-sm text-muted-foreground mt-1">What type of work will be performed in this project?</p>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="flex gap-2">
-                      <Select
-                        value={newJobCategory}
-                        onValueChange={setNewJobCategory}
-                      >
-                        <SelectTrigger className="flex-1">
-                          <SelectValue placeholder="Select job category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {jobCategoryOptions.map((category) => (
-                            <SelectItem key={category} value={category}>
-                              {category}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <Button
-                        type="button"
-                        onClick={() => addJobCategory(newJobCategory)}
-                        disabled={!newJobCategory}
-                      >
-                        <Plus className="w-4 h-4" />
-                      </Button>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2">
-                      {formData.jobCategories.map((category) => (
-                        <Badge key={category} variant="secondary" className="gap-1">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                      {jobCategoryOptions.map((category) => (
+                        <button
+                          key={category}
+                          type="button"
+                          onClick={() => addJobCategory(category)}
+                          disabled={formData.jobCategories.includes(category)}
+                          className={cn(
+                            "p-3 text-sm text-left border rounded-lg transition-all hover:bg-muted",
+                            formData.jobCategories.includes(category)
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-background border-border hover:border-primary/50"
+                          )}
+                        >
                           {category}
-                          <button
-                            type="button"
-                            onClick={() => removeJobCategory(category)}
-                            className="ml-1 hover:bg-red-100 rounded-full"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        </Badge>
+                        </button>
                       ))}
                     </div>
+
+                    {formData.jobCategories.length > 0 && (
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Selected Categories:</Label>
+                        <div className="flex flex-wrap gap-2">
+                          {formData.jobCategories.map((category) => (
+                            <Badge key={category} variant="secondary" className="gap-1">
+                              {category}
+                              <button
+                                type="button"
+                                onClick={() => removeJobCategory(category)}
+                                className="ml-1 hover:bg-red-100 rounded-full"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
-
-                {/* Units */}
-                {formData.scopeType === "Unit-based" && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Units Included</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex gap-2">
-                        <Select
-                          value={newUnit}
-                          onValueChange={setNewUnit}
-                        >
-                          <SelectTrigger className="flex-1">
-                            <SelectValue placeholder="Select unit" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {unitOptions.map((unit) => (
-                              <SelectItem key={unit} value={unit}>
-                                {unit}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <Button
-                          type="button"
-                          onClick={() => addUnit(newUnit)}
-                          disabled={!newUnit}
-                        >
-                          <Plus className="w-4 h-4" />
-                        </Button>
-                      </div>
-
-                      <div className="flex flex-wrap gap-2">
-                        {formData.units.map((unit) => (
-                          <Badge key={unit} variant="secondary" className="gap-1">
-                            {unit}
-                            <button
-                              type="button"
-                              onClick={() => removeUnit(unit)}
-                              className="ml-1 hover:bg-red-100 rounded-full"
-                            >
-                              <X className="w-3 h-3" />
-                            </button>
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
 
                 {/* Actions */}
                 <div className="flex gap-4 justify-end">
