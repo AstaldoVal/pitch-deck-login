@@ -5,88 +5,67 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
 // Mock contractors data
-const contractors = [
-  {
-    id: 1,
-    firstName: "Mike",
-    lastName: "Johnson",
-    email: "mike.johnson@contractors.com",
-    specialty: "Plumbing",
-    status: "active",
-    rating: 4.8,
-    projectsCompleted: 15
-  },
-  {
-    id: 2,
-    firstName: "Sarah",
-    lastName: "Williams",
-    email: "sarah.williams@electricians.com",
-    specialty: "Electrical",
-    status: "active",
-    rating: 4.9,
-    projectsCompleted: 22
-  },
-  {
-    id: 3,
-    firstName: "Carlos",
-    lastName: "Rodriguez",
-    email: "carlos.rodriguez@painting.com",
-    specialty: "Painting",
-    status: "active",
-    rating: 4.7,
-    projectsCompleted: 18
-  },
-  {
-    id: 4,
-    firstName: "David",
-    lastName: "Brown",
-    email: "david.brown@flooring.com",
-    specialty: "Flooring",
-    status: "pending",
-    rating: 4.6,
-    projectsCompleted: 12
-  },
-  {
-    id: 5,
-    firstName: "Jennifer",
-    lastName: "Davis",
-    email: "jennifer.davis@hvac.com",
-    specialty: "HVAC",
-    status: "active",
-    rating: 4.9,
-    projectsCompleted: 25
-  },
-  {
-    id: 6,
-    firstName: "Robert",
-    lastName: "Wilson",
-    email: "robert.wilson@roofing.com",
-    specialty: "Roofing",
-    status: "inactive",
-    rating: 4.5,
-    projectsCompleted: 8
-  }
-];
-
+const contractors = [{
+  id: 1,
+  firstName: "Mike",
+  lastName: "Johnson",
+  email: "mike.johnson@contractors.com",
+  specialty: "Plumbing",
+  status: "active",
+  rating: 4.8,
+  projectsCompleted: 15
+}, {
+  id: 2,
+  firstName: "Sarah",
+  lastName: "Williams",
+  email: "sarah.williams@electricians.com",
+  specialty: "Electrical",
+  status: "active",
+  rating: 4.9,
+  projectsCompleted: 22
+}, {
+  id: 3,
+  firstName: "Carlos",
+  lastName: "Rodriguez",
+  email: "carlos.rodriguez@painting.com",
+  specialty: "Painting",
+  status: "active",
+  rating: 4.7,
+  projectsCompleted: 18
+}, {
+  id: 4,
+  firstName: "David",
+  lastName: "Brown",
+  email: "david.brown@flooring.com",
+  specialty: "Flooring",
+  status: "pending",
+  rating: 4.6,
+  projectsCompleted: 12
+}, {
+  id: 5,
+  firstName: "Jennifer",
+  lastName: "Davis",
+  email: "jennifer.davis@hvac.com",
+  specialty: "HVAC",
+  status: "active",
+  rating: 4.9,
+  projectsCompleted: 25
+}, {
+  id: 6,
+  firstName: "Robert",
+  lastName: "Wilson",
+  email: "robert.wilson@roofing.com",
+  specialty: "Roofing",
+  status: "inactive",
+  rating: 4.5,
+  projectsCompleted: 8
+}];
 const getStatusBadge = (status: string) => {
   switch (status) {
     case "active":
@@ -99,40 +78,39 @@ const getStatusBadge = (status: string) => {
       return null;
   }
 };
-
 const renderRating = (rating: number) => {
-  return (
-    <div className="flex items-center gap-1">
+  return <div className="flex items-center gap-1">
       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
       <span className="text-sm font-medium">{rating}</span>
-    </div>
-  );
+    </div>;
 };
-
 export default function Contractors() {
   const location = useLocation();
   const navigate = useNavigate();
   const isPropertyContractors = location.pathname === "/contractors";
-  const { toast } = useToast();
-  const [contractorSpecialties, setContractorSpecialties] = useState<{[key: number]: string}>(
-    contractors.reduce((acc, contractor) => ({ ...acc, [contractor.id]: contractor.specialty }), {})
-  );
-
+  const {
+    toast
+  } = useToast();
+  const [contractorSpecialties, setContractorSpecialties] = useState<{
+    [key: number]: string;
+  }>(contractors.reduce((acc, contractor) => ({
+    ...acc,
+    [contractor.id]: contractor.specialty
+  }), {}));
   const handleAddContractor = () => {
     // TODO: Implement add contractor functionality
     console.log("Add contractor clicked");
   };
-
   const handleSpecialtyChange = (contractorId: number, newSpecialty: string) => {
-    setContractorSpecialties(prev => ({ ...prev, [contractorId]: newSpecialty }));
+    setContractorSpecialties(prev => ({
+      ...prev,
+      [contractorId]: newSpecialty
+    }));
   };
-
   const handleViewDetails = (contractorId: number) => {
     navigate(`/contractor/${contractorId}`);
   };
-
-  return (
-    <SidebarProvider>
+  return <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50">
         {isPropertyContractors ? <PropertySidebar /> : <AppSidebar />}
         
@@ -173,17 +151,13 @@ export default function Contractors() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {contractors.map((contractor) => (
-                      <TableRow key={contractor.id}>
+                    {contractors.map(contractor => <TableRow key={contractor.id}>
                         <TableCell className="font-medium">
                           {contractor.firstName} {contractor.lastName}
                         </TableCell>
                         <TableCell>{contractor.email}</TableCell>
                         <TableCell>
-                          <Select 
-                            value={contractorSpecialties[contractor.id]} 
-                            onValueChange={(value) => handleSpecialtyChange(contractor.id, value)}
-                          >
+                          <Select value={contractorSpecialties[contractor.id]} onValueChange={value => handleSpecialtyChange(contractor.id, value)}>
                             <SelectTrigger className="w-full">
                               <SelectValue />
                             </SelectTrigger>
@@ -210,16 +184,11 @@ export default function Contractors() {
                           </span>
                         </TableCell>
                         <TableCell>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewDetails(contractor.id)}
-                          >
+                          <Button variant="outline" size="sm" onClick={() => handleViewDetails(contractor.id)}>
                             View Details
                           </Button>
                         </TableCell>
-                      </TableRow>
-                    ))}
+                      </TableRow>)}
                   </TableBody>
                 </Table>
               </div>
@@ -227,6 +196,5 @@ export default function Contractors() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
-  );
+    </SidebarProvider>;
 }
