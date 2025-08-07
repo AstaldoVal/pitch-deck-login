@@ -156,8 +156,8 @@ const getFileIcon = (type: string) => {
 
 export default function ChangeOrderDetails() {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const changeOrder = id && mockChangeOrders[id] ? mockChangeOrders[id] : null;
+  const { changeOrderId } = useParams();
+  const changeOrder = changeOrderId && mockChangeOrders[changeOrderId] ? mockChangeOrders[changeOrderId] : null;
 
   const handleApprove = () => {
     toast.success("Change order approved successfully");
