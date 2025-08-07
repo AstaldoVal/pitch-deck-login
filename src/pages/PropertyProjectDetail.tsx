@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { AppHeader } from "@/components/AppHeader";
-import { Building, Calendar, Users, DollarSign, FileText, ChevronDown, ChevronRight, MessageCircle, BarChart3, Home, Briefcase, List, Kanban, TrendingUp, Calculator } from "lucide-react";
+import { Building, Calendar, Users, DollarSign, FileText, ChevronDown, ChevronRight, MessageCircle, BarChart3, Home, Briefcase, List, Kanban, TrendingUp, Calculator, Clock, TrendingDown } from "lucide-react";
 import { format } from "date-fns";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -661,6 +661,170 @@ export default function PropertyProjectDetail() {
                   <span className="ml-2">Kanban</span>
                 </ToggleGroupItem>
               </ToggleGroup>
+            </div>
+
+            {/* Project Impact Section */}
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground mb-6">Project Impact</h2>
+                
+                {/* Impact Metrics Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <Card className="border-2">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-red-100">
+                          <DollarSign className="h-5 w-5 text-red-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Cost Impact</p>
+                          <p className="text-lg font-semibold text-destructive">
+                            {(() => {
+                              const totalBudget = project.unitsIncluded?.reduce((sum, unit) => sum + unit.totalBudget, 0) || 0;
+                              const totalInvoiced = project.unitsIncluded?.reduce((sum, unit) => sum + unit.totalInvoiced, 0) || 0;
+                              const costImpact = totalInvoiced - totalBudget;
+                              return costImpact >= 0 ? `+${formatCurrency(costImpact)}` : formatCurrency(costImpact);
+                            })()}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border-2">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-orange-100">
+                          <Clock className="h-5 w-5 text-orange-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Schedule Impact</p>
+                          <p className="text-lg font-semibold text-orange-600">
+                            {(() => {
+                              const avgProgress = project.unitsIncluded?.reduce((sum, unit) => sum + unit.percentComplete, 0) / (project.unitsIncluded?.length || 1);
+                              const daysImpact = avgProgress < 50 ? Math.floor((100 - avgProgress) / 10) : 0;
+                              return daysImpact > 0 ? `+${daysImpact} days` : 'On Track';
+                            })()}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border-2">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-amber-100">
+                          <TrendingDown className="h-5 w-5 text-amber-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Quality Impact</p>
+                          <p className="text-lg font-semibold text-amber-600">
+                            {(() => {
+                              const totalJobs = project.unitsIncluded?.reduce((sum, unit) => sum + unit.jobs.length, 0) || 0;
+                              const completedJobs = project.unitsIncluded?.reduce((sum, unit) => 
+                                sum + unit.jobs.filter(job => job.status === 'Completed').length, 0) || 0;
+                              const completionRate = totalJobs > 0 ? (completedJobs / totalJobs) * 100 : 0;
+                              return completionRate > 80 ? 'Low Risk' : completionRate > 60 ? 'Medium Risk' : 'High Risk';
+                            })()}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Change Orders and Timeline Impact */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Active Change Orders</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between p-4 border rounded-lg">
+                          <div>
+                            <h4 className="font-semibold">CO-001: Kitchen Upgrade</h4>
+                            <p className="text-sm text-muted-foreground">Requested by {project.generatedBy}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-semibold text-destructive">+$5,200</p>
+                            <p className="text-sm text-muted-foreground">+3 days</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between p-4 border rounded-lg">
+                          <div>
+                            <h4 className="font-semibold">CO-002: Flooring Upgrade</h4>
+                            <p className="text-sm text-muted-foreground">Material specification change</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-semibold text-destructive">+$2,800</p>
+                            <p className="text-sm text-muted-foreground">+1 day</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Project Timeline Impact</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-center py-2 border-b">
+                          <span className="text-sm font-medium">Original Start Date:</span>
+                          <span className="text-sm">{formatDate(project.startDate)}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b">
+                          <span className="text-sm font-medium">Revised Start Date:</span>
+                          <span className="text-sm text-orange-600">
+                            {format(new Date(new Date(project.startDate).getTime() + 2 * 24 * 60 * 60 * 1000), 'MMM dd, yyyy')}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b">
+                          <span className="text-sm font-medium">Original End Date:</span>
+                          <span className="text-sm">{formatDate(project.endDate)}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2">
+                          <span className="text-sm font-medium">Revised End Date:</span>
+                          <span className="text-sm text-orange-600">
+                            {format(new Date(new Date(project.endDate).getTime() + 4 * 24 * 60 * 60 * 1000), 'MMM dd, yyyy')}
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Contract Value Changes */}
+                <Card className="mb-8">
+                  <CardHeader>
+                    <CardTitle>Contract Value Analysis</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="text-center p-4 border rounded-lg">
+                        <p className="text-sm font-medium text-muted-foreground mb-2">Original Contract</p>
+                        <p className="text-2xl font-bold text-foreground">
+                          {formatCurrency(project.unitsIncluded?.reduce((sum, unit) => sum + unit.totalBudget, 0) || 0)}
+                        </p>
+                      </div>
+                      <div className="text-center p-4 border rounded-lg">
+                        <p className="text-sm font-medium text-muted-foreground mb-2">Change Orders</p>
+                        <p className="text-2xl font-bold text-destructive">+$8,000</p>
+                      </div>
+                      <div className="text-center p-4 border rounded-lg bg-muted/50">
+                        <p className="text-sm font-medium text-muted-foreground mb-2">Revised Contract</p>
+                        <p className="text-2xl font-bold text-foreground">
+                          {formatCurrency((project.unitsIncluded?.reduce((sum, unit) => sum + unit.totalBudget, 0) || 0) + 8000)}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
 
             {viewMode === 'kanban' ? (
