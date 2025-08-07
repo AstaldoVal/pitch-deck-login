@@ -10,57 +10,118 @@ import { ArrowLeft, Download, FileText, Image, CheckCircle, XCircle, Clock, User
 import { toast } from "sonner";
 
 // Mock data for change order details
-const mockChangeOrder = {
-  id: "CO-001",
-  unitNumber: "Unit 1A",
-  contractor: "Elite Construction",
-  requestedBy: "Mike Stevens",
-  dateRequested: "2024-01-20",
-  reason: "Material specifications changed",
-  customReason: "",
-  description: "Upgrade kitchen countertops from laminate to quartz per owner request. This change will provide better durability and aesthetics but requires additional time for material ordering and installation.",
-  costImpact: 2500,
-  timeImpact: 3,
-  status: "pending",
-  originalContract: "Kitchen Renovation - Phase 1",
-  contractValue: 50000,
-  approver: "",
-  dateApproved: "",
-  digitalSignature: "",
-  attachments: [
-    {
-      id: 1,
-      name: "Quartz_Samples.pdf",
-      type: "documentation",
-      size: "2.1 MB",
-      uploadedBy: "Mike Stevens",
-      uploadedDate: "2024-01-20"
-    },
-    {
-      id: 2,
-      name: "Kitchen_Photos.zip",
-      type: "photos",
-      size: "5.8 MB",
-      uploadedBy: "Mike Stevens",
-      uploadedDate: "2024-01-20"
-    }
-  ],
-  history: [
-    {
-      id: 1,
-      action: "Created",
-      user: "Mike Stevens",
-      date: "2024-01-20T10:30:00Z",
-      description: "Change order created and submitted for review"
-    },
-    {
-      id: 2,
-      action: "Under Review",
-      user: "Sarah Johnson",
-      date: "2024-01-20T14:15:00Z",
-      description: "Change order assigned for review"
-    }
-  ]
+const mockChangeOrders: Record<string, any> = {
+  "CO-001": {
+    id: "CO-001",
+    unitNumber: "Unit 101",
+    contractor: "ABC Construction",
+    requestedBy: "John Smith",
+    dateRequested: "2024-01-20",
+    dateApproved: "2024-01-22",
+    reason: "Material upgrade request",
+    customReason: "",
+    description: "Upgrade from standard to premium finishes in kitchen. This includes upgrading countertops to quartz, appliances to stainless steel grade, and cabinet hardware to premium finishes.",
+    costImpact: 5200,
+    timeImpact: 3,
+    status: "approved",
+    originalContract: "Kitchen Renovation - Unit 101",
+    contractValue: 45000,
+    approver: "Sarah Johnson",
+    digitalSignature: "",
+    attachments: [
+      {
+        id: 1,
+        name: "Premium_Finishes_Spec.pdf",
+        type: "documentation",
+        size: "1.8 MB",
+        uploadedBy: "John Smith",
+        uploadedDate: "2024-01-20"
+      },
+      {
+        id: 2,
+        name: "Kitchen_Current_Photos.zip",
+        type: "photos",
+        size: "4.2 MB",
+        uploadedBy: "John Smith",
+        uploadedDate: "2024-01-20"
+      }
+    ],
+    history: [
+      {
+        id: 1,
+        action: "Created",
+        user: "John Smith",
+        date: "2024-01-20T10:30:00Z",
+        description: "Change order created and submitted for review"
+      },
+      {
+        id: 2,
+        action: "Under Review",
+        user: "Sarah Johnson",
+        date: "2024-01-20T14:15:00Z",
+        description: "Change order assigned for review"
+      },
+      {
+        id: 3,
+        action: "Approved",
+        user: "Sarah Johnson",
+        date: "2024-01-22T09:45:00Z",
+        description: "Change order approved and ready for implementation"
+      }
+    ]
+  },
+  "CO-002": {
+    id: "CO-002",
+    unitNumber: "Unit 102",
+    contractor: "Premium Contractors",
+    requestedBy: "Sarah Johnson",
+    dateRequested: "2024-01-25",
+    dateApproved: "2024-01-26",
+    reason: "Material substitution for better ROI",
+    customReason: "",
+    description: "Switch from vinyl to hardwood flooring in living areas. Market research shows higher ROI with hardwood floors and will increase rental value significantly.",
+    costImpact: 2800,
+    timeImpact: 1,
+    status: "approved",
+    originalContract: "Flooring Installation - Unit 102",
+    contractValue: 35000,
+    approver: "Mike Stevens",
+    digitalSignature: "",
+    attachments: [
+      {
+        id: 1,
+        name: "Hardwood_Samples.pdf",
+        type: "documentation",
+        size: "2.5 MB",
+        uploadedBy: "Sarah Johnson",
+        uploadedDate: "2024-01-25"
+      },
+      {
+        id: 2,
+        name: "ROI_Analysis.xlsx",
+        type: "documentation",
+        size: "890 KB",
+        uploadedBy: "Sarah Johnson",
+        uploadedDate: "2024-01-25"
+      }
+    ],
+    history: [
+      {
+        id: 1,
+        action: "Created",
+        user: "Sarah Johnson",
+        date: "2024-01-25T11:20:00Z",
+        description: "Change order created and submitted for review"
+      },
+      {
+        id: 2,
+        action: "Approved",
+        user: "Mike Stevens",
+        date: "2024-01-26T08:30:00Z",
+        description: "Change order approved based on ROI analysis"
+      }
+    ]
+  }
 };
 
 const getStatusBadge = (status: string) => {
@@ -96,7 +157,7 @@ const getFileIcon = (type: string) => {
 export default function ChangeOrderDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [changeOrder] = useState(mockChangeOrder);
+  const changeOrder = id && mockChangeOrders[id] ? mockChangeOrders[id] : null;
 
   const handleApprove = () => {
     toast.success("Change order approved successfully");
@@ -112,6 +173,25 @@ export default function ChangeOrderDetails() {
     toast.success(`Downloading ${filename}`);
     // In real app, this would trigger file download
   };
+
+  if (!changeOrder) {
+    return (
+      <SidebarProvider>
+        <div className="min-h-screen flex w-full">
+          <PropertySidebar />
+          <main className="flex-1 p-6">
+            <div className="max-w-7xl mx-auto text-center">
+              <h1 className="text-3xl font-bold text-foreground">Change Order Not Found</h1>
+              <p className="text-muted-foreground mt-2">The requested change order could not be found.</p>
+              <Button onClick={() => navigate("/property/change-orders")} className="mt-4">
+                Back to Change Orders
+              </Button>
+            </div>
+          </main>
+        </div>
+      </SidebarProvider>
+    );
+  }
 
   return (
     <SidebarProvider>
