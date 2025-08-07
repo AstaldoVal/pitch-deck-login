@@ -504,8 +504,13 @@ export default function PropertyProjectNew() {
                         <button
                           key={category}
                           type="button"
-                          onClick={() => addJobCategory(category)}
-                          disabled={formData.jobCategories.includes(category)}
+                          onClick={() => {
+                            if (formData.jobCategories.includes(category)) {
+                              removeJobCategory(category);
+                            } else {
+                              addJobCategory(category);
+                            }
+                          }}
                           className={cn(
                             "p-3 text-sm text-left border rounded-lg transition-all hover:bg-muted",
                             formData.jobCategories.includes(category)
