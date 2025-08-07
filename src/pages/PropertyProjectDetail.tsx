@@ -665,7 +665,7 @@ export default function PropertyProjectDetail() {
             </div>
 
             <Tabs defaultValue="units" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="w-auto">
                 <TabsTrigger value="units">Units</TabsTrigger>
                 <TabsTrigger value="impact">Project Impact Analysis</TabsTrigger>
               </TabsList>
