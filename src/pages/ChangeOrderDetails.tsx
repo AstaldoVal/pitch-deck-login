@@ -297,6 +297,91 @@ export default function ChangeOrderDetails() {
                   </CardContent>
                 </Card>
 
+                {/* Schedule Impact Comparison */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Schedule Impact vs Original Bid</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Original Bid Timeline */}
+                      <div className="space-y-4">
+                        <h4 className="font-medium text-foreground">Original Bid Timeline</h4>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3 p-3 border rounded-lg">
+                            <Calendar className="w-5 h-5 text-blue-600" />
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">Start Date</p>
+                              <p className="font-semibold">2024-02-01</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 border rounded-lg">
+                            <Calendar className="w-5 h-5 text-blue-600" />
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">End Date</p>
+                              <p className="font-semibold">2024-02-28</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 border rounded-lg">
+                            <Timer className="w-5 h-5 text-blue-600" />
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">Duration</p>
+                              <p className="font-semibold">28 days</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Adjusted Timeline */}
+                      <div className="space-y-4">
+                        <h4 className="font-medium text-foreground">Adjusted Timeline</h4>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3 p-3 border rounded-lg">
+                            <Calendar className="w-5 h-5 text-green-600" />
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">Start Date</p>
+                              <p className="font-semibold">2024-02-01</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 border rounded-lg bg-red-50">
+                            <Calendar className="w-5 h-5 text-red-600" />
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">New End Date</p>
+                              <p className="font-semibold text-red-600">2024-03-03</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 border rounded-lg bg-red-50">
+                            <Timer className="w-5 h-5 text-red-600" />
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">New Duration</p>
+                              <p className="font-semibold text-red-600">31 days (+3 days)</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Schedule Change Summary */}
+                    <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                      <h4 className="font-medium text-red-800 mb-2">Schedule Delay Impact</h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-red-700">Delay Duration:</span>
+                          <span className="font-medium text-red-800">+{changeOrder.timeImpact} days</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-red-700">New Completion Date:</span>
+                          <span className="font-medium text-red-800">March 3, 2024</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-red-700">Percentage Delay:</span>
+                          <span className="font-medium text-red-800">{((changeOrder.timeImpact / 28) * 100).toFixed(1)}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 {/* Impact Assessment */}
                 <Card>
                   <CardHeader>
