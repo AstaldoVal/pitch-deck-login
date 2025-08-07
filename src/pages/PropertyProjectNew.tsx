@@ -517,26 +517,6 @@ export default function PropertyProjectNew() {
                         </button>
                       ))}
                     </div>
-
-                    {formData.jobCategories.length > 0 && (
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium">Selected Categories:</Label>
-                        <div className="flex flex-wrap gap-2">
-                          {formData.jobCategories.map((category) => (
-                            <Badge key={category} variant="secondary" className="gap-1">
-                              {category}
-                              <button
-                                type="button"
-                                onClick={() => removeJobCategory(category)}
-                                className="ml-1 hover:bg-red-100 rounded-full"
-                              >
-                                <X className="w-3 h-3" />
-                              </button>
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
 
