@@ -274,41 +274,6 @@ const PropertyEmpty = () => {
                 />
               </div>
 
-              {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Total Units</p>
-                      <p className="text-2xl font-bold text-gray-900">0</p>
-                      <p className="text-xs text-gray-400 mt-1">Upload rent roll to see units</p>
-                    </div>
-                    <Users className="w-8 h-8 text-gray-300" />
-                  </div>
-                </Card>
-
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-                      <p className="text-2xl font-bold text-gray-900">$0</p>
-                      <p className="text-xs text-gray-400 mt-1">No revenue data yet</p>
-                    </div>
-                    <DollarSign className="w-8 h-8 text-gray-300" />
-                  </div>
-                </Card>
-
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Occupancy</p>
-                      <p className="text-2xl font-bold text-gray-900">0%</p>
-                      <p className="text-xs text-gray-400 mt-1">No occupancy data yet</p>
-                    </div>
-                    <Building2 className="w-8 h-8 text-gray-300" />
-                  </div>
-                </Card>
-              </div>
 
 
               {/* Progress Summary */}
