@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { 
   Building2, 
@@ -252,25 +253,20 @@ const PropertyUnits = () => {
                 </div>
               </Card>
 
-              {/* Add Units Form */}
-              {showAddForm && (
-                <Card className="mb-6">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle>Add Units</CardTitle>
-                      <Button variant="ghost" size="sm" onClick={() => setShowAddForm(false)}>
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
+              {/* Add Units Dialog */}
+              <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
+                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Add Units</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
                     <Tabs value={activeTab} onValueChange={setActiveTab}>
                       <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="template">Template Generation</TabsTrigger>
                         <TabsTrigger value="manual">Quick Manual Add</TabsTrigger>
                       </TabsList>
                       
-                      <TabsContent value="template" className="space-y-4">
+                      <TabsContent value="template" className="space-y-4 mt-6">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="space-y-2">
                             <Label>Unit Prefix</Label>
@@ -358,7 +354,7 @@ const PropertyUnits = () => {
                         </div>
                       </TabsContent>
 
-                      <TabsContent value="manual" className="space-y-4">
+                      <TabsContent value="manual" className="space-y-4 mt-6">
                         <div className="space-y-3">
                           {quickUnits.map((unit, index) => (
                             <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
@@ -443,9 +439,9 @@ const PropertyUnits = () => {
                         </div>
                       </TabsContent>
                     </Tabs>
-                  </CardContent>
-                </Card>
-              )}
+                  </div>
+                </DialogContent>
+              </Dialog>
 
               {/* Units List */}
               {units.length > 0 ? (
