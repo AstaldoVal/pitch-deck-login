@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,9 +8,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppHeader } from "@/components/AppHeader";
 import { PropertySidebar } from "@/components/PropertySidebar";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
-const RenovationInspections = () => {
+const RenovationInspectionNew = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     unit: "",
     reason: "",
@@ -67,8 +71,40 @@ const RenovationInspections = () => {
   };
 
   const handleSubmit = () => {
-    console.log("Inspection scheduled:", formData);
-    // Handle form submission
+    // Validation
+    if (!formData.unit || !formData.reason || !formData.inspector || 
+        formData.selectedDays.length === 0 || formData.selectedTimes.length === 0) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields and select at least one day and time slot.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Create inspection data
+    const newInspection = {
+      id: `INS-${Date.now()}`,
+      unit: formData.unit,
+      reason: formData.reason,
+      inspector: formData.inspector,
+      date: formData.selectedDays.join(", "),
+      time: formData.selectedTimes.join(", "),
+      status: "Scheduled",
+      createdAt: new Date().toISOString()
+    };
+
+    // In a real app, this would be an API call
+    console.log("Creating inspection:", newInspection);
+
+    // Show success toast
+    toast({
+      title: "Inspection Scheduled",
+      description: `Inspection ${newInspection.id} has been successfully scheduled.`,
+    });
+
+    // Navigate back to inspections list
+    navigate('/property/renovation-inspections');
   };
 
   return (
@@ -212,7 +248,7 @@ const RenovationInspections = () => {
                     className="px-8 py-2 text-base"
                     disabled={!formData.unit || !formData.reason || !formData.inspector || formData.selectedDays.length === 0 || formData.selectedTimes.length === 0}
                   >
-                    Continue
+                    Create
                   </Button>
                 </div>
               </CardContent>
@@ -225,4 +261,4 @@ const RenovationInspections = () => {
   );
 };
 
-export default RenovationInspections;
+export default RenovationInspectionNew;
