@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AppHeader } from "@/components/AppHeader";
-import { AppSidebar } from "@/components/AppSidebar";
+import { PropertySidebar } from "@/components/PropertySidebar";
 import { cn } from "@/lib/utils";
 
 const RenovationInspections = () => {
@@ -72,7 +72,7 @@ const RenovationInspections = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <AppSidebar />
+      <PropertySidebar />
       <div className="flex-1 md:ml-64">
         <AppHeader />
         <main className="p-6">
