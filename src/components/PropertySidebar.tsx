@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Home, Building2, Users, Settings, MessageCircle, ArrowLeft, Gavel, Briefcase, DollarSign, BarChart3, HardHat, FileText, ClipboardList } from "lucide-react";
+import { Home, Building2, Users, Settings, MessageCircle, ArrowLeft, Gavel, Briefcase, DollarSign, BarChart3, HardHat, FileText, ClipboardList, ClipboardCheck } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -40,6 +40,7 @@ const getPropertyItems = () => {
     { title: "Projects", url: "/property/projects", icon: Briefcase },
     { title: "Renovation Draws", url: "/property/renovation-draws", icon: FileText },
     { title: "Change Orders", url: "/property/change-orders", icon: ClipboardList },
+    { title: "Inspections", url: "/property/renovation-inspections", icon: ClipboardCheck },
     { title: "Budget", url: "/property/budget", icon: DollarSign },
     { title: "Gantt Chart", url: "/property/gantt", icon: BarChart3 },
   ];
