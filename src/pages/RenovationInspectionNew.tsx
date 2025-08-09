@@ -78,8 +78,8 @@ const RenovationInspections = () => {
         <div className="flex-1 flex flex-col">
           <AppHeader />
           <main className="flex-1 p-6">
-          <div className="max-w-2xl mx-auto">
-            <Card>
+            <div className="max-w-6xl">
+              <Card>
               <CardHeader>
                 <CardTitle className="text-2xl font-semibold">Schedule Renovation Inspection</CardTitle>
                 <p className="text-muted-foreground">
