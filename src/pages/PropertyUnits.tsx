@@ -267,14 +267,15 @@ const PropertyUnits = () => {
                   <DialogHeader>
                     <DialogTitle>Add Units</DialogTitle>
                   </DialogHeader>
-                  <div className="flex-1 overflow-y-auto" data-scroll-container>
-                    <Tabs value={activeTab} onValueChange={setActiveTab}>
-                      <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="template">Template Generation</TabsTrigger>
-                        <TabsTrigger value="manual">Quick Manual Add</TabsTrigger>
-                      </TabsList>
-                      
-                      <TabsContent value="template" className="space-y-4 mt-6">
+                  
+                  <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1">
+                    <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
+                      <TabsTrigger value="template">Template Generation</TabsTrigger>
+                      <TabsTrigger value="manual">Quick Manual Add</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="template" className="flex-1 overflow-y-auto mt-6">
+                      <div className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="space-y-2">
                             <Label>Unit Prefix</Label>
@@ -360,10 +361,13 @@ const PropertyUnits = () => {
                             Generate {templateForm.endNumber - templateForm.startNumber + 1} Units
                           </Button>
                         </div>
-                      </TabsContent>
+                      </div>
+                    </TabsContent>
 
-                      <TabsContent value="manual" className="space-y-4 mt-6 flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-4 flex-shrink-0">
+                    <TabsContent value="manual" className="flex flex-col flex-1">
+                      {/* Fixed header with Add Row button */}
+                      <div className="sticky top-0 bg-background z-10 pb-4 border-b mb-4">
+                        <div className="flex items-center justify-between">
                           <Label className="text-base font-medium">Units to Add</Label>
                           <Button
                             variant="outline"
@@ -375,74 +379,79 @@ const PropertyUnits = () => {
                             Add Row
                           </Button>
                         </div>
-                        <div className="flex-1 overflow-y-auto pr-2">
-                          <div className="space-y-3">
-                            {quickUnits.map((unit, index) => (
-                              <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
-                                <div className="space-y-2">
-                                  <Label>Unit Number</Label>
-                                  <Input
-                                    placeholder="e.g., 101, A-12"
-                                    value={unit.unitNumber}
-                                    onChange={(e) => updateQuickUnit(index, 'unitNumber', e.target.value)}
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label>Type</Label>
-                                  <Select
-                                    value={unit.unitType}
-                                    onValueChange={(value) => updateQuickUnit(index, 'unitType', value)}
-                                  >
-                                    <SelectTrigger>
-                                      <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      <SelectItem value="Studio">Studio</SelectItem>
-                                      <SelectItem value="1BR/1BA">1BR/1BA</SelectItem>
-                                      <SelectItem value="2BR/1BA">2BR/1BA</SelectItem>
-                                      <SelectItem value="2BR/2BA">2BR/2BA</SelectItem>
-                                      <SelectItem value="3BR/2BA">3BR/2BA</SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                                <div className="space-y-2">
-                                  <Label>Bedrooms</Label>
-                                  <Input
-                                    type="number"
-                                    min="0"
-                                    max="5"
-                                    value={unit.bedrooms}
-                                    onChange={(e) => updateQuickUnit(index, 'bedrooms', parseInt(e.target.value))}
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label>Bathrooms</Label>
-                                  <Input
-                                    type="number"
-                                    min="1"
-                                    max="5"
-                                    step="0.5"
-                                    value={unit.bathrooms}
-                                    onChange={(e) => updateQuickUnit(index, 'bathrooms', parseFloat(e.target.value))}
-                                  />
-                                </div>
-                                <div className="flex justify-end">
-                                  {quickUnits.length > 1 && (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() => removeQuickUnitRow(index)}
-                                    >
-                                      <Trash2 className="w-4 h-4" />
-                                    </Button>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
+                      </div>
 
-                        <div className="flex justify-end gap-3 pt-4 border-t flex-shrink-0">
+                      {/* Scrollable content */}
+                      <div className="flex-1 overflow-y-auto pr-2" data-scroll-container>
+                        <div className="space-y-3">
+                          {quickUnits.map((unit, index) => (
+                            <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+                              <div className="space-y-2">
+                                <Label>Unit Number</Label>
+                                <Input
+                                  placeholder="e.g., 101, A-12"
+                                  value={unit.unitNumber}
+                                  onChange={(e) => updateQuickUnit(index, 'unitNumber', e.target.value)}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Type</Label>
+                                <Select
+                                  value={unit.unitType}
+                                  onValueChange={(value) => updateQuickUnit(index, 'unitType', value)}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="Studio">Studio</SelectItem>
+                                    <SelectItem value="1BR/1BA">1BR/1BA</SelectItem>
+                                    <SelectItem value="2BR/1BA">2BR/1BA</SelectItem>
+                                    <SelectItem value="2BR/2BA">2BR/2BA</SelectItem>
+                                    <SelectItem value="3BR/2BA">3BR/2BA</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Bedrooms</Label>
+                                <Input
+                                  type="number"
+                                  min="0"
+                                  max="5"
+                                  value={unit.bedrooms}
+                                  onChange={(e) => updateQuickUnit(index, 'bedrooms', parseInt(e.target.value))}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Bathrooms</Label>
+                                <Input
+                                  type="number"
+                                  min="1"
+                                  max="5"
+                                  step="0.5"
+                                  value={unit.bathrooms}
+                                  onChange={(e) => updateQuickUnit(index, 'bathrooms', parseFloat(e.target.value))}
+                                />
+                              </div>
+                              <div className="flex justify-end">
+                                {quickUnits.length > 1 && (
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => removeQuickUnitRow(index)}
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Fixed footer with action buttons */}
+                      <div className="sticky bottom-0 bg-background pt-4 border-t mt-4">
+                        <div className="flex justify-end gap-3">
                           <Button variant="outline" onClick={() => setShowAddForm(false)}>
                             Cancel
                           </Button>
@@ -450,9 +459,9 @@ const PropertyUnits = () => {
                             Add {quickUnits.filter(u => u.unitNumber.trim()).length} Units
                           </Button>
                         </div>
-                      </TabsContent>
-                    </Tabs>
-                  </div>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
                 </DialogContent>
               </Dialog>
 
