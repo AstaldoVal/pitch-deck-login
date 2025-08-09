@@ -38,8 +38,8 @@ const RenovationInspections = () => {
     { id: "mon-16", label: "Monday", date: "Jan 16" },
     { id: "tue-17", label: "Tuesday", date: "Jan 17" },
     { id: "wed-18", label: "Wednesday", date: "Jan 18" },
-    { id: "thu-19", label: "Jan 16", date: "Jan 19" },
-    { id: "fri-20", label: "Jan 20", date: "Jan 20" }
+    { id: "thu-19", label: "Thursday", date: "Jan 19" },
+    { id: "fri-20", label: "Friday", date: "Jan 20" }
   ];
 
   const timeSlots = [
