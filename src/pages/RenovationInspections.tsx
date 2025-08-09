@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppHeader } from "@/components/AppHeader";
 import { PropertySidebar } from "@/components/PropertySidebar";
 import { cn } from "@/lib/utils";
@@ -71,11 +72,12 @@ const RenovationInspections = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <PropertySidebar />
-      <div className="flex-1 md:ml-64">
-        <AppHeader />
-        <main className="p-6">
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-background">
+        <PropertySidebar />
+        <div className="flex-1 flex flex-col">
+          <AppHeader />
+          <main className="flex-1 p-6">
           <div className="max-w-2xl mx-auto">
             <Card>
               <CardHeader>
@@ -200,10 +202,11 @@ const RenovationInspections = () => {
                 </div>
               </CardContent>
             </Card>
-          </div>
-        </main>
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };
 
