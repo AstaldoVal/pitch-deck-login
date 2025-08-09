@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppHeader } from "@/components/AppHeader";
 import { PropertySidebar } from "@/components/PropertySidebar";
@@ -177,70 +178,53 @@ const RenovationInspections = () => {
                 </Card>
               </div>
 
-              {/* Inspections List */}
+              {/* Inspections Table */}
               <Card>
                 <CardHeader>
                   <CardTitle>All Inspections</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {inspections.map((inspection) => (
-                      <div 
-                        key={inspection.id}
-                        className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-2">
-                            {getStatusIcon(inspection.status)}
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Unit/Building</TableHead>
+                        <TableHead>Reason</TableHead>
+                        <TableHead>Inspector</TableHead>
+                        <TableHead>Date & Time</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Result</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {inspections.map((inspection) => (
+                        <TableRow key={inspection.id}>
+                          <TableCell className="font-medium">{inspection.id}</TableCell>
+                          <TableCell>{inspection.unit}</TableCell>
+                          <TableCell>{inspection.reason}</TableCell>
+                          <TableCell>{inspection.inspector}</TableCell>
+                          <TableCell>
                             <div>
-                              <h3 className="font-medium text-sm">{inspection.id}</h3>
-                              <p className="text-xs text-muted-foreground">ID</p>
+                              <div className="font-medium">{inspection.date}</div>
+                              <div className="text-sm text-muted-foreground">{inspection.time}</div>
                             </div>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4 text-muted-foreground" />
-                            <div>
-                              <p className="font-medium text-sm">{inspection.unit}</p>
-                              <p className="text-xs text-muted-foreground">Unit/Building</p>
-                            </div>
-                          </div>
-
-                          <div>
-                            <p className="font-medium text-sm">{inspection.reason}</p>
-                            <p className="text-xs text-muted-foreground">Reason</p>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-muted-foreground" />
-                            <div>
-                              <p className="font-medium text-sm">{inspection.inspector.split(' - ')[0]}</p>
-                              <p className="text-xs text-muted-foreground">{inspection.inspector.split(' - ')[1]}</p>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-muted-foreground" />
-                            <div>
-                              <p className="font-medium text-sm">{inspection.date}</p>
-                              <p className="text-xs text-muted-foreground">{inspection.time}</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <Badge className={getStatusColor(inspection.status)}>
-                            {inspection.status}
-                          </Badge>
-                          {inspection.result && (
-                            <Badge className={getResultColor(inspection.result)}>
-                              {inspection.result}
+                          </TableCell>
+                          <TableCell>
+                            <Badge className={getStatusColor(inspection.status)}>
+                              {inspection.status}
                             </Badge>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                          </TableCell>
+                          <TableCell>
+                            {inspection.result && (
+                              <Badge className={getResultColor(inspection.result)}>
+                                {inspection.result}
+                              </Badge>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             </div>
