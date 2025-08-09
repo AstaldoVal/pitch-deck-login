@@ -29,6 +29,7 @@ import RenovationDrawNew from "./pages/RenovationDrawNew";
 import RenovationDrawDetails from "./pages/RenovationDrawDetails";
 import RenovationInspections from "./pages/RenovationInspections";
 import RenovationInspectionNew from "./pages/RenovationInspectionNew";
+import RenovationInspectionEdit from "./pages/RenovationInspectionEdit";
 import ChangeOrders from "./pages/ChangeOrders";
 import ChangeOrderNew from "./pages/ChangeOrderNew";
 import ChangeOrderDetails from "./pages/ChangeOrderDetails";
@@ -68,6 +69,7 @@ const App = () => (
             <Route path="/property/renovation-draws/:drawId" element={<RenovationDrawDetails />} />
             <Route path="/property/renovation-inspections" element={<RenovationInspections />} />
             <Route path="/property/renovation-inspections/new" element={<RenovationInspectionNew />} />
+            <Route path="/property/renovation-inspections/:inspectionId" element={<RenovationInspectionEdit />} />
             <Route path="/property/change-orders" element={<ChangeOrders />} />
             <Route path="/property/change-orders/new" element={<ChangeOrderNew />} />
             <Route path="/property/change-orders/:changeOrderId" element={<ChangeOrderDetails />} />

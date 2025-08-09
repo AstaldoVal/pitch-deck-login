@@ -198,7 +198,11 @@ const RenovationInspections = () => {
                     </TableHeader>
                     <TableBody>
                       {inspections.map((inspection) => (
-                        <TableRow key={inspection.id}>
+                        <TableRow 
+                          key={inspection.id}
+                          className="cursor-pointer hover:bg-muted/50"
+                          onClick={() => navigate(`/property/renovation-inspections/${inspection.id}`)}
+                        >
                           <TableCell className="font-medium">{inspection.id}</TableCell>
                           <TableCell>{inspection.unit}</TableCell>
                           <TableCell>{inspection.reason}</TableCell>
