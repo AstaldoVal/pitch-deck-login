@@ -90,13 +90,28 @@ const RenovationInspections = () => {
                 {/* Unit/Building */}
                 <div className="space-y-2">
                   <Label htmlFor="unit" className="text-lg font-medium">Unit / Building</Label>
-                  <Input
-                    id="unit"
+                  <Select
                     value={formData.unit}
-                    onChange={(e) => setFormData(prev => ({ ...prev, unit: e.target.value }))}
-                    placeholder="Enter unit or building number"
-                    className="text-base"
-                  />
+                    onValueChange={(value) => setFormData(prev => ({ ...prev, unit: value }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select unit or building" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="101">101</SelectItem>
+                      <SelectItem value="102">102</SelectItem>
+                      <SelectItem value="103">103</SelectItem>
+                      <SelectItem value="201">201</SelectItem>
+                      <SelectItem value="202">202</SelectItem>
+                      <SelectItem value="203">203</SelectItem>
+                      <SelectItem value="Building A">Building A</SelectItem>
+                      <SelectItem value="Building B">Building B</SelectItem>
+                      <SelectItem value="Building C">Building C</SelectItem>
+                      <SelectItem value="Common Areas">Common Areas</SelectItem>
+                      <SelectItem value="Lobby">Lobby</SelectItem>
+                      <SelectItem value="Parking Garage">Parking Garage</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Reason and Inspector */}
