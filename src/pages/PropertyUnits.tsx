@@ -355,6 +355,18 @@ const PropertyUnits = () => {
                       </TabsContent>
 
                       <TabsContent value="manual" className="space-y-4 mt-6">
+                        <div className="flex items-center justify-between mb-4">
+                          <Label className="text-base font-medium">Units to Add</Label>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={addQuickUnitRow}
+                            className="gap-2"
+                          >
+                            <Plus className="w-4 h-4" />
+                            Add Row
+                          </Button>
+                        </div>
                         <div className="space-y-3">
                           {quickUnits.map((unit, index) => (
                             <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
@@ -405,7 +417,7 @@ const PropertyUnits = () => {
                                   onChange={(e) => updateQuickUnit(index, 'bathrooms', parseFloat(e.target.value))}
                                 />
                               </div>
-                              <div className="flex gap-2">
+                              <div className="flex justify-end">
                                 {quickUnits.length > 1 && (
                                   <Button
                                     variant="outline"
@@ -413,15 +425,6 @@ const PropertyUnits = () => {
                                     onClick={() => removeQuickUnitRow(index)}
                                   >
                                     <Trash2 className="w-4 h-4" />
-                                  </Button>
-                                )}
-                                {index === quickUnits.length - 1 && (
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={addQuickUnitRow}
-                                  >
-                                    <Plus className="w-4 h-4" />
                                   </Button>
                                 )}
                               </div>
