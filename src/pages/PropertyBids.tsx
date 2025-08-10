@@ -975,9 +975,9 @@ export default function PropertyBids() {
                                 className="hidden"
                                 id="rent-roll-upload-unit-based"
                               />
-                              <label htmlFor="rent-roll-upload-unit-based">
-                                <Button className="bg-gradient-to-r from-primary to-primary/80 cursor-pointer">
-                                  Upload and Enter
+                              <label htmlFor="rent-roll-upload-unit-based" className="cursor-pointer">
+                                <Button asChild className="bg-gradient-to-r from-primary to-primary/80">
+                                  <span>Upload and Enter</span>
                                 </Button>
                               </label>
                             </div>
