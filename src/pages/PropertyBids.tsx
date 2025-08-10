@@ -1059,14 +1059,10 @@ export default function PropertyBids() {
                           </div>
                         </div>
 
-                          </div>
-                        )}
                       </>
                     )}
                   </section>
                 )}
-              </>
-            )}
 
             {currentStep === 5 && (
               /* Contractors Section */
@@ -1189,6 +1185,8 @@ export default function PropertyBids() {
               </section>
             )}
           </div>
+        </div>
+      </div>
           
           {/* Fixed Bottom Navigation */}
           <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border p-4 shadow-lg">
@@ -1264,4 +1262,5 @@ export default function PropertyBids() {
       </div>
     </SidebarProvider>
   );
+}
 }
