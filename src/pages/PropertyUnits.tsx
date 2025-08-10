@@ -464,7 +464,7 @@ const PropertyUnits = () => {
                       </div>
                     </TabsContent>
 
-                    <TabsContent value="manual" className="flex flex-col h-full overflow-hidden">
+                    <TabsContent value="manual" className="flex flex-col h-full overflow-hidden relative">
                       {/* Fixed header with Add Row button */}
                       <div className="flex-shrink-0 pb-4 border-b mb-4">
                         <div className="flex items-center justify-between">
@@ -481,8 +481,8 @@ const PropertyUnits = () => {
                         </div>
                       </div>
 
-                      {/* Scrollable content */}
-                      <div className="flex-1 overflow-y-auto min-h-0" data-scroll-container>
+                      {/* Scrollable content with bottom padding for buttons */}
+                      <div className="flex-1 overflow-y-auto min-h-0 pb-20" data-scroll-container>
                         <div className="space-y-3 pr-2">
                           {quickUnits.map((unit, index) => (
                             <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
@@ -539,8 +539,8 @@ const PropertyUnits = () => {
                         </div>
                       </div>
 
-                      {/* Fixed footer with action buttons */}
-                      <div className="flex-shrink-0 pt-4 border-t bg-background sticky bottom-0">
+                      {/* Fixed footer with action buttons - absolutely positioned */}
+                      <div className="absolute bottom-0 left-0 right-0 pt-4 border-t bg-background">
                         <div className="flex justify-end gap-3">
                           <Button variant="outline" onClick={() => setShowAddForm(false)}>
                             Cancel
