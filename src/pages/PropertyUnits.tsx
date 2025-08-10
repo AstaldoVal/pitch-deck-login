@@ -17,7 +17,10 @@ import {
   X,
   Hash,
   Home,
-  Trash2
+  Trash2,
+  Upload,
+  FileText,
+  Check
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PropertySidebar } from "@/components/PropertySidebar";
@@ -59,7 +62,10 @@ const PropertyUnits = () => {
   const [propertyData, setPropertyData] = useState<PropertyData | null>(null);
   const [units, setUnits] = useState<Unit[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showRentRollUpload, setShowRentRollUpload] = useState(false);
   const [activeTab, setActiveTab] = useState("template");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [showFilePreview, setShowFilePreview] = useState(false);
   const { toast } = useToast();
 
   // Template form state
@@ -190,10 +196,41 @@ const PropertyUnits = () => {
   };
 
   const handleImportUnits = () => {
-    toast({
-      title: "Import Units",
-      description: "This feature will be available in the next version"
-    });
+    setShowRentRollUpload(true);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setShowFilePreview(true);
+    }
+  };
+
+  const handleFileConfirm = () => {
+    if (selectedFile) {
+      // Update property data in localStorage
+      const currentProperty = JSON.parse(localStorage.getItem('property') || '{}');
+      const updatedProperty = {
+        ...currentProperty,
+        hasRentRoll: true,
+        rentRollFile: selectedFile.name,
+        uploadTime: new Date()
+      };
+      localStorage.setItem('property', JSON.stringify(updatedProperty));
+      
+      // Update local state
+      setPropertyData(updatedProperty);
+      
+      toast({
+        title: "Rent Roll Uploaded",
+        description: "Your rent roll has been uploaded successfully. Setup will be completed within 24 hours."
+      });
+      
+      setShowFilePreview(false);
+      setSelectedFile(null);
+      setShowRentRollUpload(false);
+    }
   };
 
   if (!propertyData) {
@@ -260,6 +297,79 @@ const PropertyUnits = () => {
                   </Button>
                 </div>
               </Card>
+
+              {/* Rent Roll Upload Dialog */}
+              <Dialog open={showRentRollUpload} onOpenChange={setShowRentRollUpload}>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Import Units from Rent Roll</DialogTitle>
+                  </DialogHeader>
+                  
+                  <div className="space-y-6">
+                    <div className="text-sm text-muted-foreground">
+                      Upload your rent roll to have our Customer Success team import your units automatically within 24 hours. 
+                      This saves you hours of manual data entry and ensures optimal configuration.
+                    </div>
+                    
+                    {!showFilePreview ? (
+                      <div className="space-y-4">
+                        <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center hover:border-muted-foreground/50 transition-colors">
+                          <input
+                            type="file"
+                            id="rentRollUpload"
+                            accept=".xlsx,.xls,.csv"
+                            onChange={handleFileUpload}
+                            className="hidden"
+                          />
+                          <label htmlFor="rentRollUpload" className="cursor-pointer">
+                            <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                            <p className="text-base font-medium mb-2">
+                              Click to upload rent roll
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Supported: .xlsx, .xls, .csv
+                            </p>
+                          </label>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="bg-muted/50 border rounded-lg p-4">
+                          <div className="flex items-center space-x-3 mb-4">
+                            <FileText className="w-6 h-6 text-primary" />
+                            <div>
+                              <p className="font-medium">{selectedFile?.name}</p>
+                              <p className="text-sm text-muted-foreground">File ready for processing</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-3">
+                            <Button 
+                              onClick={handleFileConfirm}
+                              className="flex-1"
+                            >
+                              <Check className="w-4 h-4 mr-2" />
+                              Confirm Upload
+                            </Button>
+                            <Button 
+                              variant="outline"
+                              onClick={() => setShowFilePreview(false)}
+                              className="flex-1"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-end gap-3 pt-4 border-t">
+                      <Button variant="outline" onClick={() => setShowRentRollUpload(false)}>
+                        Close
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
 
               {/* Add Units Dialog */}
               <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
