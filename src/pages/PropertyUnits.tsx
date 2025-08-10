@@ -373,18 +373,18 @@ const PropertyUnits = () => {
 
               {/* Add Units Dialog */}
               <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
-                <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+                <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
                   <DialogHeader>
                     <DialogTitle>Add Units</DialogTitle>
                   </DialogHeader>
                   
-                  <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1">
+                  <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full">
                     <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
                       <TabsTrigger value="template">Template Generation</TabsTrigger>
                       <TabsTrigger value="manual">Quick Manual Add</TabsTrigger>
                     </TabsList>
                     
-                    <TabsContent value="template" className="flex-1 overflow-y-auto mt-6">
+                    <TabsContent value="template" className="flex-1 overflow-y-auto">
                       <div className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="space-y-2">
@@ -464,9 +464,9 @@ const PropertyUnits = () => {
                       </div>
                     </TabsContent>
 
-                    <TabsContent value="manual" className="flex flex-col flex-1">
+                    <TabsContent value="manual" className="flex flex-col h-full overflow-hidden">
                       {/* Fixed header with Add Row button */}
-                      <div className="sticky top-0 bg-background z-10 pb-4 border-b mb-4">
+                      <div className="flex-shrink-0 pb-4 border-b mb-4">
                         <div className="flex items-center justify-between">
                           <Label className="text-base font-medium">Units to Add</Label>
                           <Button
@@ -482,8 +482,8 @@ const PropertyUnits = () => {
                       </div>
 
                       {/* Scrollable content */}
-                      <div className="flex-1 overflow-y-auto pr-2" data-scroll-container>
-                        <div className="space-y-3">
+                      <div className="flex-1 overflow-y-auto min-h-0" data-scroll-container>
+                        <div className="space-y-3 pr-2">
                           {quickUnits.map((unit, index) => (
                             <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
                               <div className="space-y-2">
@@ -540,7 +540,7 @@ const PropertyUnits = () => {
                       </div>
 
                       {/* Fixed footer with action buttons */}
-                      <div className="sticky bottom-0 bg-background pt-4 border-t mt-4">
+                      <div className="flex-shrink-0 pt-4 border-t mt-4">
                         <div className="flex justify-end gap-3">
                           <Button variant="outline" onClick={() => setShowAddForm(false)}>
                             Cancel
