@@ -34,6 +34,7 @@ import ChangeOrders from "./pages/ChangeOrders";
 import ChangeOrderNew from "./pages/ChangeOrderNew";
 import ChangeOrderDetails from "./pages/ChangeOrderDetails";
 import NotFound from "./pages/NotFound";
+import Budgets from "./pages/Budgets";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,7 @@ const App = () => (
             <Route path="/property/bids" element={<PropertyBids />} />
             <Route path="/property/bids-list" element={<BidsList />} />
             <Route path="/property/bid/:bidId" element={<BidDetails />} />
+            <Route path="/property/budget" element={<Budgets />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/users" element={<Users />} />
             <Route path="/contractors" element={<Contractors />} />
