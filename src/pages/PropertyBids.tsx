@@ -1003,31 +1003,30 @@ export default function PropertyBids() {
                             </div>
                           </div>
                           
-                          <div className="flex flex-wrap gap-3 max-h-64 overflow-y-auto">
+                          <div className="space-y-3 max-h-64 overflow-y-auto">
                             {units.map((unit) => (
                               <div
                                 key={unit.id}
                                 onClick={() => toggleUnitSelection(unit.id)}
                                 className={cn(
-                                  "p-3 rounded-lg border cursor-pointer transition-all hover:shadow-sm min-w-[180px]",
+                                  "flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all hover:shadow-sm w-full",
                                   unit.selected
                                     ? "border-primary bg-primary/5 shadow-sm"
                                     : "border-border hover:border-border/60"
                                 )}
                               >
-                                <div className="flex items-center justify-between mb-2">
-                                  <div className="font-medium">{unit.unitNumber}</div>
-                                  <input
-                                    type="checkbox"
-                                    checked={unit.selected}
-                                    onChange={() => toggleUnitSelection(unit.id)}
-                                    className="h-4 w-4"
-                                  />
+                                <div className="flex items-center gap-4">
+                                  <div className="font-medium text-lg">{unit.unitNumber}</div>
+                                  <div className="text-sm text-muted-foreground">
+                                    {unit.unitType} • Plan {unit.floorPlan} • {unit.sqft} sq ft • {unit.bedrooms}BR/{unit.bathrooms}BA
+                                  </div>
                                 </div>
-                                <div className="text-sm text-muted-foreground space-y-1">
-                                  <div>{unit.unitType} • Plan {unit.floorPlan}</div>
-                                  <div>{unit.sqft} sq ft • {unit.bedrooms}BR/{unit.bathrooms}BA</div>
-                                </div>
+                                <input
+                                  type="checkbox"
+                                  checked={unit.selected}
+                                  onChange={() => toggleUnitSelection(unit.id)}
+                                  className="h-4 w-4"
+                                />
                               </div>
                             ))}
                           </div>
