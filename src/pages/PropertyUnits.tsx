@@ -540,7 +540,7 @@ const PropertyUnits = () => {
                       </div>
 
                       {/* Fixed footer with action buttons */}
-                      <div className="flex-shrink-0 pt-4 border-t mt-4">
+                      <div className="flex-shrink-0 pt-4 border-t bg-background sticky bottom-0">
                         <div className="flex justify-end gap-3">
                           <Button variant="outline" onClick={() => setShowAddForm(false)}>
                             Cancel
