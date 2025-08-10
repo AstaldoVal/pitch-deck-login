@@ -976,8 +976,8 @@ export default function PropertyBids() {
                                 id="rent-roll-upload-unit-based"
                               />
                               <label htmlFor="rent-roll-upload-unit-based">
-                                <Button className="bg-gradient-to-r from-primary to-primary/80">
-                                  Select File
+                                <Button className="bg-gradient-to-r from-primary to-primary/80 cursor-pointer">
+                                  Upload and Enter
                                 </Button>
                               </label>
                             </div>
