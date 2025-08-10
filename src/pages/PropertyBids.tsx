@@ -127,7 +127,9 @@ export default function PropertyBids() {
     // Load property data from localStorage
     const savedProperty = localStorage.getItem('property');
     if (savedProperty) {
-      setPropertyData(JSON.parse(savedProperty));
+      const property = JSON.parse(savedProperty);
+      setPropertyData(property);
+      setHasRentRoll(property.hasRentRoll || false);
     }
   }, []);
 
