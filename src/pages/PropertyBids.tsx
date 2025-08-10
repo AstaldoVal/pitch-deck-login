@@ -1003,13 +1003,13 @@ export default function PropertyBids() {
                             </div>
                           </div>
                           
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 max-h-64 overflow-y-auto">
+                          <div className="flex flex-wrap gap-3 max-h-64 overflow-y-auto">
                             {units.map((unit) => (
                               <div
                                 key={unit.id}
                                 onClick={() => toggleUnitSelection(unit.id)}
                                 className={cn(
-                                  "p-4 rounded-lg border cursor-pointer transition-all hover:shadow-sm",
+                                  "p-3 rounded-lg border cursor-pointer transition-all hover:shadow-sm min-w-[180px]",
                                   unit.selected
                                     ? "border-primary bg-primary/5 shadow-sm"
                                     : "border-border hover:border-border/60"
@@ -1026,8 +1026,7 @@ export default function PropertyBids() {
                                 </div>
                                 <div className="text-sm text-muted-foreground space-y-1">
                                   <div>{unit.unitType} • Plan {unit.floorPlan}</div>
-                                  <div>{unit.sqft} sq ft</div>
-                                  <div>{unit.bedrooms}BR/{unit.bathrooms}BA</div>
+                                  <div>{unit.sqft} sq ft • {unit.bedrooms}BR/{unit.bathrooms}BA</div>
                                 </div>
                               </div>
                             ))}
