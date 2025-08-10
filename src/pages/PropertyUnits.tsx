@@ -415,22 +415,12 @@ const PropertyUnits = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                           <div className="space-y-2">
-                            <Label>Unit Type</Label>
-                            <Select
+                            <Label>Floor Plan</Label>
+                            <Input
+                              placeholder="e.g., Studio, 1BR/1BA, Penthouse"
                               value={templateForm.unitType}
-                              onValueChange={(value) => setTemplateForm(prev => ({ ...prev, unitType: value }))}
-                            >
-                              <SelectTrigger>
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Studio">Studio</SelectItem>
-                                <SelectItem value="1BR/1BA">1BR/1BA</SelectItem>
-                                <SelectItem value="2BR/1BA">2BR/1BA</SelectItem>
-                                <SelectItem value="2BR/2BA">2BR/2BA</SelectItem>
-                                <SelectItem value="3BR/2BA">3BR/2BA</SelectItem>
-                              </SelectContent>
-                            </Select>
+                              onChange={(e) => setTemplateForm(prev => ({ ...prev, unitType: e.target.value }))}
+                            />
                           </div>
                           <div className="space-y-2">
                             <Label>Bedrooms</Label>
