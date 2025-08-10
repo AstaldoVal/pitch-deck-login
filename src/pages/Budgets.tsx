@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AppHeader } from "@/components/AppHeader";
@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
 import { Plus, Download, FileText, ChevronRight, ChevronDown } from "lucide-react";
 
 interface JobRow {
@@ -39,6 +39,14 @@ const currency = (n: number) => n.toLocaleString(undefined, { minimumFractionDig
 
 function BudgetsContent() {
   const { open } = useSidebar();
+
+  const [openProps, setOpenProps] = useState<Record<number, boolean>>({});
+  const toggleProp = (idx: number) =>
+    setOpenProps((s) => ({ ...s, [idx]: !s[idx] }));
+
+  const [openFP, setOpenFP] = useState<Record<string, boolean>>({});
+  const toggleFP = (key: string) =>
+    setOpenFP((s) => ({ ...s, [key]: !s[key] }));
 
   const data: PropertyBudgetRow[] = useMemo(() => [
     {
@@ -143,88 +151,106 @@ function BudgetsContent() {
                       {data.map((row, idx) => {
                         const diff = row.budget - row.incurred;
                         return (
-                          <Accordion key={idx} type="single" collapsible className="w-full">
-                            <AccordionItem value={`item-${idx}`}>
-                              <TableRow>
-                                <TableCell className="font-medium">
-                                  <AccordionTrigger className="flex items-center gap-2 p-0 hover:no-underline">
-                                    <ChevronRight className="h-4 w-4 data-[state=open]:hidden" />
-                                    <ChevronDown className="h-4 w-4 hidden data-[state=open]:block" />
-                                    {row.property}
-                                  </AccordionTrigger>
-                                </TableCell>
-                                <TableCell>{row.name}</TableCell>
-                                <TableCell>{row.start} - {row.end}</TableCell>
-                                <TableCell className="text-right">{currency(row.budget)}</TableCell>
-                                <TableCell className="text-right">{currency(row.incurred)}</TableCell>
-                                <TableCell className={`text-right ${diff >= 0 ? 'text-green-600' : 'text-red-600'}`}>{currency(diff)}</TableCell>
-                              </TableRow>
-                              <AccordionContent>
-                                {/* Floor plans */}
-                                {row.floorPlans.length > 0 && (
-                                  <div className="bg-muted/30 rounded-md p-3 mx-3 mb-3">
+                          <>
+                            <TableRow key={`p-${idx}`}>
+                              <TableCell className="font-medium">
+                                <button
+                                  className="flex items-center gap-2 p-0 hover:underline-offset-0"
+                                  onClick={() => toggleProp(idx)}
+                                  aria-expanded={!!openProps[idx]}
+                                >
+                                  {openProps[idx] ? (
+                                    <ChevronDown className="h-4 w-4" />
+                                  ) : (
+                                    <ChevronRight className="h-4 w-4" />
+                                  )}
+                                  {row.property}
+                                </button>
+                              </TableCell>
+                              <TableCell>{row.name}</TableCell>
+                              <TableCell>{row.start} - {row.end}</TableCell>
+                              <TableCell className="text-right">{currency(row.budget)}</TableCell>
+                              <TableCell className="text-right">{currency(row.incurred)}</TableCell>
+                              <TableCell className={`text-right ${diff >= 0 ? 'text-green-600' : 'text-red-600'}`}>{currency(diff)}</TableCell>
+                            </TableRow>
+
+                            {openProps[idx] && row.floorPlans.length > 0 && (
+                              <TableRow key={`p-${idx}-details`}>
+                                <TableCell colSpan={6}>
+                                  <div className="bg-muted/30 rounded-md p-3 mb-3">
                                     <Table>
                                       <TableBody>
                                         {row.floorPlans.map((fp, fIdx) => {
                                           const fpDiff = fp.budget - fp.incurred;
+                                          const key = `${idx}-${fIdx}`;
+                                          const isOpen = !!openFP[key];
                                           return (
-                                            <Accordion key={fIdx} type="single" collapsible className="w-full">
-                                              <AccordionItem value={`fp-${idx}-${fIdx}`}>
-                                                <TableRow>
-                                                  <TableCell className="pl-6 text-muted-foreground">Floor Plan</TableCell>
-                                                  <TableCell className="font-medium">
-                                                    <AccordionTrigger className="flex items-center gap-2 p-0 hover:no-underline">
-                                                      <ChevronRight className="h-4 w-4 data-[state=open]:hidden" />
-                                                      <ChevronDown className="h-4 w-4 hidden data-[state=open]:block" />
-                                                      {fp.name}
-                                                    </AccordionTrigger>
+                                            <>
+                                              <TableRow key={`fp-${key}`}>
+                                                <TableCell className="pl-6 text-muted-foreground">Floor Plan</TableCell>
+                                                <TableCell className="font-medium">
+                                                  <button
+                                                    className="flex items-center gap-2"
+                                                    onClick={() => toggleFP(key)}
+                                                    aria-expanded={isOpen}
+                                                  >
+                                                    {isOpen ? (
+                                                      <ChevronDown className="h-4 w-4" />
+                                                    ) : (
+                                                      <ChevronRight className="h-4 w-4" />
+                                                    )}
+                                                    {fp.name}
+                                                  </button>
+                                                </TableCell>
+                                                <TableCell className="whitespace-nowrap">
+                                                  <Badge variant="secondary">Units: {fp.units}</Badge>
+                                                </TableCell>
+                                                <TableCell className="text-right">{currency(fp.budget)}</TableCell>
+                                                <TableCell className="text-right">{currency(fp.incurred)}</TableCell>
+                                                <TableCell className={`text-right ${fpDiff >= 0 ? 'text-green-600' : 'text-red-600'}`}>{currency(fpDiff)}</TableCell>
+                                              </TableRow>
+
+                                              {isOpen && (
+                                                <TableRow key={`fp-${key}-jobs`}>
+                                                  <TableCell colSpan={6}>
+                                                    <div className="bg-background rounded-md p-3 mx-3">
+                                                      <Table>
+                                                        <TableHeader>
+                                                          <TableRow>
+                                                            <TableHead className="pl-14">Job</TableHead>
+                                                            <TableHead className="text-right">Budget ($)</TableHead>
+                                                            <TableHead className="text-right">Total Cost Incurred ($)</TableHead>
+                                                            <TableHead className="text-right">Difference ($)</TableHead>
+                                                          </TableRow>
+                                                        </TableHeader>
+                                                        <TableBody>
+                                                          {fp.jobs.map((job, jIdx) => {
+                                                            const jDiff = job.budget - job.incurred;
+                                                            return (
+                                                              <TableRow key={jIdx}>
+                                                                <TableCell className="pl-14">{job.name}</TableCell>
+                                                                <TableCell className="text-right">{currency(job.budget)}</TableCell>
+                                                                <TableCell className="text-right">{currency(job.incurred)}</TableCell>
+                                                                <TableCell className={`text-right ${jDiff >= 0 ? 'text-green-600' : 'text-red-600'}`}>{currency(jDiff)}</TableCell>
+                                                              </TableRow>
+                                                            );
+                                                          })}
+                                                        </TableBody>
+                                                      </Table>
+                                                    </div>
                                                   </TableCell>
-                                                  <TableCell className="whitespace-nowrap">
-                                                    <Badge variant="secondary">Units: {fp.units}</Badge>
-                                                  </TableCell>
-                                                  <TableCell className="text-right">{currency(fp.budget)}</TableCell>
-                                                  <TableCell className="text-right">{currency(fp.incurred)}</TableCell>
-                                                  <TableCell className={`text-right ${fpDiff >= 0 ? 'text-green-600' : 'text-red-600'}`}>{currency(fpDiff)}</TableCell>
                                                 </TableRow>
-                                                <AccordionContent>
-                                                  {/* Jobs */}
-                                                  <div className="bg-background rounded-md p-3 mx-3">
-                                                    <Table>
-                                                      <TableHeader>
-                                                        <TableRow>
-                                                          <TableHead className="pl-14">Job</TableHead>
-                                                          <TableHead className="text-right">Budget ($)</TableHead>
-                                                          <TableHead className="text-right">Total Cost Incurred ($)</TableHead>
-                                                          <TableHead className="text-right">Difference ($)</TableHead>
-                                                        </TableRow>
-                                                      </TableHeader>
-                                                      <TableBody>
-                                                        {fp.jobs.map((job, jIdx) => {
-                                                          const jDiff = job.budget - job.incurred;
-                                                          return (
-                                                            <TableRow key={jIdx}>
-                                                              <TableCell className="pl-14">{job.name}</TableCell>
-                                                              <TableCell className="text-right">{currency(job.budget)}</TableCell>
-                                                              <TableCell className="text-right">{currency(job.incurred)}</TableCell>
-                                                              <TableCell className={`text-right ${jDiff >= 0 ? 'text-green-600' : 'text-red-600'}`}>{currency(jDiff)}</TableCell>
-                                                            </TableRow>
-                                                          );
-                                                        })}
-                                                      </TableBody>
-                                                    </Table>
-                                                  </div>
-                                                </AccordionContent>
-                                              </AccordionItem>
-                                            </Accordion>
+                                              )}
+                                            </>
                                           );
                                         })}
                                       </TableBody>
                                     </Table>
                                   </div>
-                                )}
-                              </AccordionContent>
-                            </AccordionItem>
-                          </Accordion>
+                                </TableCell>
+                              </TableRow>
+                            )}
+                          </>
                         );
                       })}
                     </TableBody>
