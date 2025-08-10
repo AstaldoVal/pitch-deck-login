@@ -770,9 +770,195 @@ export default function PropertyBids() {
                       )}
                     </button>
                   </div>
+                </section>
 
-                  {/* Unit Selection for Unit-Based Scope */}
-                  {scopeType === "unit-based" && hasRentRoll && (
+                {/* Job-Type Scope Content */}
+                {scopeType === "job-type" && (
+                  <section className="space-y-8 pt-8 border-t-2 border-border/60">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h2 className="text-2xl font-semibold">Job Categories</h2>
+                        <p className="text-muted-foreground mt-1">Define the work scope for contractors</p>
+                      </div>
+                      <Button onClick={addJobCategory} className="bg-gradient-to-r from-primary to-brand-blue-dark">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Job
+                      </Button>
+                    </div>
+
+                    {/* Selected Job Categories */}
+                    {jobCategories.length > 0 && (
+                      <div className="space-y-6">
+                        {jobCategories.map((category) => (
+                           <div key={category.id} className="border-l-4 border-l-primary/30 pl-6 py-4 space-y-4">
+                             <div 
+                               className="flex items-center justify-between cursor-pointer hover:bg-accent/30 rounded-lg p-2 -m-2 transition-colors"
+                               onClick={() => toggleCategoryExpansion(category.id)}
+                             >
+                               <div className="flex items-center gap-3">
+                                 <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
+                                 <div onClick={(e) => e.stopPropagation()}>
+                                   <Select 
+                                     value={category.name} 
+                                     onValueChange={(value) => updateJobCategory(category.id, "name", value)}
+                                   >
+                                     <SelectTrigger className="w-48">
+                                     <SelectValue />
+                                   </SelectTrigger>
+                                   <SelectContent>
+                                     <SelectItem value="Flooring">Flooring</SelectItem>
+                                     <SelectItem value="Kitchen">Kitchen</SelectItem>
+                                     <SelectItem value="Bathroom">Bathroom</SelectItem>
+                                     <SelectItem value="Painting">Painting</SelectItem>
+                                     <SelectItem value="HVAC">HVAC</SelectItem>
+                                     <SelectItem value="Plumbing">Plumbing</SelectItem>
+                                     <SelectItem value="Electrical">Electrical</SelectItem>
+                                     <SelectItem value="Appliances">Appliances</SelectItem>
+                                     <SelectItem value="Windows">Windows</SelectItem>
+                                     <SelectItem value="Doors">Doors</SelectItem>
+                                     <SelectItem value="Roofing">Roofing</SelectItem>
+                                     <SelectItem value="Landscaping">Landscaping</SelectItem>
+                                     </SelectContent>
+                                   </Select>
+                                 </div>
+                                 {!category.isExpanded && (
+                                   <div className="text-sm text-muted-foreground italic">
+                                     Click to expand and add job details
+                                   </div>
+                                 )}
+                               </div>
+                               <Button
+                                 variant="ghost"
+                                 size="sm"
+                                 onClick={(e) => {
+                                   e.stopPropagation();
+                                   removeJobCategory(category.id);
+                                 }}
+                                 className="text-muted-foreground hover:text-destructive"
+                               >
+                                 <X className="h-4 w-4" />
+                               </Button>
+                             </div>
+                            
+                             {category.isExpanded && (
+                               <div className="space-y-6 pt-4">
+                                 {/* Basic Information */}
+                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Material Spec/Finish</Label>
+                                     <Input
+                                       placeholder="e.g., Luxury Vinyl Plank, Granite countertop"
+                                       value={category.materialSpec || ""}
+                                       onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
+                                     />
+                                   </div>
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Product Information</Label>
+                                     <Input
+                                       placeholder="Brand, model, specifications"
+                                       value={category.productInfo || ""}
+                                       onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
+                                     />
+                                   </div>
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Dimensions</Label>
+                                     <Input
+                                       placeholder="Size, area, linear feet"
+                                       value={category.dimensions || ""}
+                                       onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
+                                     />
+                                   </div>
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Quantity</Label>
+                                     <Input
+                                       placeholder="Number of units affected"
+                                       value={category.quantity || ""}
+                                       onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
+                                     />
+                                   </div>
+                                 </div>
+
+                                 {/* Project Details */}
+                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Estimated Labor Hours</Label>
+                                     <Input
+                                       placeholder="e.g., 8 hours per unit"
+                                       value={category.laborHours || ""}
+                                       onChange={(e) => updateJobCategory(category.id, "laborHours", e.target.value)}
+                                     />
+                                   </div>
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Skill Level Required</Label>
+                                     <Select value={category.skillLevel || ""} onValueChange={(value) => updateJobCategory(category.id, "skillLevel", value)}>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Select skill level" />
+                                       </SelectTrigger>
+                                       <SelectContent>
+                                         <SelectItem value="basic">Basic</SelectItem>
+                                         <SelectItem value="intermediate">Intermediate</SelectItem>
+                                         <SelectItem value="advanced">Advanced</SelectItem>
+                                         <SelectItem value="specialized">Specialized</SelectItem>
+                                       </SelectContent>
+                                     </Select>
+                                   </div>
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Priority Level</Label>
+                                     <Select value={category.priority || ""} onValueChange={(value) => updateJobCategory(category.id, "priority", value)}>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Select priority" />
+                                       </SelectTrigger>
+                                       <SelectContent>
+                                         <SelectItem value="high">High</SelectItem>
+                                         <SelectItem value="medium">Medium</SelectItem>
+                                         <SelectItem value="low">Low</SelectItem>
+                                       </SelectContent>
+                                     </Select>
+                                   </div>
+                                 </div>
+                                 
+                                 <div className="space-y-2">
+                                   <Label className="text-sm font-medium">Detailed Work Description</Label>
+                                   <Textarea
+                                     placeholder="Provide detailed work requirements, standards, and any special instructions for contractors"
+                                     value={category.notes || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
+                                     className="min-h-[100px]"
+                                   />
+                                 </div>
+                                 
+                                 <div className="space-y-2">
+                                   <Label className="text-sm font-medium">Reference Documents & Images</Label>
+                                   <Button variant="outline" className="w-full">
+                                     <Upload className="mr-2 h-4 w-4" />
+                                     Upload Specs, Drawings, or Reference Images
+                                   </Button>
+                                 </div>
+                               </div>
+                             )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {jobCategories.length === 0 && (
+                      <div className="text-center py-12 text-muted-foreground border border-dashed border-border rounded-lg">
+                        <Building className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <h3 className="text-lg font-medium mb-2">No job categories added yet</h3>
+                        <p className="mb-4">Define job categories to specify work scope for contractors</p>
+                        <Button onClick={addJobCategory} variant="outline">
+                          <Plus className="mr-2 h-4 w-4" />
+                          Add First Job Category
+                        </Button>
+                      </div>
+                    )}
+                  </section>
+                )}
+
+                {/* Unit-Based Scope Content */}
+                {scopeType === "unit-based" && hasRentRoll && (
+                  <section className="space-y-8 pt-8 border-t-2 border-border/60">
+                    {/* Unit Selection */}
                     <div className="border border-border rounded-lg p-6 bg-card">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
@@ -830,195 +1016,207 @@ export default function PropertyBids() {
                         )}
                       </div>
                     </div>
-                  )}
-                </section>
 
-                {/* Job Categories */}
-                <section className="space-y-8 pt-8 border-t-2 border-border/60">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h2 className="text-2xl font-semibold">Job Categories</h2>
-                      <p className="text-muted-foreground mt-1">Define the work scope for contractors</p>
-                    </div>
-                    <Button onClick={addJobCategory} className="bg-gradient-to-r from-primary to-brand-blue-dark">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Add Job
-                    </Button>
-                  </div>
-
-                  {/* Selected Job Categories */}
-                  {jobCategories.length > 0 && (
-                    <div className="space-y-6">
-                      {jobCategories.map((category) => (
-                         <div key={category.id} className="border-l-4 border-l-primary/30 pl-6 py-4 space-y-4">
-                           <div 
-                             className="flex items-center justify-between cursor-pointer hover:bg-accent/30 rounded-lg p-2 -m-2 transition-colors"
-                             onClick={() => toggleCategoryExpansion(category.id)}
-                           >
-                             <div className="flex items-center gap-3">
-                               <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
-                               <div onClick={(e) => e.stopPropagation()}>
-                                 <Select 
-                                   value={category.name} 
-                                   onValueChange={(value) => updateJobCategory(category.id, "name", value)}
-                                 >
-                                   <SelectTrigger className="w-48">
-                                   <SelectValue />
-                                 </SelectTrigger>
-                                 <SelectContent>
-                                   <SelectItem value="Flooring">Flooring</SelectItem>
-                                   <SelectItem value="Kitchen">Kitchen</SelectItem>
-                                   <SelectItem value="Bathroom">Bathroom</SelectItem>
-                                   <SelectItem value="Painting">Painting</SelectItem>
-                                   <SelectItem value="HVAC">HVAC</SelectItem>
-                                   <SelectItem value="Plumbing">Plumbing</SelectItem>
-                                   <SelectItem value="Electrical">Electrical</SelectItem>
-                                   <SelectItem value="Appliances">Appliances</SelectItem>
-                                   <SelectItem value="Windows">Windows</SelectItem>
-                                   <SelectItem value="Doors">Doors</SelectItem>
-                                   <SelectItem value="Roofing">Roofing</SelectItem>
-                                   <SelectItem value="Landscaping">Landscaping</SelectItem>
-                                   </SelectContent>
-                                 </Select>
-                               </div>
-                               {!category.isExpanded && (
-                                 <div className="text-sm text-muted-foreground italic">
-                                   Click to expand and add job details
-                                 </div>
-                               )}
-                             </div>
-                             <Button
-                               variant="ghost"
-                               size="sm"
-                               onClick={(e) => {
-                                 e.stopPropagation();
-                                 removeJobCategory(category.id);
-                               }}
-                               className="text-muted-foreground hover:text-destructive"
-                             >
-                               <X className="h-4 w-4" />
-                             </Button>
-                           </div>
-                          
-                           {category.isExpanded && (
-                             <div className="space-y-6 pt-4">
-                               {/* Basic Information */}
-                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                 <div className="space-y-2">
-                                   <Label className="text-sm text-muted-foreground">Material Spec/Finish</Label>
-                                   <Input
-                                     placeholder="e.g., Luxury Vinyl Plank, Granite countertop"
-                                     value={category.materialSpec || ""}
-                                     onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
-                                   />
-                                 </div>
-                                 <div className="space-y-2">
-                                   <Label className="text-sm text-muted-foreground">Product Information</Label>
-                                   <Input
-                                     placeholder="Brand, model, specifications"
-                                     value={category.productInfo || ""}
-                                     onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
-                                   />
-                                 </div>
-                                 <div className="space-y-2">
-                                   <Label className="text-sm text-muted-foreground">Dimensions</Label>
-                                   <Input
-                                     placeholder="Size, area, linear feet"
-                                     value={category.dimensions || ""}
-                                     onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
-                                   />
-                                 </div>
-                                 <div className="space-y-2">
-                                   <Label className="text-sm text-muted-foreground">Quantity</Label>
-                                   <Input
-                                     placeholder="Number of units affected"
-                                     value={category.quantity || ""}
-                                     onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
-                                   />
-                                 </div>
-                               </div>
-
-                               {/* Project Details */}
-                               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                 <div className="space-y-2">
-                                   <Label className="text-sm text-muted-foreground">Estimated Labor Hours</Label>
-                                   <Input
-                                     placeholder="e.g., 8 hours per unit"
-                                     value={category.laborHours || ""}
-                                     onChange={(e) => updateJobCategory(category.id, "laborHours", e.target.value)}
-                                   />
-                                 </div>
-                                 <div className="space-y-2">
-                                   <Label className="text-sm text-muted-foreground">Skill Level Required</Label>
-                                   <Select value={category.skillLevel || ""} onValueChange={(value) => updateJobCategory(category.id, "skillLevel", value)}>
-                                     <SelectTrigger>
-                                       <SelectValue placeholder="Select skill level" />
-                                     </SelectTrigger>
-                                     <SelectContent>
-                                       <SelectItem value="basic">Basic</SelectItem>
-                                       <SelectItem value="intermediate">Intermediate</SelectItem>
-                                       <SelectItem value="advanced">Advanced</SelectItem>
-                                       <SelectItem value="specialized">Specialized</SelectItem>
-                                     </SelectContent>
-                                   </Select>
-                                 </div>
-                                 <div className="space-y-2">
-                                   <Label className="text-sm text-muted-foreground">Priority Level</Label>
-                                   <Select value={category.priority || ""} onValueChange={(value) => updateJobCategory(category.id, "priority", value)}>
-                                     <SelectTrigger>
-                                       <SelectValue placeholder="Select priority" />
-                                     </SelectTrigger>
-                                     <SelectContent>
-                                       <SelectItem value="high">High</SelectItem>
-                                       <SelectItem value="medium">Medium</SelectItem>
-                                       <SelectItem value="low">Low</SelectItem>
-                                     </SelectContent>
-                                   </Select>
-                                 </div>
-                               </div>
-
-                               {/* Unit Types (if unit-based scope) */}
-                               {scopeType === "unit-based" && units.length > 0 && (
-                                 <div className="space-y-2">
-                                   <Label className="text-sm text-muted-foreground">Applicable Unit Types</Label>
-                                   <div className="flex flex-wrap gap-2">
-                                     {Array.from(new Set(units.map(u => u.unitType))).map(unitType => (
-                                       <Badge
-                                         key={unitType}
-                                         variant="outline"
-                                         className="cursor-pointer hover:bg-primary hover:text-white"
-                                       >
-                                         {unitType}
-                                       </Badge>
-                                     ))}
-                                   </div>
-                                 </div>
-                               )}
-                               
-                               <div className="space-y-2">
-                                 <Label className="text-sm font-medium">Detailed Work Description</Label>
-                                 <Textarea
-                                   placeholder="Provide detailed work requirements, standards, and any special instructions for contractors"
-                                   value={category.notes || ""}
-                                   onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
-                                   className="min-h-[100px]"
-                                 />
-                               </div>
-                               
-                               <div className="space-y-2">
-                                 <Label className="text-sm font-medium">Reference Documents & Images</Label>
-                                 <Button variant="outline" className="w-full">
-                                   <Upload className="mr-2 h-4 w-4" />
-                                   Upload Specs, Drawings, or Reference Images
-                                 </Button>
-                               </div>
-                             </div>
-                           )}
+                    {/* Job Categories for Selected Units */}
+                    {units.filter(u => u.selected).length > 0 && (
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="text-xl font-semibold">Job Categories for Selected Units</h3>
+                            <p className="text-muted-foreground mt-1">Define work scope for {units.filter(u => u.selected).length} selected units</p>
+                          </div>
+                          <Button onClick={addJobCategory} className="bg-gradient-to-r from-primary to-brand-blue-dark">
+                            <Plus className="mr-2 h-4 w-4" />
+                            Add Job
+                          </Button>
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </section>
+
+                        {/* Selected Job Categories for Unit-Based */}
+                        {jobCategories.length > 0 && (
+                          <div className="space-y-6">
+                            {jobCategories.map((category) => (
+                               <div key={category.id} className="border-l-4 border-l-primary/30 pl-6 py-4 space-y-4">
+                                 <div 
+                                   className="flex items-center justify-between cursor-pointer hover:bg-accent/30 rounded-lg p-2 -m-2 transition-colors"
+                                   onClick={() => toggleCategoryExpansion(category.id)}
+                                 >
+                                   <div className="flex items-center gap-3">
+                                     <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
+                                     <div onClick={(e) => e.stopPropagation()}>
+                                       <Select 
+                                         value={category.name} 
+                                         onValueChange={(value) => updateJobCategory(category.id, "name", value)}
+                                       >
+                                         <SelectTrigger className="w-48">
+                                         <SelectValue />
+                                       </SelectTrigger>
+                                       <SelectContent>
+                                         <SelectItem value="Flooring">Flooring</SelectItem>
+                                         <SelectItem value="Kitchen">Kitchen</SelectItem>
+                                         <SelectItem value="Bathroom">Bathroom</SelectItem>
+                                         <SelectItem value="Painting">Painting</SelectItem>
+                                         <SelectItem value="HVAC">HVAC</SelectItem>
+                                         <SelectItem value="Plumbing">Plumbing</SelectItem>
+                                         <SelectItem value="Electrical">Electrical</SelectItem>
+                                         <SelectItem value="Appliances">Appliances</SelectItem>
+                                         <SelectItem value="Windows">Windows</SelectItem>
+                                         <SelectItem value="Doors">Doors</SelectItem>
+                                         <SelectItem value="Roofing">Roofing</SelectItem>
+                                         <SelectItem value="Landscaping">Landscaping</SelectItem>
+                                         </SelectContent>
+                                       </Select>
+                                     </div>
+                                     {!category.isExpanded && (
+                                       <div className="text-sm text-muted-foreground italic">
+                                         Applies to {units.filter(u => u.selected).length} selected units
+                                       </div>
+                                     )}
+                                   </div>
+                                   <Button
+                                     variant="ghost"
+                                     size="sm"
+                                     onClick={(e) => {
+                                       e.stopPropagation();
+                                       removeJobCategory(category.id);
+                                     }}
+                                     className="text-muted-foreground hover:text-destructive"
+                                   >
+                                     <X className="h-4 w-4" />
+                                   </Button>
+                                 </div>
+                                
+                                 {category.isExpanded && (
+                                   <div className="space-y-6 pt-4">
+                                     {/* Unit Types Display */}
+                                     <div className="space-y-2">
+                                       <Label className="text-sm text-muted-foreground">Applicable Units</Label>
+                                       <div className="flex flex-wrap gap-2">
+                                         {units.filter(u => u.selected).map(unit => (
+                                           <Badge
+                                             key={unit.id}
+                                             variant="outline"
+                                             className="text-xs"
+                                           >
+                                             {unit.unitNumber} ({unit.unitType})
+                                           </Badge>
+                                         ))}
+                                       </div>
+                                     </div>
+
+                                     {/* Basic Information */}
+                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                       <div className="space-y-2">
+                                         <Label className="text-sm text-muted-foreground">Material Spec/Finish</Label>
+                                         <Input
+                                           placeholder="e.g., Luxury Vinyl Plank, Granite countertop"
+                                           value={category.materialSpec || ""}
+                                           onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
+                                         />
+                                       </div>
+                                       <div className="space-y-2">
+                                         <Label className="text-sm text-muted-foreground">Product Information</Label>
+                                         <Input
+                                           placeholder="Brand, model, specifications"
+                                           value={category.productInfo || ""}
+                                           onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
+                                         />
+                                       </div>
+                                       <div className="space-y-2">
+                                         <Label className="text-sm text-muted-foreground">Dimensions</Label>
+                                         <Input
+                                           placeholder="Size, area, linear feet"
+                                           value={category.dimensions || ""}
+                                           onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
+                                         />
+                                       </div>
+                                       <div className="space-y-2">
+                                         <Label className="text-sm text-muted-foreground">Quantity per Unit</Label>
+                                         <Input
+                                           placeholder="Quantity per selected unit"
+                                           value={category.quantity || ""}
+                                           onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
+                                         />
+                                       </div>
+                                     </div>
+
+                                     {/* Project Details */}
+                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                       <div className="space-y-2">
+                                         <Label className="text-sm text-muted-foreground">Estimated Labor Hours per Unit</Label>
+                                         <Input
+                                           placeholder="e.g., 8 hours per unit"
+                                           value={category.laborHours || ""}
+                                           onChange={(e) => updateJobCategory(category.id, "laborHours", e.target.value)}
+                                         />
+                                       </div>
+                                       <div className="space-y-2">
+                                         <Label className="text-sm text-muted-foreground">Skill Level Required</Label>
+                                         <Select value={category.skillLevel || ""} onValueChange={(value) => updateJobCategory(category.id, "skillLevel", value)}>
+                                           <SelectTrigger>
+                                             <SelectValue placeholder="Select skill level" />
+                                           </SelectTrigger>
+                                           <SelectContent>
+                                             <SelectItem value="basic">Basic</SelectItem>
+                                             <SelectItem value="intermediate">Intermediate</SelectItem>
+                                             <SelectItem value="advanced">Advanced</SelectItem>
+                                             <SelectItem value="specialized">Specialized</SelectItem>
+                                           </SelectContent>
+                                         </Select>
+                                       </div>
+                                       <div className="space-y-2">
+                                         <Label className="text-sm text-muted-foreground">Priority Level</Label>
+                                         <Select value={category.priority || ""} onValueChange={(value) => updateJobCategory(category.id, "priority", value)}>
+                                           <SelectTrigger>
+                                             <SelectValue placeholder="Select priority" />
+                                           </SelectTrigger>
+                                           <SelectContent>
+                                             <SelectItem value="high">High</SelectItem>
+                                             <SelectItem value="medium">Medium</SelectItem>
+                                             <SelectItem value="low">Low</SelectItem>
+                                           </SelectContent>
+                                         </Select>
+                                       </div>
+                                     </div>
+                                     
+                                     <div className="space-y-2">
+                                       <Label className="text-sm font-medium">Detailed Work Description</Label>
+                                       <Textarea
+                                         placeholder="Provide detailed work requirements, standards, and any special instructions for contractors"
+                                         value={category.notes || ""}
+                                         onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
+                                         className="min-h-[100px]"
+                                       />
+                                     </div>
+                                     
+                                     <div className="space-y-2">
+                                       <Label className="text-sm font-medium">Reference Documents & Images</Label>
+                                       <Button variant="outline" className="w-full">
+                                         <Upload className="mr-2 h-4 w-4" />
+                                         Upload Specs, Drawings, or Reference Images
+                                       </Button>
+                                     </div>
+                                   </div>
+                                 )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {jobCategories.length === 0 && (
+                          <div className="text-center py-12 text-muted-foreground border border-dashed border-border rounded-lg">
+                            <Building className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                            <h3 className="text-lg font-medium mb-2">No job categories added yet</h3>
+                            <p className="mb-4">Define job categories for the selected {units.filter(u => u.selected).length} units</p>
+                            <Button onClick={addJobCategory} variant="outline">
+                              <Plus className="mr-2 h-4 w-4" />
+                              Add First Job Category
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </section>
+                )}
               </>
             )}
 
