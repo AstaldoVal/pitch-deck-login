@@ -373,19 +373,19 @@ const PropertyUnits = () => {
 
               {/* Add Units Dialog */}
               <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
-                <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
-                  <DialogHeader>
+                <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col">
+                  <DialogHeader className="flex-shrink-0">
                     <DialogTitle>Add Units</DialogTitle>
                   </DialogHeader>
                   
-                  <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full">
+                  <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
                     <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
                       <TabsTrigger value="template">Template Generation</TabsTrigger>
                       <TabsTrigger value="manual">Quick Manual Add</TabsTrigger>
                     </TabsList>
                     
                     <TabsContent value="template" className="flex-1 overflow-y-auto">
-                      <div className="space-y-4">
+                      <div className="space-y-4 pb-4">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="space-y-2">
                             <Label>Unit Prefix</Label>
@@ -452,19 +452,10 @@ const PropertyUnits = () => {
                             />
                           </div>
                         </div>
-
-                        <div className="flex justify-end gap-3 pt-4 border-t">
-                          <Button variant="outline" onClick={() => setShowAddForm(false)}>
-                            Cancel
-                          </Button>
-                          <Button onClick={generateUnitsFromTemplate}>
-                            Generate {templateForm.endNumber - templateForm.startNumber + 1} Units
-                          </Button>
-                        </div>
                       </div>
                     </TabsContent>
 
-                    <TabsContent value="manual" className="flex flex-col h-full overflow-hidden relative">
+                    <TabsContent value="manual" className="flex flex-col flex-1 min-h-0">
                       {/* Fixed header with Add Row button */}
                       <div className="flex-shrink-0 pb-4 border-b mb-4">
                         <div className="flex items-center justify-between">
@@ -481,8 +472,8 @@ const PropertyUnits = () => {
                         </div>
                       </div>
 
-                      {/* Scrollable content with bottom padding for buttons */}
-                      <div className="flex-1 overflow-y-auto min-h-0 pb-20" data-scroll-container>
+                      {/* Scrollable content */}
+                      <div className="flex-1 overflow-y-auto min-h-0" data-scroll-container>
                         <div className="space-y-3 pr-2">
                           {quickUnits.map((unit, index) => (
                             <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
@@ -538,19 +529,25 @@ const PropertyUnits = () => {
                           ))}
                         </div>
                       </div>
-
-                      {/* Fixed footer with action buttons - absolutely positioned */}
-                      <div className="absolute bottom-0 left-0 right-0 pt-4 border-t bg-background">
-                        <div className="flex justify-end gap-3">
-                          <Button variant="outline" onClick={() => setShowAddForm(false)}>
-                            Cancel
+                    </TabsContent>
+                    
+                    {/* Fixed footer for both tabs */}
+                    <div className="flex-shrink-0 pt-4 border-t bg-background">
+                      <div className="flex justify-end gap-3">
+                        <Button variant="outline" onClick={() => setShowAddForm(false)}>
+                          Cancel
+                        </Button>
+                        {activeTab === "template" ? (
+                          <Button onClick={generateUnitsFromTemplate}>
+                            Generate {templateForm.endNumber - templateForm.startNumber + 1} Units
                           </Button>
+                        ) : (
                           <Button onClick={addQuickUnits}>
                             Add {quickUnits.filter(u => u.unitNumber.trim()).length} Units
                           </Button>
-                        </div>
+                        )}
                       </div>
-                    </TabsContent>
+                    </div>
                   </Tabs>
                 </DialogContent>
               </Dialog>
