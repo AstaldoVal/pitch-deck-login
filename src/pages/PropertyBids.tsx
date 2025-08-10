@@ -48,117 +48,68 @@ interface JobCategory {
   materialSpec?: string;
   productInfo?: string;
   dimensions?: string;
-  unitType?: string;
+  quantity?: string;
+  unitTypes?: string[];
+  laborHours?: string;
+  skillLevel?: string;
+  priority?: string;
   notes?: string;
+  files?: File[];
+  isExpanded?: boolean;
 }
 
 interface Unit {
   id: string;
-  name: string;
-  type: string;
+  unitNumber: string;
+  unitType: string;
+  floorPlan: string;
   sqft: number;
-}
-
-interface Step {
-  number: number;
-  title: string;
-  description: string;
+  bedrooms: number;
+  bathrooms: number;
+  selected: boolean;
 }
 
 export default function PropertyBids() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  
   const [currentStep, setCurrentStep] = useState(1);
-  const [scopeType, setScopeType] = useState<'job-types' | 'unit-based'>('job-types');
-  
-  // Property Data
-  const [propertyData, setPropertyData] = useState<PropertyData>({
-    name: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
-    propertyType: "",
-    hasRentRoll: false,
-  });
-
-  // Job Categories
-  const [jobCategories, setJobCategories] = useState<JobCategory[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
-
-  // Units
-  const [units, setUnits] = useState<Unit[]>([]);
-  const [selectedUnits, setSelectedUnits] = useState<Set<string>>(new Set());
-  
-  // Contractors
+  const [propertyData, setPropertyData] = useState<PropertyData | null>(null);
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
   const [contractors, setContractors] = useState<Contractor[]>([]);
+  const [scopeType, setScopeType] = useState<"job-type" | "unit-based">("job-type");
+  const [jobCategories, setJobCategories] = useState<JobCategory[]>([]);
+  const [units, setUnits] = useState<Unit[]>([]);
+  const [hasRentRoll, setHasRentRoll] = useState(false);
+  const [rentRollFile, setRentRollFile] = useState<File | null>(null);
+  const [newContractor, setNewContractor] = useState<Contractor>({
+    id: "",
+    companyName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    location: ""
+  });
+  const [showContractorForm, setShowContractorForm] = useState(false);
   
-  // Project details
-  const [projectName, setProjectName] = useState("");
-  const [dueDate, setDueDate] = useState<Date>();
-  const [description, setDescription] = useState("");
-  const [specialInstructions, setSpecialInstructions] = useState("");
+  // Form data with defaults
+  const [generatedBy, setGeneratedBy] = useState("Roman Matsukatov");
+  const [email, setEmail] = useState("roman.matsukatov@company.com");
+  const [phone, setPhone] = useState("(555) 123-4567");
+  const [companyName, setCompanyName] = useState("Property Management LLC");
+  const [totalBudget, setTotalBudget] = useState("");
 
-  const steps: Step[] = [
-    { number: 1, title: "Property Information", description: "Basic property details" },
-    { number: 2, title: "Scope Type", description: "Choose your scope approach" },
-    { number: 3, title: "Define Scope", description: "Select work details" },
-    { number: 4, title: "Project Details", description: "Timeline and specifications" },
-    { number: 5, title: "Select Contractors", description: "Choose contractors for bidding" },
+  const steps = [
+    { number: 1, title: "Basic Information", description: "Bid details and property info" },
+    { number: 2, title: "Project Timeline", description: "Start and end dates" },
+    { number: 3, title: "Rent Roll Upload", description: "Upload property units data" },
+    { number: 4, title: "Scope Type", description: "Define project scope" },
+    { number: 5, title: "Contractors", description: "Add contractors to bid" }
   ];
 
-  // Load sample data on mount
-  useEffect(() => {
-    const sampleJobCategories: JobCategory[] = [
-      { id: '1', name: 'Kitchen Cabinets', materialSpec: 'Solid Wood', productInfo: 'Shaker Style' },
-      { id: '2', name: 'Flooring', materialSpec: 'Luxury Vinyl Plank', productInfo: '8mm thickness' },
-      { id: '3', name: 'Bathroom Vanity', materialSpec: 'Granite Countertop', productInfo: '36" width' },
-      { id: '4', name: 'Interior Paint', materialSpec: 'Benjamin Moore', productInfo: 'Eggshell finish' },
-      { id: '5', name: 'HVAC', materialSpec: 'Central Air', productInfo: '3 Ton Unit' },
-      { id: '6', name: 'Electrical', materialSpec: 'Updated Panel', productInfo: '200 Amp' },
-      { id: '7', name: 'Plumbing', materialSpec: 'Copper Pipes', productInfo: 'Full replacement' },
-      { id: '8', name: 'Windows', materialSpec: 'Double Pane', productInfo: 'Vinyl frame' },
-    ];
-    setJobCategories(sampleJobCategories);
-
-    const sampleUnits: Unit[] = [
-      { id: '1', name: 'Unit 101', type: '1 Bedroom', sqft: 750 },
-      { id: '2', name: 'Unit 102', type: '2 Bedroom', sqft: 1100 },
-      { id: '3', name: 'Unit 201', type: '1 Bedroom', sqft: 750 },
-      { id: '4', name: 'Unit 202', type: '2 Bedroom', sqft: 1100 },
-      { id: '5', name: 'Unit 301', type: 'Studio', sqft: 500 },
-    ];
-    setUnits(sampleUnits);
-
-    const sampleContractors: Contractor[] = [
-      {
-        id: '1',
-        companyName: 'Acme Construction',
-        firstName: 'John',
-        lastName: 'Smith',
-        email: 'john@acmeconstruction.com',
-        location: 'New York, NY'
-      },
-      {
-        id: '2',
-        companyName: 'Premium Renovators',
-        firstName: 'Sarah',
-        lastName: 'Johnson',
-        email: 'sarah@premiumreno.com',
-        location: 'Brooklyn, NY'
-      },
-      {
-        id: '3',
-        companyName: 'Elite Builders',
-        firstName: 'Mike',
-        lastName: 'Davis',
-        email: 'mike@elitebuilders.com',
-        location: 'Queens, NY'
-      }
-    ];
-    setContractors(sampleContractors);
-  }, []);
+  const goToStep = (step: number) => {
+    setCurrentStep(step);
+  };
 
   const nextStep = () => {
     if (currentStep < steps.length) {
@@ -172,56 +123,158 @@ export default function PropertyBids() {
     }
   };
 
-  const handleScopeTypeChange = (type: 'job-types' | 'unit-based') => {
-    setScopeType(type);
-    // Clear selections when switching scope types
-    setSelectedCategories(new Set());
-    setSelectedUnits(new Set());
+  useEffect(() => {
+    // Load property data from localStorage
+    const savedProperty = localStorage.getItem('property');
+    if (savedProperty) {
+      const property = JSON.parse(savedProperty);
+      setPropertyData(property);
+      setHasRentRoll(property.hasRentRoll || false);
+    }
+  }, []);
+
+  const generateBidNumber = () => {
+    return `BID-${Date.now().toString().slice(-6)}`;
   };
 
-  const toggleCategory = (categoryId: string) => {
-    const newSelected = new Set(selectedCategories);
-    if (newSelected.has(categoryId)) {
-      newSelected.delete(categoryId);
-    } else {
-      newSelected.add(categoryId);
+  const addContractor = () => {
+    if (contractors.length >= 5) return;
+    
+    if (newContractor.companyName && newContractor.firstName && newContractor.lastName && newContractor.email) {
+      setContractors([...contractors, { ...newContractor, id: Date.now().toString() }]);
+      setNewContractor({
+        id: "",
+        companyName: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        location: ""
+      });
+      setShowContractorForm(false);
     }
-    setSelectedCategories(newSelected);
   };
 
-  const toggleUnit = (unitId: string) => {
-    const newSelected = new Set(selectedUnits);
-    if (newSelected.has(unitId)) {
-      newSelected.delete(unitId);
-    } else {
-      newSelected.add(unitId);
+  const removeContractor = (id: string) => {
+    setContractors(contractors.filter(contractor => contractor.id !== id));
+  };
+
+  const addJobCategory = () => {
+    const categories = ["Flooring", "Kitchen", "Bathroom", "Painting", "HVAC", "Plumbing", "Electrical", "Appliances", "Windows", "Doors", "Roofing", "Landscaping"];
+    const newJobCategory = {
+      id: Date.now().toString(),
+      name: categories[0], // По умолчанию первая категория
+      isExpanded: false
+    };
+    setJobCategories([...jobCategories, newJobCategory]);
+  };
+
+  const toggleCategoryExpansion = (id: string) => {
+    setJobCategories(categories =>
+      categories.map(cat =>
+        cat.id === id ? { ...cat, isExpanded: !cat.isExpanded } : cat
+      )
+    );
+  };
+
+  const updateJobCategory = (id: string, field: keyof JobCategory, value: string) => {
+    setJobCategories(categories =>
+      categories.map(cat =>
+        cat.id === id ? { ...cat, [field]: value } : cat
+      )
+    );
+  };
+
+  const removeJobCategory = (id: string) => {
+    setJobCategories(categories => categories.filter(cat => cat.id !== id));
+  };
+
+  const handleRentRollUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setRentRollFile(file);
+      setHasRentRoll(true);
+      
+      // Simulate parsing units from rent roll
+      const sampleUnits: Unit[] = [
+        { id: "1", unitNumber: "101", unitType: "1BR", floorPlan: "A", sqft: 650, bedrooms: 1, bathrooms: 1, selected: false },
+        { id: "2", unitNumber: "102", unitType: "1BR", floorPlan: "A", sqft: 650, bedrooms: 1, bathrooms: 1, selected: false },
+        { id: "3", unitNumber: "201", unitType: "2BR", floorPlan: "B", sqft: 950, bedrooms: 2, bathrooms: 2, selected: false },
+        { id: "4", unitNumber: "202", unitType: "2BR", floorPlan: "B", sqft: 950, bedrooms: 2, bathrooms: 2, selected: false },
+        { id: "5", unitNumber: "301", unitType: "3BR", floorPlan: "C", sqft: 1200, bedrooms: 3, bathrooms: 2, selected: false },
+      ];
+      setUnits(sampleUnits);
+      
+      toast({
+        title: "Rent Roll Uploaded",
+        description: `${file.name} has been processed and ${sampleUnits.length} units were found.`,
+      });
     }
-    setSelectedUnits(newSelected);
+  };
+
+  const toggleUnitSelection = (unitId: string) => {
+    setUnits(units => 
+      units.map(unit => 
+        unit.id === unitId ? { ...unit, selected: !unit.selected } : unit
+      )
+    );
+  };
+
+  const selectAllUnits = () => {
+    setUnits(units => units.map(unit => ({ ...unit, selected: true })));
+  };
+
+  const deselectAllUnits = () => {
+    setUnits(units => units.map(unit => ({ ...unit, selected: false })));
   };
 
   const handleSaveDraft = () => {
+    // Создаем объект бида с собранными данными со статусом "Not Started"
+    const bidData = {
+      id: generateBidNumber(),
+      generatedBy,
+      email,
+      phone,
+      companyName,
+      totalBudget,
+      property: propertyData,
+      startDate,
+      endDate,
+      scopeType,
+      jobCategories,
+      contractors,
+      createdAt: new Date().toISOString(),
+      status: "Not started"
+    };
+
+    // Сохраняем бид в localStorage
+    const savedBids = JSON.parse(localStorage.getItem('propertyBids') || '[]');
+    savedBids.push(bidData);
+    localStorage.setItem('propertyBids', JSON.stringify(savedBids));
+
+    // Показываем уведомление и переходим на страницу списка бидов
     toast({
       title: "Draft Saved",
       description: "Your bid has been saved as a draft.",
     });
+    navigate('/property/bids-list');
   };
 
   const handleCreateBid = () => {
+    // Создаем объект бида с собранными данными
     const bidData = {
-      id: Date.now().toString(),
-      propertyData,
+      id: generateBidNumber(),
+      generatedBy,
+      email,
+      phone,
+      companyName,
+      totalBudget,
+      property: propertyData,
+      startDate,
+      endDate,
       scopeType,
-      selectedCategories: Array.from(selectedCategories),
-      selectedUnits: Array.from(selectedUnits),
-      jobCategories: jobCategories.filter(cat => selectedCategories.has(cat.id)),
-      units: units.filter(unit => selectedUnits.has(unit.id)),
-      projectName,
-      dueDate,
-      description,
-      specialInstructions,
-      contractors: contractors.map(c => c.id),
-      createdAt: new Date().toISOString(),
-      status: 'active'
+      jobCategories,
+      contractors,
+      createdAt: new Date().toISOString()
     };
 
     // Сохраняем бид в localStorage (можно заменить на API)
@@ -246,540 +299,1073 @@ export default function PropertyBids() {
                 <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
                   Create Renovation Bid
                 </h1>
-                <p className="text-lg text-muted-foreground mt-2">
-                  Define your project scope and invite contractors to bid
-                </p>
+                <p className="text-muted-foreground mt-3 text-lg">Generate detailed renovation proposals for contractors</p>
               </div>
-            </div>
-
-            {/* Progress Stepper */}
-            <div className="flex items-center justify-between relative">
-              {steps.map((step, index) => (
-                <div key={step.number} className="flex flex-col items-center flex-1">
-                  <div className="flex items-center w-full">
-                    <div
+              
+              {/* Compact Step Navigation in top right */}
+              <div className="flex items-center gap-4">
+                <Badge variant="outline" className="px-3 py-1">
+                  Step {currentStep} of {steps.length}
+                </Badge>
+                <div className="flex items-center gap-2">
+                  {steps.map((step) => (
+                    <button
+                      key={step.number}
+                      onClick={() => goToStep(step.number)}
                       className={cn(
-                        "flex items-center justify-center w-10 h-10 rounded-full border-2 font-semibold",
-                        currentStep >= step.number
-                          ? "bg-primary border-primary text-primary-foreground"
-                          : "bg-background border-border text-muted-foreground"
+                        "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all",
+                        currentStep === step.number
+                          ? "bg-primary text-white"
+                          : currentStep > step.number
+                          ? "bg-primary/80 text-white hover:bg-primary"
+                          : "bg-muted text-muted-foreground hover:bg-muted/60"
                       )}
                     >
-                      {currentStep > step.number ? (
-                        <Check className="h-5 w-5" />
-                      ) : (
-                        step.number
-                      )}
-                    </div>
-                    {index < steps.length - 1 && (
-                      <div
-                        className={cn(
-                          "flex-1 h-0.5 mx-4",
-                          currentStep > step.number
-                            ? "bg-primary"
-                            : "bg-border"
-                        )}
-                      />
-                    )}
-                  </div>
-                  <div className="mt-2 text-center">
-                    <p className={cn(
-                      "text-sm font-medium",
-                      currentStep >= step.number
-                        ? "text-foreground"
-                        : "text-muted-foreground"
-                    )}>
-                      {step.title}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {step.description}
-                    </p>
-                  </div>
+                      {currentStep > step.number ? <Check className="h-3 w-3" /> : step.number}
+                    </button>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
 
             {/* Step Content */}
             {currentStep === 1 && (
-              /* Property Information */
-              <section className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-2xl">Property Information</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
+              /* Basic Information */
+              <section className="space-y-8">
+                <div>
+                  <h2 className="text-2xl font-semibold mb-6">Basic Information</h2>
+                </div>
+                
+                {/* Bid Details */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <FileText className="h-5 w-5 text-primary" />
+                        <h3 className="text-lg font-medium">Bid Details</h3>
+                      </div>
+                      <div className="space-y-4 pl-7">
+                        <div>
+                          <Label className="text-sm text-muted-foreground">Bid Number</Label>
+                          <p className="font-semibold text-xl mt-1">{generateBidNumber()}</p>
+                        </div>
+                        <div>
+                          <Label className="text-sm text-muted-foreground">Generated By</Label>
+                          <Input 
+                            value={generatedBy}
+                            onChange={(e) => setGeneratedBy(e.target.value)}
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-sm text-muted-foreground">Total Budget</Label>
+                          <Input 
+                            type="text"
+                            placeholder="$1,650,000"
+                            value={totalBudget}
+                            onChange={(e) => setTotalBudget(e.target.value)}
+                            className="mt-1"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Contact Information */}
+                  <div className="space-y-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <User className="h-5 w-5 text-primary" />
+                        <h3 className="text-lg font-medium">Contact Information</h3>
+                      </div>
+                      <div className="space-y-4 pl-7">
+                        <div>
+                          <Label className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Mail className="h-3 w-3" />
+                            Email
+                          </Label>
+                          <Input 
+                            type="email" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Phone className="h-3 w-3" />
+                            Phone
+                          </Label>
+                          <Input 
+                            type="tel" 
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Building className="h-3 w-3" />
+                            Company
+                          </Label>
+                          <Input 
+                            value={companyName}
+                            onChange={(e) => setCompanyName(e.target.value)}
+                            className="mt-1"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Property Information */}
+                {propertyData && (
+                  <div className="pt-8 border-t-2 border-border/60">
+                    <div className="flex items-center gap-2 mb-6">
+                      <Building className="h-5 w-5 text-primary" />
+                      <h3 className="text-lg font-medium">Property Information</h3>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="propertyName">Property Name *</Label>
-                        <Input
-                          id="propertyName"
-                          value={propertyData.name}
-                          onChange={(e) => setPropertyData({ ...propertyData, name: e.target.value })}
-                          placeholder="Enter property name"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="propertyType">Property Type *</Label>
-                        <Select
-                          value={propertyData.propertyType}
-                          onValueChange={(value) => setPropertyData({ ...propertyData, propertyType: value })}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select property type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="apartment">Apartment Complex</SelectItem>
-                            <SelectItem value="single-family">Single Family</SelectItem>
-                            <SelectItem value="townhouse">Townhouse</SelectItem>
-                            <SelectItem value="condo">Condominium</SelectItem>
-                            <SelectItem value="commercial">Commercial</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="address">Address *</Label>
-                        <Input
-                          id="address"
-                          value={propertyData.address}
-                          onChange={(e) => setPropertyData({ ...propertyData, address: e.target.value })}
-                          placeholder="Street address"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="city">City *</Label>
-                        <Input
-                          id="city"
-                          value={propertyData.city}
-                          onChange={(e) => setPropertyData({ ...propertyData, city: e.target.value })}
-                          placeholder="City"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="state">State *</Label>
-                        <Input
-                          id="state"
-                          value={propertyData.state}
-                          onChange={(e) => setPropertyData({ ...propertyData, state: e.target.value })}
-                          placeholder="State"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="zip">ZIP Code *</Label>
-                        <Input
-                          id="zip"
-                          value={propertyData.zip}
-                          onChange={(e) => setPropertyData({ ...propertyData, zip: e.target.value })}
-                          placeholder="ZIP code"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="yearBuilt">Year Built</Label>
-                        <Input
-                          id="yearBuilt"
-                          type="number"
-                          value={propertyData.yearBuilt || ''}
-                          onChange={(e) => setPropertyData({ ...propertyData, yearBuilt: parseInt(e.target.value) || undefined })}
-                          placeholder="e.g. 1995"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="assetManager">Asset Manager</Label>
-                        <Input
-                          id="assetManager"
-                          value={propertyData.assetManager || ''}
-                          onChange={(e) => setPropertyData({ ...propertyData, assetManager: e.target.value })}
-                          placeholder="Asset manager name"
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </section>
-            )}
-
-            {currentStep === 2 && (
-              /* Scope Type Selection */
-              <section className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-2xl">Choose Your Scope Approach</CardTitle>
-                    <p className="text-muted-foreground">Select how you want to define the renovation scope</p>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div
-                        className={cn(
-                          "border-2 rounded-lg p-6 cursor-pointer transition-all duration-200 hover:shadow-md",
-                          scopeType === 'job-types'
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-primary/50"
-                        )}
-                        onClick={() => handleScopeTypeChange('job-types')}
-                      >
-                        <div className="flex items-start space-x-3">
-                          <div className={cn(
-                            "w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5",
-                            scopeType === 'job-types'
-                              ? "border-primary bg-primary"
-                              : "border-muted-foreground"
-                          )}>
-                            {scopeType === 'job-types' && (
-                              <div className="w-full h-full rounded-full bg-white scale-50" />
-                            )}
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-lg">Job Type Scope</h3>
-                            <p className="text-muted-foreground text-sm mt-1">
-                              Define scope by specific job categories (kitchen, flooring, HVAC, etc.)
-                            </p>
-                            <div className="mt-3 flex flex-wrap gap-1">
-                              <Badge variant="secondary" className="text-xs">Kitchen</Badge>
-                              <Badge variant="secondary" className="text-xs">Flooring</Badge>
-                              <Badge variant="secondary" className="text-xs">HVAC</Badge>
-                            </div>
-                          </div>
+                      <div className="space-y-4 pl-7">
+                        <div>
+                          <Label className="text-sm text-muted-foreground">Property Name</Label>
+                          <p className="font-medium mt-1">{propertyData.name}</p>
+                        </div>
+                        <div>
+                          <Label className="text-sm text-muted-foreground">Address</Label>
+                          <p className="font-medium mt-1">{propertyData.address}, {propertyData.city}, {propertyData.state} {propertyData.zip}</p>
                         </div>
                       </div>
-
-                      <div
-                        className={cn(
-                          "border-2 rounded-lg p-6 cursor-pointer transition-all duration-200 hover:shadow-md",
-                          scopeType === 'unit-based'
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-primary/50"
-                        )}
-                        onClick={() => handleScopeTypeChange('unit-based')}
-                      >
-                        <div className="flex items-start space-x-3">
-                          <div className={cn(
-                            "w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5",
-                            scopeType === 'unit-based'
-                              ? "border-primary bg-primary"
-                              : "border-muted-foreground"
-                          )}>
-                            {scopeType === 'unit-based' && (
-                              <div className="w-full h-full rounded-full bg-white scale-50" />
-                            )}
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-lg">Unit-based Scope</h3>
-                            <p className="text-muted-foreground text-sm mt-1">
-                              Define scope by selecting specific units from your rent roll
-                            </p>
-                            <div className="mt-3 flex flex-wrap gap-1">
-                              <Badge variant="secondary" className="text-xs">Unit 101</Badge>
-                              <Badge variant="secondary" className="text-xs">Unit 202</Badge>
-                              <Badge variant="secondary" className="text-xs">Unit 301</Badge>
-                            </div>
-                          </div>
+                      <div className="space-y-4 pl-7">
+                        <div>
+                          <Label className="text-sm text-muted-foreground">Year Built</Label>
+                          <p className="font-medium mt-1">{propertyData.yearBuilt || "Not specified"}</p>
+                        </div>
+                        <div>
+                          <Label className="text-sm text-muted-foreground">Building Type</Label>
+                          <p className="font-medium mt-1">{propertyData.buildingType || "Not specified"}</p>
+                        </div>
+                        <div>
+                          <Label className="text-sm text-muted-foreground">Asset Manager</Label>
+                          <p className="font-medium mt-1">{propertyData.assetManager || "Not assigned"}</p>
                         </div>
                       </div>
                     </div>
-
-                    {scopeType === 'unit-based' && (
-                      <div className="border border-border rounded-lg p-4 bg-muted/30">
-                        <div className="flex items-center gap-2 mb-2">
-                          <FileText className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Rent Roll Required</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-3">
-                          Unit-based scope requires a rent roll to identify available units. Upload your rent roll file to proceed.
-                        </p>
-                        <Button variant="outline" size="sm" className="flex items-center gap-2">
-                          <Upload className="h-4 w-4" />
-                          Upload and Enter
-                        </Button>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </section>
-            )}
-
-            {currentStep === 3 && (
-              /* Define Scope */
-              <section className="space-y-6">
-                {scopeType === 'job-types' ? (
-                  <>
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-2xl flex items-center gap-2">
-                          <Building className="h-6 w-6" />
-                          Job Type Scope
-                        </CardTitle>
-                        <p className="text-muted-foreground">Select the job categories for your renovation project</p>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {jobCategories.map((category) => (
-                            <div
-                              key={category.id}
-                              className={cn(
-                                "border rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-md",
-                                selectedCategories.has(category.id)
-                                  ? "border-primary bg-primary/5 shadow-sm"
-                                  : "border-border hover:border-primary/50"
-                              )}
-                              onClick={() => toggleCategory(category.id)}
-                            >
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <h4 className="font-semibold">{category.name}</h4>
-                                  {category.materialSpec && (
-                                    <p className="text-sm text-muted-foreground mt-1">
-                                      Material: {category.materialSpec}
-                                    </p>
-                                  )}
-                                  {category.productInfo && (
-                                    <p className="text-sm text-muted-foreground">
-                                      Product: {category.productInfo}
-                                    </p>
-                                  )}
-                                </div>
-                                <div className={cn(
-                                  "w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0",
-                                  selectedCategories.has(category.id)
-                                    ? "border-primary bg-primary"
-                                    : "border-muted-foreground"
-                                )}>
-                                  {selectedCategories.has(category.id) && (
-                                    <Check className="h-3 w-3 text-white" />
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-
-                        {selectedCategories.size > 0 && (
-                          <div className="mt-6 p-4 bg-muted/30 rounded-lg">
-                            <h4 className="font-semibold mb-2">Selected Job Categories ({selectedCategories.size})</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {Array.from(selectedCategories).map((categoryId) => {
-                                const category = jobCategories.find(c => c.id === categoryId);
-                                return category ? (
-                                  <Badge key={categoryId} variant="default" className="flex items-center gap-1">
-                                    {category.name}
-                                    <X 
-                                      className="h-3 w-3 cursor-pointer hover:text-destructive" 
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        toggleCategory(categoryId);
-                                      }}
-                                    />
-                                  </Badge>
-                                ) : null;
-                              })}
-                            </div>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </>
-                ) : (
-                  <>
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-2xl flex items-center gap-2">
-                          <Home className="h-6 w-6" />
-                          Unit-based Scope
-                        </CardTitle>
-                        <p className="text-muted-foreground">Select the units for your renovation project</p>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-3">
-                          {units.map((unit) => (
-                            <div
-                              key={unit.id}
-                              className={cn(
-                                "flex items-center justify-between p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md",
-                                selectedUnits.has(unit.id)
-                                  ? "border-primary bg-primary/5 shadow-sm"
-                                  : "border-border hover:border-primary/50"
-                              )}
-                              onClick={() => toggleUnit(unit.id)}
-                            >
-                              <div className="flex items-center gap-4">
-                                <div className={cn(
-                                  "w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0",
-                                  selectedUnits.has(unit.id)
-                                    ? "border-primary bg-primary"
-                                    : "border-muted-foreground"
-                                )}>
-                                  {selectedUnits.has(unit.id) && (
-                                    <Check className="h-3 w-3 text-white" />
-                                  )}
-                                </div>
-                                <div>
-                                  <h4 className="font-semibold">{unit.name}</h4>
-                                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                    <span>{unit.type}</span>
-                                    <span>•</span>
-                                    <span>{unit.sqft} sq ft</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-
-                        {selectedUnits.size > 0 && (
-                          <div className="mt-6 p-4 bg-muted/30 rounded-lg">
-                            <h4 className="font-semibold mb-2">Selected Units ({selectedUnits.size})</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {Array.from(selectedUnits).map((unitId) => {
-                                const unit = units.find(u => u.id === unitId);
-                                return unit ? (
-                                  <Badge key={unitId} variant="default" className="flex items-center gap-1">
-                                    {unit.name}
-                                    <X 
-                                      className="h-3 w-3 cursor-pointer hover:text-destructive" 
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        toggleUnit(unitId);
-                                      }}
-                                    />
-                                  </Badge>
-                                ) : null;
-                              })}
-                            </div>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </>
+                  </div>
                 )}
               </section>
             )}
 
-            {currentStep === 4 && (
-              /* Project Details */
-              <section className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-2xl">Project Details</CardTitle>
-                    <p className="text-muted-foreground">Provide timeline and project specifications</p>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="projectName">Project Name *</Label>
-                        <Input
-                          id="projectName"
-                          value={projectName}
-                          onChange={(e) => setProjectName(e.target.value)}
-                          placeholder="Enter project name"
-                        />
+            {currentStep === 2 && (
+              /* Timeline Section */
+              <section className="space-y-8">
+                <div>
+                  <h2 className="text-2xl font-semibold">Timeline & Activity Period</h2>
+                  <p className="text-muted-foreground mt-1">Set project dates and bid collection period</p>
+                </div>
+                
+                {/* Project Timeline */}
+                <div className="border border-border rounded-lg p-6 bg-card">
+                  <div className="flex items-center gap-2 mb-6">
+                    <CalendarIcon className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-medium">Project Timeline</h3>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label className="text-sm text-muted-foreground">
+                        Project Kick-off Date
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !startDate && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {startDate ? format(startDate, "PPP") : <span>Select start date</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={startDate}
+                            onSelect={setStartDate}
+                            initialFocus
+                            className={cn("p-3 pointer-events-auto")}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label className="text-sm text-muted-foreground">
+                        Project Completion Date
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !endDate && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {endDate ? format(endDate, "PPP") : <span>Select end date</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={endDate}
+                            onSelect={setEndDate}
+                            initialFocus
+                            className={cn("p-3 pointer-events-auto")}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bid Collection Activity Period */}
+                <div className="border border-border rounded-lg p-6 bg-card">
+                  <div className="flex items-center gap-2 mb-6">
+                    <CalendarIcon className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-medium">Bid Collection Period</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-6">
+                    Set the timeframe for contractors to submit their proposals
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label className="text-sm text-muted-foreground">
+                        Bid Submission Opens
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            <span>Today (auto-set)</span>
+                          </Button>
+                        </PopoverTrigger>
+                      </Popover>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label className="text-sm text-muted-foreground">
+                        Bid Submission Deadline
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            <span>Select deadline</span>
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={undefined}
+                            onSelect={() => {}}
+                            initialFocus
+                            className={cn("p-3 pointer-events-auto")}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {currentStep === 3 && (
+              /* Rent Roll Upload Section */
+              <section className="space-y-8">
+                <div>
+                  <h2 className="text-2xl font-semibold">Rent Roll Upload</h2>
+                  <p className="text-muted-foreground mt-1">Upload property units data to populate scope options</p>
+                </div>
+
+                {/* Rent Roll Upload */}
+                <div className="border border-border rounded-lg p-6 bg-card">
+                  <div className="flex items-center gap-2 mb-6">
+                    <Upload className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-medium">Upload Rent Roll</h3>
+                  </div>
+
+                  {!hasRentRoll ? (
+                    <div className="space-y-4">
+                      <p className="text-muted-foreground">
+                        Upload your rent roll file to automatically populate unit information and enable unit-based scoping.
+                      </p>
+                      <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
+                        <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                        <div className="space-y-2">
+                          <p className="text-lg font-medium">Upload Rent Roll</p>
+                          <p className="text-sm text-muted-foreground">
+                            Supported formats: .xlsx, .xls, .csv
+                          </p>
+                        </div>
+                        <div className="mt-4">
+                          <input
+                            type="file"
+                            accept=".xlsx,.xls,.csv"
+                            onChange={handleRentRollUpload}
+                            className="hidden"
+                            id="rent-roll-upload"
+                          />
+                          <label htmlFor="rent-roll-upload">
+                            <Button className="bg-gradient-to-r from-primary to-primary/80">
+                              Select File
+                            </Button>
+                          </label>
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <Label>Due Date *</Label>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant="outline"
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg border border-green-200">
+                        <FileText className="h-5 w-5 text-green-600" />
+                        <div className="flex-1">
+                          <p className="font-medium text-green-900">
+                            {rentRollFile?.name}
+                          </p>
+                          <p className="text-sm text-green-700">
+                            {units.length} units found and processed
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setHasRentRoll(false);
+                            setRentRollFile(null);
+                            setUnits([]);
+                          }}
+                          className="text-green-700 hover:text-green-900"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+
+                      {/* Units Preview */}
+                      <div className="border border-border rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-medium">Units Overview</h4>
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline" onClick={selectAllUnits}>
+                              Select All
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={deselectAllUnits}>
+                              Deselect All
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-64 overflow-y-auto">
+                          {units.map((unit) => (
+                            <div
+                              key={unit.id}
+                              onClick={() => toggleUnitSelection(unit.id)}
                               className={cn(
-                                "w-full justify-start text-left font-normal",
-                                !dueDate && "text-muted-foreground"
+                                "p-3 rounded-lg border cursor-pointer transition-all",
+                                unit.selected
+                                  ? "border-primary bg-primary/5"
+                                  : "border-border hover:border-border/60"
                               )}
                             >
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {dueDate ? format(dueDate, "PPP") : "Select due date"}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={dueDate}
-                              onSelect={setDueDate}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <p className="font-medium">{unit.unitNumber}</p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {unit.unitType} • {unit.sqft} sq ft
+                                  </p>
+                                </div>
+                                <input
+                                  type="checkbox"
+                                  checked={unit.selected}
+                                  onChange={() => toggleUnitSelection(unit.id)}
+                                  className="h-4 w-4"
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="mt-4 text-sm text-muted-foreground">
+                          {units.filter(u => u.selected).length} of {units.length} units selected
+                        </div>
                       </div>
                     </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="description">Project Description</Label>
-                      <Textarea
-                        id="description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        placeholder="Provide a detailed description of the renovation project..."
-                        rows={4}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="specialInstructions">Special Instructions</Label>
-                      <Textarea
-                        id="specialInstructions"
-                        value={specialInstructions}
-                        onChange={(e) => setSpecialInstructions(e.target.value)}
-                        placeholder="Any special requirements, restrictions, or instructions for contractors..."
-                        rows={3}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
+                  )}
+                </div>
               </section>
+            )}
+
+            {currentStep === 4 && (
+              <>
+                {/* Scope Selection */}
+                <section className="space-y-8">
+                  <div>
+                    <h2 className="text-2xl font-semibold">Scope Type</h2>
+                    <p className="text-muted-foreground mt-1">Choose how to define the project scope</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button
+                      onClick={() => setScopeType("job-type")}
+                      className={cn(
+                        "p-6 text-left rounded-xl border-2 transition-all",
+                        scopeType === "job-type" 
+                          ? "border-primary bg-primary/5" 
+                          : "border-border hover:border-border/60 hover:bg-muted/20"
+                      )}
+                    >
+                      <div className="font-semibold text-lg">Job-Type Scope</div>
+                      <div className="text-sm text-muted-foreground mt-2">
+                        Driven by job categories and associated units/floorplans
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => setScopeType("unit-based")}
+                      className={cn(
+                        "p-6 text-left rounded-xl border-2 transition-all",
+                        scopeType === "unit-based" 
+                          ? "border-primary bg-primary/5" 
+                          : "border-border hover:border-border/60 hover:bg-muted/20"
+                      )}
+                    >
+                      <div className="font-semibold text-lg">Unit-Based Scope</div>
+                      <div className="text-sm text-muted-foreground mt-2">
+                        Driven by selected units and associated job categories
+                      </div>
+                    </button>
+                  </div>
+                </section>
+
+                {/* Job-Type Scope Content */}
+                {scopeType === "job-type" && (
+                  <section className="space-y-8 pt-8 border-t-2 border-border/60">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h2 className="text-2xl font-semibold">Job Categories</h2>
+                        <p className="text-muted-foreground mt-1">Define the work scope for contractors</p>
+                      </div>
+                      <Button onClick={addJobCategory} className="bg-gradient-to-r from-primary to-brand-blue-dark">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Job
+                      </Button>
+                    </div>
+
+                    {/* Selected Job Categories */}
+                    {jobCategories.length > 0 && (
+                      <div className="space-y-6">
+                        {jobCategories.map((category) => (
+                           <div key={category.id} className="border-l-4 border-l-primary/30 pl-6 py-4 space-y-4">
+                             <div 
+                               className="flex items-center justify-between cursor-pointer hover:bg-accent/30 rounded-lg p-2 -m-2 transition-colors"
+                               onClick={() => toggleCategoryExpansion(category.id)}
+                             >
+                               <div className="flex items-center gap-3">
+                                 <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
+                                 <div onClick={(e) => e.stopPropagation()}>
+                                   <Select 
+                                     value={category.name} 
+                                     onValueChange={(value) => updateJobCategory(category.id, "name", value)}
+                                   >
+                                     <SelectTrigger className="w-48">
+                                     <SelectValue />
+                                   </SelectTrigger>
+                                   <SelectContent>
+                                     <SelectItem value="Flooring">Flooring</SelectItem>
+                                     <SelectItem value="Kitchen">Kitchen</SelectItem>
+                                     <SelectItem value="Bathroom">Bathroom</SelectItem>
+                                     <SelectItem value="Painting">Painting</SelectItem>
+                                     <SelectItem value="HVAC">HVAC</SelectItem>
+                                     <SelectItem value="Plumbing">Plumbing</SelectItem>
+                                     <SelectItem value="Electrical">Electrical</SelectItem>
+                                     <SelectItem value="Appliances">Appliances</SelectItem>
+                                     <SelectItem value="Windows">Windows</SelectItem>
+                                     <SelectItem value="Doors">Doors</SelectItem>
+                                     <SelectItem value="Roofing">Roofing</SelectItem>
+                                     <SelectItem value="Landscaping">Landscaping</SelectItem>
+                                     </SelectContent>
+                                   </Select>
+                                 </div>
+                                 {!category.isExpanded && (
+                                   <div className="text-sm text-muted-foreground italic">
+                                     Click to expand and add job details
+                                   </div>
+                                 )}
+                               </div>
+                               <Button
+                                 variant="ghost"
+                                 size="sm"
+                                 onClick={(e) => {
+                                   e.stopPropagation();
+                                   removeJobCategory(category.id);
+                                 }}
+                                 className="text-muted-foreground hover:text-destructive"
+                               >
+                                 <X className="h-4 w-4" />
+                               </Button>
+                             </div>
+                            
+                             {category.isExpanded && (
+                               <div className="space-y-6 pt-4">
+                                 {/* Basic Information */}
+                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Material Spec/Finish</Label>
+                                     <Input
+                                       placeholder="e.g., Luxury Vinyl Plank, Granite countertop"
+                                       value={category.materialSpec || ""}
+                                       onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
+                                     />
+                                   </div>
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Product Information</Label>
+                                     <Input
+                                       placeholder="Brand, model, specifications"
+                                       value={category.productInfo || ""}
+                                       onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
+                                     />
+                                   </div>
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Dimensions</Label>
+                                     <Input
+                                       placeholder="Size, area, linear feet"
+                                       value={category.dimensions || ""}
+                                       onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
+                                     />
+                                   </div>
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Quantity</Label>
+                                     <Input
+                                       placeholder="Number of units affected"
+                                       value={category.quantity || ""}
+                                       onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
+                                     />
+                                   </div>
+                                 </div>
+
+                                 {/* Project Details */}
+                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Estimated Labor Hours</Label>
+                                     <Input
+                                       placeholder="e.g., 8 hours per unit"
+                                       value={category.laborHours || ""}
+                                       onChange={(e) => updateJobCategory(category.id, "laborHours", e.target.value)}
+                                     />
+                                   </div>
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Skill Level Required</Label>
+                                     <Select value={category.skillLevel || ""} onValueChange={(value) => updateJobCategory(category.id, "skillLevel", value)}>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Select skill level" />
+                                       </SelectTrigger>
+                                       <SelectContent>
+                                         <SelectItem value="basic">Basic</SelectItem>
+                                         <SelectItem value="intermediate">Intermediate</SelectItem>
+                                         <SelectItem value="advanced">Advanced</SelectItem>
+                                         <SelectItem value="specialized">Specialized</SelectItem>
+                                       </SelectContent>
+                                     </Select>
+                                   </div>
+                                   <div className="space-y-2">
+                                     <Label className="text-sm text-muted-foreground">Priority Level</Label>
+                                     <Select value={category.priority || ""} onValueChange={(value) => updateJobCategory(category.id, "priority", value)}>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Select priority" />
+                                       </SelectTrigger>
+                                       <SelectContent>
+                                         <SelectItem value="high">High</SelectItem>
+                                         <SelectItem value="medium">Medium</SelectItem>
+                                         <SelectItem value="low">Low</SelectItem>
+                                       </SelectContent>
+                                     </Select>
+                                   </div>
+                                 </div>
+                                 
+                                 <div className="space-y-2">
+                                   <Label className="text-sm font-medium">Detailed Work Description</Label>
+                                   <Textarea
+                                     placeholder="Provide detailed work requirements, standards, and any special instructions for contractors"
+                                     value={category.notes || ""}
+                                     onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
+                                     className="min-h-[100px]"
+                                   />
+                                 </div>
+                                 
+                                 <div className="space-y-2">
+                                   <Label className="text-sm font-medium">Reference Documents & Images</Label>
+                                   <Button variant="outline" className="w-full">
+                                     <Upload className="mr-2 h-4 w-4" />
+                                     Upload Specs, Drawings, or Reference Images
+                                   </Button>
+                                 </div>
+                               </div>
+                             )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {jobCategories.length === 0 && (
+                      <div className="text-center py-12 text-muted-foreground border border-dashed border-border rounded-lg">
+                        <Building className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <h3 className="text-lg font-medium mb-2">No job categories added yet</h3>
+                        <p className="mb-4">Define job categories to specify work scope for contractors</p>
+                        <Button onClick={addJobCategory} variant="outline">
+                          <Plus className="mr-2 h-4 w-4" />
+                          Add First Job Category
+                        </Button>
+                      </div>
+                    )}
+                  </section>
+                )}
+
+                {/* Unit-Based Scope Content */}
+                {scopeType === "unit-based" && (
+                  <section className="space-y-8 pt-8 border-t-2 border-border/60">
+                    {!hasRentRoll ? (
+                      /* Rent Roll Upload for Unit-Based */
+                      <div className="border border-border rounded-lg p-6 bg-card">
+                        <div className="flex items-center gap-2 mb-6">
+                          <Upload className="h-5 w-5 text-primary" />
+                          <h3 className="text-lg font-medium">Upload Rent Roll for Unit-Based Scope</h3>
+                        </div>
+                        <div className="space-y-4">
+                          <p className="text-muted-foreground">
+                            Upload your rent roll file to automatically populate unit information and enable unit-based scoping.
+                          </p>
+                          <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
+                            <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                            <div className="space-y-2">
+                              <p className="text-lg font-medium">Upload Rent Roll</p>
+                              <p className="text-sm text-muted-foreground">
+                                Supported formats: .xlsx, .xls, .csv
+                              </p>
+                            </div>
+                            <div className="mt-4">
+                              <input
+                                type="file"
+                                accept=".xlsx,.xls,.csv"
+                                onChange={handleRentRollUpload}
+                                className="hidden"
+                                id="rent-roll-upload-unit-based"
+                              />
+                              <label htmlFor="rent-roll-upload-unit-based" className="cursor-pointer">
+                                <Button asChild className="bg-gradient-to-r from-primary to-primary/80">
+                                  <span>Upload and Enter</span>
+                                </Button>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Unit Selection */}
+                        <div className="border border-border rounded-lg p-6 bg-card">
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-2">
+                              <Home className="h-5 w-5 text-primary" />
+                              <h3 className="text-lg font-medium">Select Units for Renovation</h3>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button size="sm" variant="outline" onClick={selectAllUnits}>
+                                Select All
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={deselectAllUnits}>
+                                Deselect All
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-3 max-h-64 overflow-y-auto">
+                            {units.map((unit) => (
+                              <div
+                                key={unit.id}
+                                onClick={() => toggleUnitSelection(unit.id)}
+                                className={cn(
+                                  "flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all hover:shadow-sm w-full",
+                                  unit.selected
+                                    ? "border-primary bg-primary/5 shadow-sm"
+                                    : "border-border hover:border-border/60"
+                                )}
+                              >
+                                <div className="flex items-center gap-4">
+                                  <div className="font-medium text-lg">{unit.unitNumber}</div>
+                                  <div className="text-sm text-muted-foreground">
+                                    {unit.unitType} • Plan {unit.floorPlan} • {unit.sqft} sq ft • {unit.bedrooms}BR/{unit.bathrooms}BA
+                                  </div>
+                                </div>
+                                <input
+                                  type="checkbox"
+                                  checked={unit.selected}
+                                  onChange={() => toggleUnitSelection(unit.id)}
+                                  className="h-4 w-4"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                          
+                          <div className="mt-4 flex items-center justify-between text-sm">
+                            <div className="text-muted-foreground">
+                              {units.filter(u => u.selected).length} of {units.length} units selected
+                            </div>
+                            {units.filter(u => u.selected).length > 0 && (
+                              <Badge variant="outline">
+                                Total: {units.filter(u => u.selected).reduce((sum, u) => sum + u.sqft, 0)} sq ft
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Job Categories for Selected Units */}
+                        {units.filter(u => u.selected).length > 0 && (
+                          <div className="space-y-6">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <h3 className="text-xl font-semibold">Job Categories for Selected Units</h3>
+                                <p className="text-muted-foreground mt-1">Define work scope for {units.filter(u => u.selected).length} selected units</p>
+                              </div>
+                              <Button onClick={addJobCategory} className="bg-gradient-to-r from-primary to-brand-blue-dark">
+                                <Plus className="mr-2 h-4 w-4" />
+                                Add Job
+                              </Button>
+                            </div>
+
+                            {/* Job Categories List */}
+                            {jobCategories.length > 0 && (
+                              <div className="space-y-6">
+                                {jobCategories.map((category) => (
+                                   <div key={category.id} className="border-l-4 border-l-primary/30 pl-6 py-4 space-y-4">
+                                     <div 
+                                       className="flex items-center justify-between cursor-pointer hover:bg-accent/30 rounded-lg p-2 -m-2 transition-colors"
+                                       onClick={() => toggleCategoryExpansion(category.id)}
+                                     >
+                                       <div className="flex items-center gap-3">
+                                         <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", category.isExpanded ? "rotate-180" : "")} />
+                                         <div onClick={(e) => e.stopPropagation()}>
+                                           <Select 
+                                             value={category.name} 
+                                             onValueChange={(value) => updateJobCategory(category.id, "name", value)}
+                                           >
+                                             <SelectTrigger className="w-48">
+                                             <SelectValue />
+                                           </SelectTrigger>
+                                           <SelectContent>
+                                             <SelectItem value="Flooring">Flooring</SelectItem>
+                                             <SelectItem value="Kitchen">Kitchen</SelectItem>
+                                             <SelectItem value="Bathroom">Bathroom</SelectItem>
+                                             <SelectItem value="Painting">Painting</SelectItem>
+                                             <SelectItem value="HVAC">HVAC</SelectItem>
+                                             <SelectItem value="Plumbing">Plumbing</SelectItem>
+                                             <SelectItem value="Electrical">Electrical</SelectItem>
+                                             <SelectItem value="Appliances">Appliances</SelectItem>
+                                             <SelectItem value="Windows">Windows</SelectItem>
+                                             <SelectItem value="Doors">Doors</SelectItem>
+                                             <SelectItem value="Roofing">Roofing</SelectItem>
+                                             <SelectItem value="Landscaping">Landscaping</SelectItem>
+                                             </SelectContent>
+                                           </Select>
+                                         </div>
+                                         {!category.isExpanded && (
+                                           <div className="text-sm text-muted-foreground italic">
+                                             Applies to {units.filter(u => u.selected).length} selected units
+                                           </div>
+                                         )}
+                                       </div>
+                                       <Button
+                                         variant="ghost"
+                                         size="sm"
+                                         onClick={(e) => {
+                                           e.stopPropagation();
+                                           removeJobCategory(category.id);
+                                         }}
+                                         className="text-muted-foreground hover:text-destructive"
+                                       >
+                                         <X className="h-4 w-4" />
+                                       </Button>
+                                     </div>
+                                    
+                                     {category.isExpanded && (
+                                       <div className="space-y-6 pt-4">
+                                         {/* Unit Types Display */}
+                                         <div className="space-y-2">
+                                           <Label className="text-sm text-muted-foreground">Applicable Units</Label>
+                                           <div className="flex flex-wrap gap-2">
+                                             {units.filter(u => u.selected).map(unit => (
+                                               <Badge
+                                                 key={unit.id}
+                                                 variant="outline"
+                                                 className="text-xs"
+                                               >
+                                                 {unit.unitNumber} ({unit.unitType})
+                                               </Badge>
+                                             ))}
+                                           </div>
+                                         </div>
+
+                                         {/* Basic Information */}
+                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                           <div className="space-y-2">
+                                             <Label className="text-sm text-muted-foreground">Material Spec/Finish</Label>
+                                             <Input
+                                               placeholder="e.g., Luxury Vinyl Plank, Granite countertop"
+                                               value={category.materialSpec || ""}
+                                               onChange={(e) => updateJobCategory(category.id, "materialSpec", e.target.value)}
+                                             />
+                                           </div>
+                                           <div className="space-y-2">
+                                             <Label className="text-sm text-muted-foreground">Product Information</Label>
+                                             <Input
+                                               placeholder="Brand, model, specifications"
+                                               value={category.productInfo || ""}
+                                               onChange={(e) => updateJobCategory(category.id, "productInfo", e.target.value)}
+                                             />
+                                           </div>
+                                           <div className="space-y-2">
+                                             <Label className="text-sm text-muted-foreground">Dimensions</Label>
+                                             <Input
+                                               placeholder="Size, area, linear feet"
+                                               value={category.dimensions || ""}
+                                               onChange={(e) => updateJobCategory(category.id, "dimensions", e.target.value)}
+                                             />
+                                           </div>
+                                           <div className="space-y-2">
+                                             <Label className="text-sm text-muted-foreground">Quantity per Unit</Label>
+                                             <Input
+                                               placeholder="Quantity per selected unit"
+                                               value={category.quantity || ""}
+                                               onChange={(e) => updateJobCategory(category.id, "quantity", e.target.value)}
+                                             />
+                                           </div>
+                                         </div>
+
+                                         {/* Project Details */}
+                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                           <div className="space-y-2">
+                                             <Label className="text-sm text-muted-foreground">Estimated Labor Hours per Unit</Label>
+                                             <Input
+                                               placeholder="e.g., 8 hours per unit"
+                                               value={category.laborHours || ""}
+                                               onChange={(e) => updateJobCategory(category.id, "laborHours", e.target.value)}
+                                             />
+                                           </div>
+                                           <div className="space-y-2">
+                                             <Label className="text-sm text-muted-foreground">Skill Level Required</Label>
+                                             <Select value={category.skillLevel || ""} onValueChange={(value) => updateJobCategory(category.id, "skillLevel", value)}>
+                                               <SelectTrigger>
+                                                 <SelectValue placeholder="Select skill level" />
+                                               </SelectTrigger>
+                                               <SelectContent>
+                                                 <SelectItem value="basic">Basic</SelectItem>
+                                                 <SelectItem value="intermediate">Intermediate</SelectItem>
+                                                 <SelectItem value="advanced">Advanced</SelectItem>
+                                                 <SelectItem value="specialized">Specialized</SelectItem>
+                                               </SelectContent>
+                                             </Select>
+                                           </div>
+                                           <div className="space-y-2">
+                                             <Label className="text-sm text-muted-foreground">Priority Level</Label>
+                                             <Select value={category.priority || ""} onValueChange={(value) => updateJobCategory(category.id, "priority", value)}>
+                                               <SelectTrigger>
+                                                 <SelectValue placeholder="Select priority" />
+                                               </SelectTrigger>
+                                               <SelectContent>
+                                                 <SelectItem value="high">High</SelectItem>
+                                                 <SelectItem value="medium">Medium</SelectItem>
+                                                 <SelectItem value="low">Low</SelectItem>
+                                               </SelectContent>
+                                             </Select>
+                                           </div>
+                                         </div>
+                                         
+                                         <div className="space-y-2">
+                                           <Label className="text-sm font-medium">Detailed Work Description</Label>
+                                           <Textarea
+                                             placeholder="Provide detailed work requirements, standards, and any special instructions for contractors"
+                                             value={category.notes || ""}
+                                             onChange={(e) => updateJobCategory(category.id, "notes", e.target.value)}
+                                             className="min-h-[100px]"
+                                           />
+                                         </div>
+                                         
+                                         <div className="space-y-2">
+                                           <Label className="text-sm font-medium">Reference Documents & Images</Label>
+                                           <Button variant="outline" className="w-full">
+                                             <Upload className="mr-2 h-4 w-4" />
+                                             Upload Specs, Drawings, or Reference Images
+                                           </Button>
+                                         </div>
+                                       </div>
+                                     )}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {jobCategories.length === 0 && (
+                              <div className="text-center py-12 text-muted-foreground border border-dashed border-border rounded-lg">
+                                <Building className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                                <h3 className="text-lg font-medium mb-2">No job categories added yet</h3>
+                                <p className="mb-4">Define job categories for the selected {units.filter(u => u.selected).length} units</p>
+                                <Button onClick={addJobCategory} variant="outline">
+                                  <Plus className="mr-2 h-4 w-4" />
+                                  Add First Job Category
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </section>
+                )}
+              </>
             )}
 
             {currentStep === 5 && (
               /* Contractors Section */
-              <section className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-2xl flex items-center gap-2">
-                      <User className="h-6 w-6" />
-                      Select Contractors
-                    </CardTitle>
-                    <p className="text-muted-foreground">Choose contractors to invite for bidding on this project</p>
-                  </CardHeader>
-                  <CardContent>
-                    {contractors.length > 0 ? (
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        {contractors.map((contractor) => (
-                          <Card key={contractor.id} className="border-2 hover:shadow-md transition-all duration-200">
-                            <CardContent className="p-4">
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <h3 className="font-semibold text-lg">{contractor.companyName}</h3>
-                                  <p className="text-muted-foreground">
-                                    {contractor.firstName} {contractor.lastName}
-                                  </p>
-                                  <div className="mt-2 space-y-1">
-                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                      <Mail className="h-4 w-4" />
-                                      {contractor.email}
-                                    </div>
-                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                      <Building className="h-4 w-4" />
-                                      {contractor.location}
-                                    </div>
-                                  </div>
-                                </div>
-                                <Button size="sm" className="ml-4">
-                                  Invite to Bid
-                                </Button>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        ))}
+              <section className="space-y-8">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-semibold">Contractors</h2>
+                    <p className="text-muted-foreground mt-1">Add up to 5 contractors for this bid</p>
+                  </div>
+                  {contractors.length < 5 && (
+                    <Button 
+                      onClick={() => setShowContractorForm(true)}
+                      className="bg-gradient-to-r from-primary to-brand-blue-dark hover:shadow-medium transition-all duration-300"
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add Contractor
+                    </Button>
+                  )}
+                </div>
+                
+                {/* Contract Form */}
+                {showContractorForm && (
+                  <div className="space-y-6 p-6 bg-gradient-to-br from-accent/10 to-primary/5 rounded-xl border border-primary/20 shadow-soft">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium text-lg">Add New Contractor</h4>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => setShowContractorForm(false)}
+                        className="hover:bg-destructive/10 hover:text-destructive"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label className="text-sm text-muted-foreground">Company Name *</Label>
+                        <Input
+                          value={newContractor.companyName}
+                          onChange={(e) => setNewContractor({...newContractor, companyName: e.target.value})}
+                          placeholder="Company name"
+                        />
                       </div>
-                    ) : (
-                      <div className="text-center py-12 text-muted-foreground">
-                        <User className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>No contractors added yet. Click "Add Contractor" to get started.</p>
+                      <div className="space-y-2">
+                        <Label className="text-sm text-muted-foreground">Location</Label>
+                        <Input
+                          value={newContractor.location}
+                          onChange={(e) => setNewContractor({...newContractor, location: e.target.value})}
+                          placeholder="City, State"
+                        />
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
+                      <div className="space-y-2">
+                        <Label className="text-sm text-muted-foreground">First Name *</Label>
+                        <Input
+                          value={newContractor.firstName}
+                          onChange={(e) => setNewContractor({...newContractor, firstName: e.target.value})}
+                          placeholder="First name"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm text-muted-foreground">Last Name *</Label>
+                        <Input
+                          value={newContractor.lastName}
+                          onChange={(e) => setNewContractor({...newContractor, lastName: e.target.value})}
+                          placeholder="Last name"
+                        />
+                      </div>
+                      <div className="space-y-2 md:col-span-2">
+                        <Label className="text-sm text-muted-foreground">Email Address *</Label>
+                        <Input
+                          type="email"
+                          value={newContractor.email}
+                          onChange={(e) => setNewContractor({...newContractor, email: e.target.value})}
+                          placeholder="email@company.com"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <Button onClick={addContractor} className="bg-gradient-to-r from-primary to-brand-blue-dark">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Contractor
+                      </Button>
+                      <Button variant="outline" onClick={() => setShowContractorForm(false)}>
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                
+                {contractors.length > 0 && (
+                  <div className="space-y-3">
+                    {contractors.map((contractor) => (
+                      <div key={contractor.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-background to-accent/10 rounded-lg border-l-4 border-l-primary/30 shadow-soft">
+                        <div>
+                          <div className="font-semibold text-lg">{contractor.companyName}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {contractor.firstName} {contractor.lastName} • {contractor.email}
+                            {contractor.location && ` • ${contractor.location}`}
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeContractor(contractor.id)}
+                          className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {contractors.length === 0 && !showContractorForm && (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <User className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No contractors added yet. Click "Add Contractor" to get started.</p>
+                  </div>
+                )}
               </section>
             )}
           </div>
